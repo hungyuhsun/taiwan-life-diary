@@ -263,7 +263,14 @@ tools/tts/           語音句子清單與產生器（README.md 有步驟）
 
 `/var/www/html/twdiary/`。正式版的問卷網址和試算表 ID 只在這裡。
 
-### D. Google 試算表
+### D. Google 雲端硬碟交接資料夾
+
+https://drive.google.com/drive/folders/1Y150IG4yE0mbwg119818gnxWXnZWvmqP
+
+- 放本交接紀錄（Google 文件版）、各份說明文件，以及使用者手動上傳的原始碼壓縮檔。
+- 內容是副本，**以 GitHub 為準**。更新本文件後，請一併更新雲端硬碟裡的「00 先讀我：交接紀錄」。
+
+### E. Google 試算表
 
 - ID：`1nTGPSY2y8R0hiW5rYzAlH_vXSVUV92WeMg3OQmkpzNU`
 - 第一個工作表是學生回饋，另有「教師回饋」工作表。
