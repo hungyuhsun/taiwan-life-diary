@@ -453,7 +453,25 @@ function vScore(v){ const n=v.name, tw=/TW|Hant|台|臺/i.test(v.lang+n);
 function pickVoice(){ const vs=zhVoices(); if(!vs.length) return;
   voice = (S && S.voice && vs.find(v=>v.name===S.voice)) || vs.slice().sort((a,b)=>vScore(b)-vScore(a))[0]; }
 try{ speechSynthesis.onvoiceschanged = pickVoice; pickVoice(); }catch(e){}
-function speak(text){ try{ if(!voice) pickVoice(); speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text.replace(/[（(].*?[)）]/g,'')); u.lang=voice?voice.lang:'zh-TW'; if(voice) u.voice=voice; u.rate=(S&&S.rate)||.9; speechSynthesis.speak(u);}catch(e){} }
+// 錄製語音（Azure 產生，放在 audio/）：有檔案就播放，沒有就用手機內建語音。對應規則與 tts_jobs.js 相同。
+const AUDIO_BASE='audio/'; let AUDIO=null, curAudio=null;
+try{ fetch(AUDIO_BASE+'index.json').then(r=>r.ok?r.json():[]).then(a=>{ AUDIO=new Set(a); }).catch(()=>{}); }catch(e){}
+const VOICE_OF={rina:'f_young',amei:'f_young',alian:'f_young',newbie:'f_young',newbie2:'f_young',
+  tongxue:'m_young',xiaoyang:'m_young',xuezhang:'m_young',ajie:'m_young',xinsheng:'m_young',xinsheng2:'m_young',cousin:'m_young',
+  lin:'f_adult',li:'f_adult',customer:'f_adult',nurse:'f_adult',host:'f_adult',teacher:'f_adult',prof:'f_adult',officer:'f_adult',photog:'f_adult',mama:'f_adult',
+  chen:'m_adult',clerk:'m_adult',coach:'m_adult',staff:'m_adult',stranger:'m_adult',guo:'m_adult',
+  zhang:'m_old',huang:'m_old',passer:'m_old',ayi:'f_old',ajiao:'f_old'};
+const meVoice=()=> (S&&S.hero&&hero()&&!hero().girl) ? 'me_m' : 'me_f';
+const voiceOf=(who)=> who==='me' ? meVoice() : (VOICE_OF[role(who)]||'nar');
+const normTts=(t)=>t.replace(/[（(].*?[)）]/g,'').replace(/[〔〕]/g,'').replace(/＿＿/g,'嗯').trim();
+function ttsHash(s){ let h1=0x811c9dc5,h2=0x01000193; for(let i=0;i<s.length;i++){ const c=s.charCodeAt(i); h1=Math.imul(h1^c,16777619); h2=Math.imul(h2^c,2246822519)^(h2>>>13); }
+  return (h1>>>0).toString(16).padStart(8,'0')+(h2>>>0).toString(16).padStart(8,'0'); }
+function speakTts(text){ try{ if(!voice) pickVoice(); speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang=voice?voice.lang:'zh-TW'; if(voice) u.voice=voice; u.rate=(S&&S.rate)||.9; speechSynthesis.speak(u);}catch(e){} }
+function speak(text, v){ const n=normTts(text||''); if(!n) return;
+  try{ if(curAudio){ curAudio.pause(); curAudio=null; } speechSynthesis.cancel(); }catch(e){}
+  const h=ttsHash((v||'nar')+'|'+n);
+  if(AUDIO && AUDIO.has(h) && !(S&&S.ttsOnly)){ try{ const a=new Audio(AUDIO_BASE+h+'.mp3'); a.playbackRate=clamp(((S&&S.rate)||.9)/.9,.5,1.5); curAudio=a; a.play().catch(()=>speakTts(n)); return; }catch(e){} }
+  speakTts(n); }
 function showCard(k){ return new Promise(res=>{
   const zh=CARDS[k], im=IMG['item_'+k];
   const ov=el('div',{class:'cardpop',role:'dialog','aria-label':'獲得收集卡：'+zh});
@@ -570,17 +588,18 @@ function showSay(st){
   panel.innerHTML='';
   const name = who==='me' ? (S.name||'我') : PEOPLE[role(who)].zh;
   panel.append(el('span',{class:'who'+(who==='me'?' me':'')},name));
-  const sp = el('button',{class:'speak','aria-label':'播放',onclick:()=>speak(zh)},'🔊');
+  const vv = voiceOf(who);
+  const sp = el('button',{class:'speak','aria-label':'播放',onclick:()=>speak(zh,vv)},'🔊');
   if(st.listen){
     const box = el('div',{}, el('p',{class:'hidden-text'},'？？？'));
-    const big = el('button',{class:'speak big',onclick:()=>speak(zh)},'🔊 '+UI.listen[S.lang]);
+    const big = el('button',{class:'speak big',onclick:()=>speak(zh,vv)},'🔊 '+UI.listen[S.lang]);
     panel.append(el('div',{class:'line'}, box), big);
     lastHidden = {box,zh};
   } else {
     panel.append(el('div',{class:'line'}, el('p',{class:'zh'},zh), sp));
     if(S.pinyin) panel.append(el('p',{class:'py'},pyOf(st.homeVN && hero().home.zh==='越南' ? st.homeVN : st.zh)));
   }
-  if(S.auto) speak(zh);
+  if(S.auto) speak(zh,vv);
 }
 function revealHidden(){ if(!lastHidden) return; const {box,zh}=lastHidden; box.innerHTML=''; box.append(el('p',{class:'zh'},zh)); if(S.pinyin){ const k=Object.keys(DATA.py).find(k=>fill(k)===zh); if(k) box.append(el('p',{class:'py'},pyOf(k))); } lastHidden=null; }
 
@@ -654,9 +673,9 @@ function runQ(q, ctx){
       b.addEventListener('click',async()=>{
         if(b.disabled) return; btns.forEach(x=>x.disabled=true);
         const oldRetry=panel.querySelector('.retry'); if(oldRetry) oldRetry.remove();
-        if(q.free){ b.classList.add('ok'); revealHidden(); if(q.wish) S.wish=z; speak(z); await new Promise(r=>setTimeout(r,500));
+        if(q.free){ b.classList.add('ok'); revealHidden(); if(q.wish) S.wish=z; speak(z,meVoice()); await new Promise(r=>setTimeout(r,500));
           app.classList.remove('q'); await runSteps(o.then||q.ok||[], ctx); save(); resolve(); return; }
-        if(o.ok){ b.classList.add('ok'); revealHidden(); if(first){ S.qOk++; ctx.ok=(ctx.ok||0)+1; S.st.zh=clamp(S.st.zh+1,0,100); if(q.bankNo) S.missed=S.missed.filter(x=>x!==q.bankNo);} speak(z.replace(/〔|〕/g,''));
+        if(o.ok){ b.classList.add('ok'); revealHidden(); if(first){ S.qOk++; ctx.ok=(ctx.ok||0)+1; S.st.zh=clamp(S.st.zh+1,0,100); if(q.bankNo) S.missed=S.missed.filter(x=>x!==q.bankNo);} speak(z.replace(/〔|〕/g,''),meVoice());
           const fb=feedback(true); box.after(fb);
           await waitTap(); fb.remove(); panel.querySelectorAll('.next').forEach(x=>x.remove());
           app.classList.remove('q'); await runSteps(o.then||q.ok||[], ctx); save(); resolve(); }

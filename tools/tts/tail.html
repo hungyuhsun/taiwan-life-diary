@@ -1,0 +1,82 @@
+const VOICES={
+  nar:   {name:'旁白',           voice:'zh-TW-HsiaoChenNeural', pitch:'+0%',  rate:'+0%'},
+  me_f:  {name:'主角（女）',     voice:'zh-TW-HsiaoYuNeural',   pitch:'+4%',  rate:'+0%'},
+  me_m:  {name:'主角（男）',     voice:'zh-TW-YunJheNeural',    pitch:'+6%',  rate:'+0%'},
+  f_young:{name:'年輕女生（阿蜜、學妹…）', voice:'zh-TW-HsiaoYuNeural', pitch:'+8%', rate:'+0%'},
+  m_young:{name:'年輕男生（同學、學長…）', voice:'zh-TW-YunJheNeural',  pitch:'+10%',rate:'+5%'},
+  f_adult:{name:'成年女性（林老師、護理師…）', voice:'zh-TW-HsiaoChenNeural', pitch:'+0%', rate:'+0%'},
+  m_adult:{name:'成年男性（陳老師、店員…）',   voice:'zh-TW-YunJheNeural',    pitch:'+0%', rate:'+0%'},
+  m_old: {name:'年長男性（張校長、黃師傅…）', voice:'zh-TW-YunJheNeural',    pitch:'-10%',rate:'-5%'},
+  f_old: {name:'年長女性（宿舍阿姨…）',       voice:'zh-TW-HsiaoChenNeural', pitch:'-10%',rate:'-10%'},
+};
+const SAMPLE={nar:'今天是開學第一天。',me_f:'老師好，我是新來的學生。',me_m:'老師好，我是新來的學生。',f_young:'你也是新生嗎？我們一起去吃飯吧！',m_young:'學弟，工廠的安全帽要戴好喔。',f_adult:'請大家把作業交到前面來。',m_adult:'你好，請問要內用還是外帶？',m_old:'孩子，在台灣要好好照顧自己。',f_old:'晚上十點要點名，不要遲到喔。'};
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const log=m=>{ $('log').textContent=m+'\n'+$('log').textContent.slice(0,4000); };
+try{ const k=localStorage.getItem('tts_key'); if(k){ $('key').value=k; $('remember').checked=true; } const r=localStorage.getItem('tts_region'); if(r) $('region').value=r; }catch(e){}
+function saveKey(){ try{ if($('remember').checked){ localStorage.setItem('tts_key',$('key').value.trim()); localStorage.setItem('tts_region',$('region').value.trim()); } else localStorage.removeItem('tts_key'); }catch(e){} }
+function ssml(v,text){ const c=VOICES[v]; return `<speak version="1.0" xml:lang="zh-TW"><voice name="${c.voice}"><prosody pitch="${c.pitch}" rate="${c.rate}">${esc(text)}</prosody></voice></speak>`; }
+async function tts(v,text){
+  const key=$('key').value.trim(), region=$('region').value.trim();
+  if(!key) throw new Error('請先貼上金鑰');
+  const r=await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`,{method:'POST',headers:{
+    'Ocp-Apim-Subscription-Key':key,'Content-Type':'application/ssml+xml','X-Microsoft-OutputFormat':'audio-16khz-32kbitrate-mono-mp3'},body:ssml(v,text)});
+  if(r.status===429){ const e=new Error('429'); e.retry=+(r.headers.get('Retry-After')||10); throw e; }
+  if(!r.ok) throw new Error('HTTP '+r.status+(r.status===401?'（金鑰或區域不對）':''));
+  return await r.blob();
+}
+// 試聽表
+for(const [v,c] of Object.entries(VOICES)){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td>${c.name}</td><td class="mut">${c.voice.replace('zh-TW-','').replace('Neural','')} ${c.pitch}</td><td></td>`;
+  const b=document.createElement('button'); b.className='sec'; b.textContent='▶ 試聽';
+  b.onclick=async()=>{ b.disabled=true; try{ saveKey(); const bl=await tts(v,SAMPLE[v]); new Audio(URL.createObjectURL(bl)).play(); }catch(e){ alertMsg(e); } b.disabled=false; };
+  tr.lastChild.append(b); $('voices').append(tr);
+}
+function alertMsg(e){ const m=e.message==='Failed to fetch'?'連不上 Azure（網路被擋，或瀏覽器不允許）。請改用 PowerShell 版：產生語音.ps1':e.message; log('錯誤：'+m); $('stat').textContent='錯誤：'+m; }
+// IndexedDB
+let dbp=null; function db(){ return dbp||(dbp=new Promise((ok,no)=>{ const q=indexedDB.open('twdiary_tts',1); q.onupgradeneeded=()=>q.result.createObjectStore('a'); q.onsuccess=()=>ok(q.result); q.onerror=()=>no(q.error); })); }
+async function idb(mode,fn){ const d=await db(); return new Promise((ok,no)=>{ const t=d.transaction('a',mode); const r=fn(t.objectStore('a')); t.oncomplete=()=>ok(r&&r.result); t.onerror=()=>no(t.error); }); }
+const putA=(h,b)=>idb('readwrite',s=>s.put(b,h)); const keysA=()=>idb('readonly',s=>s.getAllKeys()); const getA=h=>idb('readonly',s=>s.get(h));
+const chars=JOBS.reduce((s,j)=>s+j.t.length,0);
+$('summary').textContent=`共 ${JOBS.length} 句、${chars.toLocaleString()} 字（免費方案每月 50 萬字，用不完）。免費方案每分鐘只能做約 20 句，全部大約需要 2～3 小時，可以放著讓它跑。`;
+let running=false;
+async function refresh(){ const ks=new Set(await keysA()); const done=JOBS.filter(j=>ks.has(j.h)).length; $('prog').max=JOBS.length; $('prog').value=done; return {ks,done}; }
+refresh().then(({done})=>{ $('stat').textContent=`已完成 ${done} / ${JOBS.length}`; });
+$('go').onclick=async()=>{
+  saveKey(); running=true; $('go').disabled=true; $('stop').disabled=false;
+  const {ks}=await refresh(); const todo=JOBS.filter(j=>!ks.has(j.h)); let done=JOBS.length-todo.length, gap=3100, fails=0;
+  for(const j of todo){
+    if(!running) break;
+    for(let tries=0;;tries++){
+      try{ const t0=Date.now(); const b=await tts(j.v,j.t); await putA(j.h,b); done++; fails=0; gap=Math.max(2600,gap-50);
+        $('prog').value=done; const left=JOBS.length-done; $('stat').textContent=`已完成 ${done} / ${JOBS.length}，約剩 ${Math.ceil(left*gap/60000)} 分鐘　${j.t.slice(0,20)}`;
+        const w=gap-(Date.now()-t0); if(w>0) await new Promise(r=>setTimeout(r,w)); break; }
+      catch(e){ if(e.message==='429'){ gap=Math.min(6000,gap+400); log('太快了，等 '+e.retry+' 秒'); await new Promise(r=>setTimeout(r,e.retry*1000)); continue; }
+        if(++fails>5||/401|403|Failed to fetch/.test(e.message)){ alertMsg(e); running=false; break; }
+        log('重試：'+j.t.slice(0,20)+' '+e.message); await new Promise(r=>setTimeout(r,3000*(tries+1))); }
+    }
+  }
+  if(done===JOBS.length) $('stat').textContent='全部完成！請按「下載 audio.zip」。';
+  running=false; $('go').disabled=false; $('stop').disabled=true;
+};
+$('stop').onclick=()=>{ running=false; $('stat').textContent+='（暫停中…）'; };
+$('clear').onclick=async()=>{ if(!confirm('清除瀏覽器裡已做好的語音檔？')) return; await idb('readwrite',s=>s.clear()); refresh(); $('stat').textContent='已清除'; };
+// 簡易 zip（不壓縮）
+const CRC=(()=>{ const t=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1; t[n]=c>>>0; } return t; })();
+const crc32=u=>{ let c=0xFFFFFFFF; for(let i=0;i<u.length;i++) c=CRC[(c^u[i])&255]^(c>>>8); return (c^0xFFFFFFFF)>>>0; };
+function makeZip(files){ const enc=new TextEncoder(), parts=[], cen=[]; let off=0;
+  for(const [name,data] of files){ const n=enc.encode(name), crc=crc32(data);
+    const h=new DataView(new ArrayBuffer(30)); h.setUint32(0,0x04034b50,true); h.setUint16(4,20,true); h.setUint32(14,crc,true); h.setUint32(18,data.length,true); h.setUint32(22,data.length,true); h.setUint16(26,n.length,true);
+    parts.push(h.buffer,n,data);
+    const c=new DataView(new ArrayBuffer(46)); c.setUint32(0,0x02014b50,true); c.setUint16(4,20,true); c.setUint16(6,20,true); c.setUint32(16,crc,true); c.setUint32(20,data.length,true); c.setUint32(24,data.length,true); c.setUint16(28,n.length,true); c.setUint32(42,off,true);
+    cen.push(c.buffer,n); off+=30+n.length+data.length; }
+  const csz=cen.reduce((s,x)=>s+(x.byteLength||x.length),0); const e=new DataView(new ArrayBuffer(22)); e.setUint32(0,0x06054b50,true); e.setUint16(8,files.length,true); e.setUint16(10,files.length,true); e.setUint32(12,csz,true); e.setUint32(16,off,true);
+  return new Blob([...parts,...cen,e.buffer],{type:'application/zip'}); }
+$('zip').onclick=async()=>{ const {ks}=await refresh(); const files=[]; const list=[];
+  for(const j of JOBS) if(ks.has(j.h)){ const b=await getA(j.h); files.push(['audio/'+j.h+'.mp3',new Uint8Array(await b.arrayBuffer())]); list.push(j.h); }
+  if(!files.length){ $('stat').textContent='還沒有做好的檔案。'; return; }
+  files.push(['audio/index.json',new TextEncoder().encode(JSON.stringify(list))]);
+  const a=document.createElement('a'); a.href=URL.createObjectURL(makeZip(files)); a.download='audio.zip'; a.click();
+  $('stat').textContent=`已打包 ${list.length} 個檔案`+(list.length<JOBS.length?'（還沒全部完成，遊戲會先用有的檔案，其餘用手機語音）':''); };
+</script></body></html>

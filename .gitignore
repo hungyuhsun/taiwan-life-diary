@@ -1,3 +1,7 @@
 node_modules/
 .DS_Store
 *.log
+
+# TTS 產生物
+tools/tts/tts_jobs.json
+tools/tts/語音產生器.html

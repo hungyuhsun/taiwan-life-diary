@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台灣生活日記 語音產生器</title>
+<style>
+:root{--bg:#f7f5f0;--fg:#222;--mut:#666;--ac:#0b6e4f;--bd:#ddd;--card:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1b1b;--fg:#eee;--mut:#aaa;--bd:#444;--card:#262626}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,"Noto Sans TC",sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:1.4rem;margin:.2em 0}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;margin:14px 0}
+label{display:block;font-weight:600;margin:.5em 0 .2em}
+input,select{font:inherit;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;width:100%;box-sizing:border-box;background:var(--card);color:var(--fg)}
+button{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--ac);background:var(--ac);color:#fff;cursor:pointer;margin:4px 6px 4px 0}
+button.sec{background:transparent;color:var(--ac)}
+button:disabled{opacity:.5;cursor:default}
+.mut{color:var(--mut);font-size:.9rem}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+td,th{border-bottom:1px solid var(--bd);padding:4px 6px;text-align:left}
+progress{width:100%;height:18px}
+#log{max-height:180px;overflow:auto;font:12px/1.4 ui-monospace,monospace;white-space:pre-wrap;color:var(--mut)}
+</style></head><body><main>
+<h1>台灣生活日記 語音產生器</h1>
+<p class="mut">用學校的 Azure 語音服務，把遊戲裡的中文句子做成 mp3。金鑰只留在這台電腦，不會傳給別人。</p>
+
+<div class="card">
+<label for="key">金鑰（Azure 語音服務 →「金鑰和端點」→ 金鑰 1）</label>
+<input id="key" type="password" autocomplete="off" placeholder="貼上金鑰">
+<label for="region">區域（位置／區域）</label>
+<input id="region" value="eastasia">
+<p class="mut"><input type="checkbox" id="remember" style="width:auto"> 在這台電腦記住金鑰（公用電腦請不要勾）</p>
+</div>
+
+<div class="card">
+<b>第 1 步：試聽每一種聲音</b>
+<p class="mut">先確認金鑰可以用、聲音合適。</p>
+<table id="voices"></table>
+</div>
+
+<div class="card">
+<b>第 2 步：產生全部語音</b>
+<p class="mut" id="summary"></p>
+<button id="go">開始產生</button><button id="stop" class="sec" disabled>暫停</button>
+<progress id="prog" value="0" max="1"></progress>
+<p id="stat" class="mut"></p>
+<p class="mut">中途關掉也沒關係，做好的檔案存在瀏覽器裡，下次打開按「開始產生」會從剩下的接著做。</p>
+</div>
+
+<div class="card">
+<b>第 3 步：下載</b>
+<p class="mut">下載 audio.zip，解壓縮後把 <code>audio</code> 資料夾放到遊戲 index.html 旁邊（伺服器上是 /var/www/html/twdiary/audio/）。</p>
+<button id="zip">下載 audio.zip</button><button id="clear" class="sec">清除瀏覽器裡的檔案</button>
+</div>
+<div id="log"></div>
+</main>
+<script>
