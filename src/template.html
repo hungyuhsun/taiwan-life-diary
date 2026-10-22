@@ -1,0 +1,1250 @@
+<title>台灣生活日記</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+Thai:wght@400;600&family=Noto+Sans+Myanmar:wght@400;600&family=Noto+Sans+Khmer:wght@400;600&display=swap">
+<style>
+/* Layout: one phone-shaped stage — top HUD, a scene card with the characters, and a dialogue/choice panel that grows from the bottom.
+   Palette taken from 青年高中: school orange and emblem grey, navy-and-white plaid of the uniform. Single deliberate light look. */
+:root{
+  --ink:#1B2A36; --ink-2:#4A5A68; --paper:#EEF2F5; --card:#FFFFFF;
+  --orange:#E8741C; --orange-soft:#FCE7D4; --grey:#A7AAAD; --plaid:#26324A;
+  --ok:#2C8A57; --ok-soft:#DDF1E5; --no:#C9402B; --no-soft:#F8E0DC;
+  --line:#D5DDE3;
+  --f-display:"LXGW WenKai TC","Noto Sans TC","PingFang TC","Microsoft JhengHei",serif;
+  --f-ui:"Noto Sans TC","Noto Sans Thai","Noto Sans Myanmar","Noto Sans Khmer","Khmer OS","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-tr:"Noto Sans Thai","Noto Sans Myanmar","Noto Sans TC",system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.app{max-width:480px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-block:12px 20px;gap:12px}
+
+/* ---------- title ---------- */
+.title-screen{display:flex;flex-direction:column;gap:18px;align-items:stretch;padding-top:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .seal{width:52px;height:52px;border-radius:50%;background:conic-gradient(var(--grey) 0 50%,var(--orange) 50% 100%);display:grid;place-items:center;flex:none}
+.brand .seal span{width:30px;height:30px;border-radius:50%;background:var(--paper)}
+.brand h1{font-family:var(--f-display);font-size:2.2rem;line-height:1.1;margin:0;font-weight:700;letter-spacing:.04em}
+.brand p{margin:2px 0 0;color:var(--ink-2);font-size:.9rem}
+.cast{display:flex;justify-content:center;align-items:flex-end;height:210px;position:relative;overflow:hidden;border-radius:18px;
+  background:linear-gradient(180deg,#FFF 0%,#FFF 62%,var(--orange-soft) 62%);border:1px solid var(--line)}
+.cast img{height:180px;margin:0 -14px;filter:drop-shadow(0 4px 0 rgba(27,42,54,.08))}
+.chapter-tag{font-family:var(--f-display);font-size:1.15rem;background:var(--plaid);color:#fff;padding:10px 14px;border-radius:12px;
+  background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 6px,transparent 6px 18px),repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 6px,transparent 6px 18px)}
+.btn{border:0;border-radius:14px;padding:14px 18px;font-weight:700;font-size:1.05rem;background:var(--orange);color:#fff;box-shadow:0 3px 0 #B9560E}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #B9560E}
+.btn.ghost{background:var(--card);color:var(--ink);box-shadow:0 3px 0 var(--line);border:1px solid var(--line)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.small{font-size:.85rem;color:var(--ink-2)}
+.linkbtn{display:block;text-align:center;text-decoration:none;color:var(--ink);margin:10px 0 4px}
+.title-screen .info-link{display:block;text-align:center;font-weight:700;color:#B4520C;padding:10px 0}
+
+/* ---------- setup ---------- */
+.setup{display:flex;flex-direction:column;gap:16px}
+.setup h2{font-family:var(--f-display);font-size:1.4rem;margin:0}
+.field{display:flex;flex-direction:column;gap:8px}
+.field > label,.field > .lab{font-weight:700}
+.heroes{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.heroes .hero-card{flex:0 0 calc(25% - 6px)}
+.hero-card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.hero-card img{height:88px;object-fit:contain}
+.hero-card .hc{font-size:.75rem;color:var(--ink-2);white-space:nowrap}
+.hero-card[aria-pressed="true"]{border-color:var(--orange);background:var(--orange-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-weight:500}
+.chip[aria-pressed="true"]{border-color:var(--orange);background:var(--orange-soft)}
+input[type=text],select{font:inherit;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);width:100%;box-sizing:border-box}
+
+/* ---------- game ---------- */
+.hud{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 12px}
+.when{display:flex;align-items:baseline;gap:8px;min-width:0}
+.when b{font-family:var(--f-display);font-size:1.15rem}
+.slot{font-size:.8rem;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--plaid);color:#fff}
+.gear{border:0;background:transparent;font-size:1.3rem;padding:4px 6px;border-radius:8px}
+.meters{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr) auto;gap:8px;align-items:center}
+.meter{display:flex;flex-direction:column;gap:2px;font-size:.72rem;color:var(--ink-2);min-width:0}
+.meter .bar{height:8px;border-radius:99px;background:#E3E8EC;overflow:hidden}
+.meter .bar i{display:block;height:100%;border-radius:99px;background:var(--orange);transition:width .5s}
+.meter.mood .bar i{background:#E2A11C}.meter.tidy .bar i{background:#2E9C8E}.meter.tidy.low .bar i{background:#C9402B}.meter.skill .bar i{background:var(--plaid)}
+.money{font-variant-numeric:tabular-nums;font-weight:700;font-size:.95rem;white-space:nowrap}
+
+.stage{position:relative;height:240px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.stage .bg{position:absolute;inset:0;transition:background .4s}
+.stage .place{position:absolute;left:14px;top:10px;font-family:var(--f-display);font-size:3.4rem;line-height:1;color:rgba(27,42,54,.10);letter-spacing:.06em;pointer-events:none}
+.app.q .stage{height:150px}.app.q .sprite.npc{height:140px}.app.q .sprite.me{height:110px}.app.q .avatar{width:84px;height:84px;font-size:2.2rem;bottom:24px}
+.stage,.sprite{transition:height .25s}
+.sprite{position:absolute;bottom:0;transition:opacity .25s,transform .25s}
+.sprite.npc{right:6%;height:220px}
+.sprite.me{left:4%;height:170px}
+.avatar{position:absolute;right:10%;bottom:30px;width:118px;height:118px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-display);font-size:3rem;color:#fff;border:5px solid #fff;box-shadow:0 6px 0 rgba(27,42,54,.12)}
+.avatar small{position:absolute;bottom:-26px;font-family:var(--f-ui);font-size:.75rem;color:var(--ink-2);white-space:nowrap}
+.fxpop{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:4px;align-items:flex-end;pointer-events:none}
+.fxpop span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.8rem;font-weight:700;animation:pop 2.4s forwards}
+@keyframes pop{0%{opacity:0;transform:translateY(6px)}10%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:150px}
+.who{align-self:flex-start;font-weight:700;font-size:.85rem;padding:2px 10px;border-radius:999px;background:var(--orange-soft);color:#9A4A0C}
+.who.me{background:#E2E8F3;color:var(--plaid)}
+.line{display:flex;gap:10px;align-items:flex-start}
+.zh{font-family:var(--f-display);font-size:1.45rem;line-height:1.45;margin:0;flex:1;min-width:0;overflow-wrap:anywhere}
+.py{font-size:.85rem;color:var(--ink-2);margin:-4px 0 0;letter-spacing:.01em}
+.tr{font-family:var(--f-tr);font-size:1rem;line-height:1.6;margin:0;color:var(--ink)}
+.tr-sub{font-family:var(--f-display);font-size:.95rem;color:var(--ink-2);margin:0}
+.hidden-text{font-family:var(--f-display);font-size:1.45rem;letter-spacing:.3em;color:var(--grey)}
+.speak{flex:none;border:0;width:40px;height:40px;border-radius:50%;background:var(--plaid);color:#fff;font-size:1rem}
+.speak.sm{width:34px;height:34px;font-size:.85rem;background:#E2E8F3;color:var(--plaid)}
+.speak.big{width:auto;height:auto;border-radius:12px;padding:10px 14px;font-weight:700;font-size:.95rem}
+.next{align-self:flex-end;border:0;background:transparent;font-weight:700;color:var(--orange);padding:6px 4px}
+.prompt{font-weight:700;margin:0}
+.prompt .tr{font-weight:400;font-size:.9rem;color:var(--ink-2)}
+.stem{font-family:var(--f-display);font-size:1.35rem;background:var(--paper);border-radius:12px;padding:10px 12px;margin:0}
+.opts{display:grid;gap:8px}
+.opt{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid var(--line);background:var(--card);border-radius:14px;padding:10px 12px;min-height:52px}
+.opt .e{font-size:1.5rem;flex:none}
+.opt .o{display:flex;flex-direction:column;min-width:0}
+.opt .o b{font-family:var(--f-display);font-size:1.2rem;font-weight:700}
+.opt .o i{font-style:normal;font-size:.78rem;color:var(--ink-2)}
+.fb{display:flex;align-items:center;gap:10px;margin:12px 0 2px;padding:10px 14px;border-radius:14px;font-size:1.05rem;animation:popin .3s cubic-bezier(.2,1.4,.4,1)}
+.fb.good{background:var(--ok-soft);border:2px solid var(--ok)}
+.fb.oops{background:var(--no-soft);border:2px solid var(--no)}
+.fb-i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#fff;font-weight:700;flex:none}
+.fb.good .fb-i{background:var(--ok)} .fb.oops .fb-i{background:var(--no)}
+.fb-tr{color:var(--ink-2);font-size:.85rem;margin-left:auto}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft)}
+.opt.no{border-color:var(--no);background:var(--no-soft);opacity:.65;animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.src{font-size:.72rem;color:var(--grey);margin:0}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.act{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:10px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
+.act b{font-family:var(--f-display);font-size:1.1rem}
+.act span{font-family:var(--f-tr);font-size:.75rem;color:var(--ink-2)}
+.act em{font-style:normal;font-size:.72rem;color:var(--orange);font-weight:700}
+.act[disabled]{opacity:.4}
+.poster{border:2px dashed var(--plaid);border-radius:12px;padding:10px 12px;background:#F7F9FB}
+.poster h3{margin:0 0 6px;font-family:var(--f-display);font-size:1.2rem;text-align:center;letter-spacing:.3em}
+.poster dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font-family:var(--f-display);font-size:1.05rem}
+.poster dt{color:var(--ink-2)}.poster dd{margin:0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--plaid);color:#fff;padding:10px 16px;border-radius:14px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.2);z-index:20;max-width:calc(100% - 32px)}
+
+/* ---------- end ---------- */
+.end{display:flex;flex-direction:column;gap:14px}
+.end h2{font-family:var(--f-display);font-size:1.8rem;margin:0}
+.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font-size:1.3rem;font-variant-numeric:tabular-nums}
+.stat span{font-size:.78rem;color:var(--ink-2)}
+.friends{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.friend{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 4px;text-align:center;min-width:0}
+.friend img{height:70px}
+.friend .hearts{color:var(--orange);letter-spacing:2px}
+.cards{display:flex;flex-wrap:wrap;gap:8px}
+.opt .e img.ei{width:40px;height:40px;object-fit:contain;display:block}
+.cardpop{position:fixed;inset:0;background:rgba(27,42,54,.55);display:grid;place-items:center;z-index:30;animation:fadein .2s}
+.cc{background:#fff;border-radius:22px;padding:18px 22px 14px;width:min(280px,80vw);text-align:center;box-shadow:0 12px 32px rgba(0,0,0,.3);border:4px solid var(--orange);animation:popin .35s cubic-bezier(.2,1.4,.4,1)}
+.cc-tag{display:inline-block;background:var(--orange);color:#fff;font-weight:700;font-size:.8rem;padding:3px 10px;border-radius:99px;margin-bottom:8px}
+.cc img{width:70%;max-height:150px;object-fit:contain;display:block;margin:6px auto}
+.cc-name{display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--f-display);font-size:1.7rem}
+.cc i{display:block;color:var(--ink-2);font-style:normal;font-size:.9rem}
+.cc-tap{margin-top:10px;font-size:.8rem;color:var(--grey)}
+@keyframes popin{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadein{from{opacity:0}}
+.wish{background:#FFF6D8;border:1px dashed #E2A11C;border-radius:12px;padding:10px 12px;font-family:var(--f-display);font-size:1.05rem}
+.devbox{border:2px dashed var(--orange);border-radius:12px;padding:10px;margin:6px 0 10px;display:grid;gap:8px;background:#FFF8F0}
+.devrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.devrow select{flex:1;min-width:0;max-width:100%}
+.cardchip img{width:22px;height:22px;object-fit:contain;vertical-align:middle;margin-right:4px;background:#fff;border-radius:6px}
+.cardchip{background:var(--plaid);color:#fff;border-radius:10px;padding:6px 10px;font-size:.85rem}
+dialog{border:0;border-radius:18px;padding:18px;max-width:min(420px,calc(100vw - 32px));color:var(--ink);background:var(--card)}
+dialog::backdrop{background:rgba(27,42,54,.4)}
+dialog.mapdlg{padding:0;width:min(420px,calc(100vw - 16px));max-height:calc(100vh - 24px);overflow:auto;background:#F3EFE4}
+.jm{padding:16px 14px 24px;display:flex;flex-direction:column;gap:16px}
+.jm-head{background:#FFFEF8;border:1px solid #E2DCCB;border-radius:18px;padding:16px 14px;display:flex;flex-direction:column;gap:10px;position:sticky;top:0;z-index:2}
+.jm-head h2{margin:0;font-size:1.35rem}
+.jm-bar{height:10px;border-radius:5px;background:#E5DFD0;overflow:hidden}.jm-bar i{display:block;height:100%;background:#0C7F73;border-radius:5px}
+.jm-legend{display:flex;gap:6px;flex-wrap:wrap;font-size:.75rem}
+.jm-pill{font-size:.75rem;border-radius:10px;padding:3px 8px;white-space:nowrap}
+.jm-school{background:#0C7F73;color:#fff}.jm-work{background:#FFD84D;color:#1B2A36}.jm-common{background:#D9D4C7;color:#1B2A36}.jm-unk{border:1px dashed #9A937F;color:#4A5560}
+.jm-year h3{margin:0 4px 8px;font-size:1.15rem;display:flex;gap:8px;align-items:baseline}.jm-year h3 small{font-size:.8rem;font-weight:400;color:#4A5560}
+.jm-row{display:flex;gap:10px}
+.jm-rail{width:36px;display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.jm-node{width:34px;height:34px;border-radius:17px;display:grid;place-items:center;font-weight:900;background:#D9D4C7;color:#4A5560}
+.jm-node.done{background:#0C7F73;color:#fff}.jm-node.cur{background:#C9402B;color:#fff;box-shadow:0 0 0 4px #F4C9C1}
+.jm-line{width:3px;flex-grow:1;margin-top:4px;border-radius:2px;background:repeating-linear-gradient(#C9C2B0 0 6px,transparent 6px 11px)}.jm-line.done{background:#0C7F73}
+.jm-card{flex:1;min-width:0;margin-bottom:12px;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px;background:#FFFEF8;border:1px solid #E2DCCB}
+.jm-card.cur{border:2px solid #C9402B}.jm-card.lock{background:#ECE7DA;border:1px dashed #C9C2B0}
+.jm-card .t{display:flex;justify-content:space-between;align-items:center;gap:6px;font-weight:700}
+.jm-card .th{font-size:.82rem;color:#4A5560}
+.jm-tag{background:#C9402B;color:#fff;font-size:.72rem;border-radius:10px;padding:3px 8px;white-space:nowrap}
+.jm-ev{display:flex;flex-direction:column;gap:4px;font-size:.88rem}.jm-ev div{display:flex;gap:6px;align-items:center}.jm-ev .q{color:#5B6168;letter-spacing:2px}
+.jm-cards{display:flex;gap:6px;flex-wrap:wrap}
+.jm-k{display:flex;align-items:center;gap:4px;font-size:.75rem;border-radius:8px;padding:2px 7px 2px 3px;background:#FFF4C2;border:1px solid #E8C547}
+.jm-k img{width:22px;height:22px;object-fit:contain}.jm-k.miss{background:none;border:1px dashed #9A937F;color:#5B6168;padding:2px 7px}
+.jm-ends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.jm-end{background:#ECE7DA;border:1px dashed #B9B2A2;border-radius:14px;padding:12px 6px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;font-size:.85rem}.jm-end small{font-size:.72rem;color:#4A5560}.jm-end.got{background:#E3F2EE;border:1px solid #0C7F73}
+.set-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+.slip{display:flex;flex-direction:column;margin-top:8px}
+.slip-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.slip-row.big{border-bottom:0;font-size:1.15rem;padding-top:10px}
+.slip-row.big b{color:var(--orange)}
+</style>
+
+<div class="app" id="app"></div>
+
+<script>/*__QRLIB__*/</script>
+<script>
+const DATA = __DATA__;
+const IMG = __IMG__;
+const LANGS = {vi:'Tiếng Việt',id:'Bahasa Indonesia',en:'English',th:'ภาษาไทย',my:'မြန်မာ',km:'ភាសាខ្មែរ'};
+const KM = __KM__; // 高棉文：依英文原句查表，啟動時補進各語言物件
+const UI = {
+  saveHint:{vi:'Sao chép mã này và gửi cho chính bạn (ví dụ qua LINE). Trên máy khác, dán mã để chơi tiếp.',id:'Salin kode ini dan kirim ke dirimu sendiri (misalnya lewat LINE). Di perangkat lain, tempel kode untuk melanjutkan.',en:'Copy this code and send it to yourself (for example on LINE). On another device, paste it to continue.',th:'คัดลอกรหัสนี้แล้วส่งให้ตัวเอง (เช่น ทาง LINE) บนเครื่องอื่น วางรหัสเพื่อเล่นต่อ',my:'ဒီကုဒ်ကို ကူးပြီး ကိုယ့်ကိုယ်ကို ပို့ထားပါ (ဥပမာ LINE နဲ့)။ တခြားစက်မှာ ကုဒ်ကို ထည့်ရင် ဆက်ကစားလို့ရတယ်။'},
+  loadHint:{vi:'Dán mã lưu vào đây để chơi tiếp.',id:'Tempel kode simpanan di sini untuk melanjutkan.',en:'Paste your save code here to continue.',th:'วางรหัสบันทึกที่นี่เพื่อเล่นต่อ',my:'ဆက်ကစားဖို့ သိမ်းကုဒ်ကို ဒီမှာ ထည့်ပါ။'},
+  slip:{
+    vi:{title:'Phiếu lương',gross:'Lương gộp',labor:'BH lao động',health:'BH y tế',noNHI:'Chưa có (chưa đủ 180 ngày)',net:'Thực nhận'},
+    id:{title:'Slip gaji',gross:'Bruto',labor:'BPJS Ketenagakerjaan',health:'BPJS Kesehatan',noNHI:'Belum ada (belum 180 hari)',net:'Diterima'},
+    en:{title:'Payslip',gross:'Gross pay',labor:'Labor insurance',health:'National health insurance',noNHI:'Not yet (under 180 days)',net:'Net pay'},
+    th:{title:'สลิปเงินเดือน',gross:'ยอดรวม',labor:'ประกันแรงงาน',health:'ประกันสุขภาพ',noNHI:'ยังไม่มี (ไม่ถึง 180 วัน)',net:'รับจริง'},
+    my:{title:'လစာစာရင်း',gross:'စုစုပေါင်း',labor:'လုပ်သားအာမခံ',health:'ကျန်းမာရေးအာမခံ',noNHI:'မရှိသေး (ရက် ၁၈၀ မပြည့်)',net:'အသားတင်'}},
+  start:{vi:'Bắt đầu',id:'Mulai',en:'Start',th:'เริ่ม',my:'စတင်'},
+  cont:{vi:'Chơi tiếp',id:'Lanjutkan',en:'Continue',th:'เล่นต่อ',my:'ဆက်ကစား'},
+  pick:{vi:'Chọn nhân vật của bạn',id:'Pilih tokohmu',en:'Choose your character',th:'เลือกตัวละครของคุณ',my:'ကိုယ့်ဇာတ်ကောင် ရွေးပါ'},
+  name:{vi:'Tên của bạn',id:'Namamu',en:'Your name',th:'ชื่อของคุณ',my:'သင့်နာမည်'},
+  dept:{vi:'Ngành học',id:'Jurusan',en:'Department',th:'แผนกวิชา',my:'ဌာန'},
+  lang:{vi:'Ngôn ngữ dịch',id:'Bahasa terjemahan',en:'Translation language',th:'ภาษาแปล',my:'ဘာသာပြန် ဘာသာ'},
+  go:{vi:'Lên đường!',id:'Berangkat!',en:"Let's go!",th:'ออกเดินทาง!',my:'ထွက်မယ်!'},
+  tap:{vi:'Chạm để tiếp tục',id:'Ketuk untuk lanjut',en:'Tap to continue',th:'แตะเพื่อไปต่อ',my:'ဆက်ရန် နှိပ်ပါ'},
+  listen:{vi:'Nghe lại',id:'Dengar lagi',en:'Listen again',th:'ฟังอีกครั้ง',my:'ပြန်နားထောင်'},
+  good:{vi:'Đúng rồi!',id:'Benar!',en:'Correct!',th:'ถูกต้อง!',my:'မှန်တယ်!'},
+  oops:{vi:'Chưa đúng…',id:'Belum tepat…',en:'Not quite…',th:'ยังไม่ใช่…',my:'မမှန်သေးဘူး…'},
+  retry:{vi:'Chọn lại nhé!',id:'Coba pilih lagi!',en:'Try again!',th:'ลองเลือกใหม่นะ',my:'ထပ်ရွေးကြည့်ပါ။'},
+  what:{vi:'Hôm nay làm gì?',id:'Mau ngapain?',en:'What will you do?',th:'จะทำอะไรดี',my:'ဘာလုပ်မလဲ။'},
+  night:{vi:'Đến tối rồi, đi ngủ thôi.',id:'Sudah malam, saatnya tidur.',en:"It's night. Time for bed.",th:'ค่ำแล้ว ได้เวลานอน',my:'ညရောက်ပြီ၊ အိပ်ချိန်ရောက်ပြီ။'},
+  done:{vi:'Hoàn thành chương 1!',id:'Bab 1 selesai!',en:'Chapter 1 complete!',th:'จบบทที่ 1 แล้ว!',my:'အခန်း ၁ ပြီးပါပြီ!'},
+  next:{vi:'Chương 2 (tháng 10–12): Trung thu, làm thêm, giao thừa.',id:'Bab 2 (Okt–Des): Festival bulan, kerja paruh waktu, tahun baru.',en:'Chapter 2 (Oct–Dec): Mid-Autumn, a part-time job, New Year’s Eve.',th:'บทที่ 2 (ต.ค.–ธ.ค.): ไหว้พระจันทร์ งานพาร์ตไทม์ เคานต์ดาวน์',my:'အခန်း ၂ (အောက်တိုဘာ–ဒီဇင်ဘာ): လသာပွဲ၊ အချိန်ပိုင်းအလုပ်၊ နှစ်သစ်ကူး'},
+  ch2:{vi:'Chơi chương 2',id:'Main bab 2',en:'Play Chapter 2',th:'เล่นบทที่ 2',my:'အခန်း ၂ ကစားမယ်'},
+  ch3:{vi:'Chơi chương 3',id:'Main bab 3',en:'Play Chapter 3',th:'เล่นบทที่ 3',my:'အခန်း ၃ ကစားမယ်'},
+  next3:{vi:'Chương 4 (tháng 4–6): Tết té nước, tuần văn hóa quốc tế, tham quan đại học và lễ tốt nghiệp.',id:'Bab 4 (Apr–Jun): Festival Air, Pekan Budaya Internasional, kunjungan universitas, dan wisuda.',en:'Chapter 4 (Apr–Jun): Water Festival, International Culture Week, a university visit and graduation.',th:'บทที่ 4 (เม.ย.–มิ.ย.): สงกรานต์ สัปดาห์วัฒนธรรมนานาชาติ เยี่ยมชมมหาวิทยาลัย และพิธีจบการศึกษา',my:'အခန်း ၄ (ဧပြီ–ဇွန်): သင်္ကြန်၊ နိုင်ငံတကာယဉ်ကျေးမှုရက်သတ္တပတ်၊ တက္ကသိုလ်လေ့လာရေးနဲ့ ဘွဲ့နှင်းသဘင်။'},
+  ch4:{vi:'Chơi chương 4',id:'Main bab 4',en:'Play Chapter 4',th:'เล่นบทที่ 4',my:'အခန်း ၄ ကစားမယ်'},
+  done4:{vi:'Bạn đã hoàn thành năm nhất ở Đài Loan!',id:'Kamu sudah menyelesaikan tahun pertama di Taiwan!',en:'You finished your first year in Taiwan!',th:'คุณเรียนปีหนึ่งที่ไต้หวันจบแล้ว!',my:'ထိုင်ဝမ်မှာ ပထမနှစ်ကို ပြီးဆုံးခဲ့ပြီ!'},
+  next4:{vi:'Năm hai bắt đầu! Chương 5 (tháng 7–9): đón em khóa mới, Giáo dục trải nghiệm, gia hạn thẻ cư trú.',id:'Tahun kedua dimulai! Bab 5 (Jul–Sep): menyambut adik kelas, Pendidikan Petualangan, perpanjangan izin tinggal.',en:'Year two begins! Chapter 5 (Jul–Sep): welcoming new students, Adventure Education and renewing your residence card.',th:'ปีสองเริ่มแล้ว! บทที่ 5 (ก.ค.–ก.ย.): รับน้องใหม่ การศึกษาเชิงผจญภัย และต่ออายุบัตรถิ่นที่อยู่',my:'ဒုတိယနှစ် စပြီ။ အခန်း ၅ (ဇူလိုင်–စက်တင်ဘာ)- ကျောင်းသားသစ် ကြိုဆိုခြင်း၊ စွန့်စားလေ့လာရေး၊ နေထိုင်ခွင့်ကတ် သက်တမ်းတိုးခြင်း။'},
+  ch5:{vi:'Chơi chương 5',id:'Main bab 5',en:'Play Chapter 5',th:'เล่นบทที่ 5',my:'အခန်း ၅ ကစားမယ်'},
+  done5:{vi:'Bạn đã đón em khóa mới và hoàn thành Giáo dục trải nghiệm!',id:'Kamu sudah menyambut adik kelas dan menyelesaikan Pendidikan Petualangan!',en:'You welcomed the new students and finished Adventure Education!',th:'คุณรับน้องใหม่และผ่านการศึกษาเชิงผจญภัยแล้ว!',my:'ကျောင်းသားသစ်တွေကို ကြိုဆိုပြီး စွန့်စားလေ့လာရေးကို ပြီးဆုံးခဲ့ပြီ!'},
+  next5:{vi:'Chương 6 (tháng 10–12): Quốc khánh, hướng dẫn em khóa dưới, hội thao, thi chứng chỉ nghề, Giáng sinh.',id:'Bab 6 (Okt–Des): Hari Nasional, membimbing adik kelas, pekan olahraga, ujian sertifikasi, Natal.',en:'Chapter 6 (Oct–Dec): National Day, mentoring a first-year, sports day, a skills certification exam and Christmas.',th:'บทที่ 6 (ต.ค.–ธ.ค.): วันชาติ ดูแลน้องฝึกงาน กีฬาสี สอบใบรับรองทักษะ คริสต์มาส',my:'အခန်း ၆ (အောက်တိုဘာ–ဒီဇင်ဘာ)- အမျိုးသားနေ့၊ ညီမလေးကို လမ်းပြခြင်း၊ အားကစားပွဲ၊ ကျွမ်းကျင်မှုစာမေးပွဲ၊ ခရစ္စမတ်။'},
+  ch6:{vi:'Chơi chương 6',id:'Main bab 6',en:'Play Chapter 6',th:'เล่นบทที่ 6',my:'အခန်း ၆ ကစားမယ်'},
+  done6:{vi:'Bạn đã hướng dẫn em khóa dưới, chạy tiếp sức và thi chứng chỉ nghề!',id:'Kamu sudah membimbing adik kelas, lari estafet, dan ikut ujian sertifikasi!',en:'You mentored a first-year, ran the relay and took the skills exam!',th:'คุณดูแลน้อง วิ่งผลัด และสอบใบรับรองทักษะแล้ว!',my:'ညီမလေးကို လမ်းပြ၊ အသင်းလိုက်ပြေးပြီး ကျွမ်းကျင်မှုစာမေးပွဲ ဖြေခဲ့ပြီ!'},
+  next6:{vi:'Chương 7 (tháng 1–3): báo cáo chuyên đề, tiệc tất niên, đêm Giao thừa, Tết Nguyên Tiêu, luân phiên.',id:'Bab 7 (Jan–Mar): laporan proyek, pesta akhir tahun, malam Imlek, Cap Go Meh, rotasi.',en:'Chapter 7 (Jan–Mar): project presentation, year-end banquet, New Year’s Eve, Lantern Festival, rotation.',th:'บทที่ 7 (ม.ค.–มี.ค.): รายงานโครงงาน งานเลี้ยงปลายปี คืนส่งท้ายปี เทศกาลโคมไฟ สลับกลุ่ม',my:'အခန်း ၇ (ဇန်နဝါရီ–မတ်): ပရောဂျက်တင်ပြ၊ နှစ်ကုန်ပွဲ၊ နှစ်ဟောင်းကုန်ည၊ မီးအိမ်ပွဲ၊ အလှည့်ပြောင်း။'},
+  ch7:{vi:'Chơi chương 7',id:'Main bab 7',en:'Play Chapter 7',th:'เล่นบทที่ 7',my:'အခန်း ၇ ကစားမယ်'},
+  done7:{vi:'Bạn đã đón Tết ở Đài Loan, đoán câu đố lồng đèn và đăng ký thi TOCFL B1!',id:'Kamu merayakan Imlek di Taiwan, menebak teka-teki lampion, dan mendaftar TOCFL B1!',en:'You spent New Year in Taiwan, solved a lantern riddle and signed up for TOCFL B1!',th:'คุณฉลองตรุษจีนที่ไต้หวัน ทายปริศนาโคมไฟ และสมัครสอบ TOCFL B1 แล้ว!',my:'ထိုင်ဝမ်မှာ နှစ်သစ်ကူး ကျင်းပပြီး မီးအိမ်စကားထာ ဖြေကာ TOCFL B1 လျှောက်ပြီးပါပြီ။'},
+  next7:{vi:'Chương 8 (tháng 4–6): Thanh Minh, thi TOCFL B1, Ngày của Mẹ, Tết Đoan Ngọ, kết thúc lớp 11.',id:'Bab 8 (Apr–Jun): Qingming, ujian TOCFL B1, Hari Ibu, Festival Perahu Naga, akhir kelas dua.',en:'Chapter 8 (Apr–Jun): Tomb-Sweeping Day, the TOCFL B1 test, Mother’s Day, Dragon Boat Festival, end of second year.',th:'บทที่ 8 (เม.ย.–มิ.ย.): เชงเม้ง สอบ TOCFL B1 วันแม่ เทศกาลบ๊ะจ่าง จบปีสอง',my:'အခန်း ၈ (ဧပြီ–ဇွန်): ချင်းမင်၊ TOCFL B1 စာမေးပွဲ၊ အမေများနေ့၊ နဂါးလှေပွဲ၊ ဒုတိယနှစ်ပြီးဆုံး။'},
+  ch8:{vi:'Chơi chương 8',id:'Main bab 8',en:'Play Chapter 8',th:'เล่นบทที่ 8',my:'အခန်း ၈ ကစားမယ်'},
+  done8:{vi:'Bạn đã thi TOCFL B1 và hoàn thành năm lớp 11!',id:'Kamu sudah ikut ujian TOCFL B1 dan menyelesaikan kelas dua!',en:'You took the TOCFL B1 test and finished second year!',th:'คุณสอบ TOCFL B1 และจบปีสองแล้ว!',my:'TOCFL B1 ဖြေပြီး ဒုတိယနှစ် ပြီးဆုံးပါပြီ။'},
+  next8:{vi:'Năm ba bắt đầu! Chương 9 (tháng 7–9): chia sẻ kinh nghiệm với tân sinh, làm tổ trưởng, chọn con đường sau tốt nghiệp.',id:'Tahun ketiga dimulai! Bab 9 (Jul–Sep): berbagi pengalaman dengan siswa baru, menjadi ketua kelompok, memilih jalan setelah lulus.',en:'Third year begins! Chapter 9 (Jul–Sep): mentor new students, lead a team, choose your path after graduation.',th:'ปีสามเริ่มแล้ว! บทที่ 9 (ก.ค.–ก.ย.): แบ่งปันประสบการณ์กับน้องใหม่ เป็นหัวหน้ากลุ่ม เลือกเส้นทางหลังจบ',my:'တတိယနှစ် စပြီ။ အခန်း ၉ (ဇူလိုင်–စက်တင်ဘာ): ကျောင်းသားသစ်တွေကို အတွေ့အကြုံမျှဝေ၊ အဖွဲ့ခေါင်းဆောင်၊ ကျောင်းပြီးနောက် လမ်းရွေးချယ်။'},
+  ch9:{vi:'Chơi chương 9',id:'Main bab 9',en:'Play Chapter 9',th:'เล่นบทที่ 9',my:'အခန်း ၉ ကစားမယ်'},
+  done9:{vi:'Bạn đã trở thành đàn anh/đàn chị và chọn hướng đi cho tương lai!',id:'Kamu sudah menjadi kakak kelas dan memilih arah masa depan!',en:'You became a senior mentor and chose your direction for the future!',th:'คุณกลายเป็นรุ่นพี่และเลือกทิศทางอนาคตแล้ว!',my:'အထက်တန်း အစ်ကို/အစ်မ ဖြစ်လာပြီး အနာဂတ်လမ်းကြောင်း ရွေးပြီးပါပြီ။'},
+  next9:{vi:'Chương 10 (tháng 10–12) đang được làm.',id:'Bab 10 (Okt–Des) sedang dibuat.',en:'Chapter 10 (Oct–Dec) is in the works.',th:'บทที่ 10 (ต.ค.–ธ.ค.) กำลังจัดทำ',my:'အခန်း ၁၀ (အောက်တိုဘာ–ဒီဇင်ဘာ) ပြင်ဆင်နေဆဲပါ။'},
+  ch10:{vi:'Chơi chương 10',id:'Main bab 10',en:'Play Chapter 10',th:'เล่นบทที่ 10',my:'အခန်း ၁၀ ကစားမယ်'},
+  done10:{vi:'Bạn đã viết tự giới thiệu, phỏng vấn thử và làm tốt vai trò tổ trưởng!',id:'Kamu sudah menulis otobiografi, latihan wawancara, dan menjadi ketua kelompok yang baik!',en:'You wrote your autobiography, practiced the interview and did well as team leader!',th:'คุณเขียนอัตชีวประวัติ ฝึกสัมภาษณ์ และเป็นหัวหน้ากลุ่มที่ดีแล้ว!',my:'ကိုယ်ရေးအကျဉ်း ရေးပြီး၊ အင်တာဗျူး လေ့ကျင့်ပြီး၊ အဖွဲ့ခေါင်းဆောင် ကောင်းကောင်း လုပ်ခဲ့ပြီ!'},
+  next10:{vi:'Chương 11 (tháng 1–3): chuẩn bị lên đại học.',id:'Bab 11 (Jan–Mar): bersiap masuk universitas.',en:'Chapter 11 (Jan–Mar): getting ready for university.',th:'บทที่ 11 (ม.ค.–มี.ค.): เตรียมตัวเข้ามหาวิทยาลัย',my:'အခန်း ၁၁ (ဇန်နဝါရီ–မတ်)၊ တက္ကသိုလ်တက်ဖို့ ပြင်ဆင်မယ်။'},
+  ch12:{vi:'Chơi chương 12',id:'Main bab 12',en:'Play Chapter 12',th:'เล่นบทที่ 12',my:'အခန်း ၁၂ ကစားမယ်'},
+  done12:{vi:'Chúc mừng tốt nghiệp! Ba năm ở Đài Loan đã kết thúc.',id:'Selamat lulus! Tiga tahun di Taiwan sudah selesai.',en:'Congratulations on graduating! Your three years in Taiwan are complete.',th:'ยินดีด้วยที่จบการศึกษา! สามปีในไต้หวันจบลงแล้ว',my:'ကျောင်းပြီးတာ ဂုဏ်ယူပါတယ်! ထိုင်ဝမ်မှာ သုံးနှစ် ပြီးဆုံးသွားပြီ။'},
+  next12:{vi:'Cảm ơn bạn đã chơi đến cuối! Hãy xem bản đồ hành trình ba năm.',id:'Terima kasih sudah bermain sampai akhir! Lihat peta perjalanan tiga tahunmu.',en:'Thanks for playing to the end! Take a look at your three-year journey map.',th:'ขอบคุณที่เล่นจนจบ! ลองดูแผนที่การเดินทางสามปีของคุณ',my:'အဆုံးထိ ကစားပေးလို့ ကျေးဇူးပါ! သုံးနှစ်ခရီးမြေပုံကို ကြည့်ပါ။'},
+  ch11:{vi:'Chơi chương 11',id:'Main bab 11',en:'Play Chapter 11',th:'เล่นบทที่ 11',my:'အခန်း ၁၁ ကစားမယ်'},
+  done11:{vi:'Bạn đã tìm hiểu đại học, tham gia phỏng vấn và chăm sóc các em khóa dưới!',id:'Kamu sudah mengenal universitas, ikut wawancara, dan menjaga adik-adik kelas!',en:'You learned about university, prepared for the interview and looked after the younger students!',th:'คุณได้รู้จักมหาวิทยาลัย เตรียมสัมภาษณ์ และดูแลน้อง ๆ แล้ว!',my:'တက္ကသိုလ်အကြောင်း သိပြီး၊ အင်တာဗျူးအတွက် ပြင်ဆင်ပြီး၊ ညီငယ်ညီမငယ်တွေကို စောင့်ရှောက်ခဲ့ပြီ!'},
+  next11:{vi:'Chương 12 (tháng 4–6): phỏng vấn tháng Năm, khai thuế, lễ tốt nghiệp.',id:'Bab 12 (Apr–Jun): wawancara Mei, lapor pajak, wisuda.',en:'Chapter 12 (Apr–Jun): May interviews, tax filing, graduation.',th:'บทที่ 12 (เม.ย.–มิ.ย.): สัมภาษณ์เดือนพฤษภาคม ยื่นภาษี พิธีจบการศึกษา',my:'အခန်း ၁၂ (ဧပြီ–ဇွန်)၊ မေလ အင်တာဗျူး၊ အခွန်ဆောင်၊ ဘွဲ့နှင်းသဘင်။'},
+  thanks:{vi:['Bạn tặng thiệp cảm ơn cho ','.'],id:['Kamu memberikan kartu terima kasih kepada ','.'],en:['You give the thank-you card to ','.'],th:['คุณมอบการ์ดขอบคุณให้ ',''],my:['',' ကို ကျေးဇူးတင်ကတ် ပေးလိုက်တယ်။']},
+  done3:{vi:'Bạn đã đi văn hóa, đón Tết và tham gia hội chợ trường.',id:'Kamu sudah ikut perjalanan budaya, merayakan Imlek, dan pesta sekolah.',en:'You joined the culture trip, celebrated Lunar New Year and ran a stall at the school fair.',th:'คุณได้ไปทริปวัฒนธรรม ฉลองตรุษจีน และขายของในงานโรงเรียน',my:'ယဉ်ကျေးမှုခရီး၊ နှစ်သစ်ကူးနဲ့ ကျောင်းပွဲမှာ ပါဝင်ခဲ့တယ်။'},
+  done2:{vi:'Hoàn thành chương 2!',id:'Bab 2 selesai!',en:'Chapter 2 complete!',th:'จบบทที่ 2 แล้ว!',my:'အခန်း ၂ ပြီးပါပြီ!'},
+  next2:{vi:'Chương 3 (tháng 1–3): chuyến đi văn hóa, Tết và hội chợ trường.',id:'Bab 3 (Jan–Mar): perjalanan budaya, Imlek, dan pesta sekolah.',en:'Chapter 3 (Jan–Mar): culture trip, Lunar New Year and school fair.',th:'บทที่ 3 (ม.ค.–มี.ค.): ทริปวัฒนธรรม ตรุษจีน และงานโรงเรียน',my:'အခန်း ၃ (ဇန်နဝါရီ–မတ်): ယဉ်ကျေးမှုခရီး၊ နှစ်သစ်ကူးနဲ့ ကျောင်းပွဲ။'},
+  exam:{vi:'Câu',id:'Soal',en:'Question',th:'ข้อ',my:'မေးခွန်း'},
+  again:{vi:'Chơi lại',id:'Main lagi',en:'Play again',th:'เล่นใหม่',my:'ပြန်ကစား'},
+};
+const HOMES = [
+  {zh:'越南',loc:'Việt Nam',lang:'vi'},{zh:'印尼',loc:'Indonesia',lang:'id'},{zh:'泰國',loc:'ประเทศไทย',lang:'th'},
+  {zh:'緬甸',loc:'မြန်မာ',lang:'my'},{zh:'菲律賓',loc:'Pilipinas',lang:'en'},{zh:'馬來西亞',loc:'Malaysia',lang:'en'},
+  {zh:'柬埔寨',loc:'កម្ពុជា',lang:'km'}];
+const HEROES = Array.from({length:14},(_,i)=>({id:'h'+String(i+1).padStart(2,'0'),home:HOMES[Math.floor(i/2)],girl:i%2===0}));
+const DEPTS = [
+  {zh:'資訊科',work:{zh:'電腦公司',vi:'công ty máy tính',id:'perusahaan komputer',en:'computer company',th:'บริษัทคอมพิวเตอร์',my:'ကွန်ပျူတာကုမ္ပဏီ'},gear:'工作證',ge:'🪪'},
+  {zh:'烘焙食品科',work:{zh:'麵包工廠',vi:'xưởng bánh mì',id:'pabrik roti',en:'bakery factory',th:'โรงงานขนมปัง',my:'ပေါင်မုန့်စက်ရုံ'},gear:'口罩',ge:'😷'},
+  {zh:'餐飲管理科',work:{zh:'餐廳廚房',vi:'bếp nhà hàng',id:'dapur restoran',en:'restaurant kitchen',th:'ครัวร้านอาหาร',my:'စားသောက်ဆိုင်မီးဖိုချောင်'},gear:'口罩',ge:'😷'},
+  {zh:'汽車科',work:{zh:'修車廠',vi:'xưởng sửa xe',id:'bengkel mobil',en:'car repair shop',th:'อู่ซ่อมรถ',my:'ကားပြင်ဆိုင်'},gear:'安全帽',ge:'⛑️'},
+  {zh:'商用資訊科',work:{zh:'貿易公司',vi:'công ty thương mại',id:'perusahaan dagang',en:'trading company',th:'บริษัทการค้า',my:'ကုန်သွယ်ရေးကုမ္ပဏီ'},gear:'工作證',ge:'🪪'}];
+const GEAR_E = {'工作證':'🪪','口罩':'😷','安全帽':'⛑️'};
+const ITEM_IMG = {'工作證':'item_badge','口罩':'item_mask','安全帽':'item_helmet','雨傘':'item_umbrella','悠遊卡':'item_easycard','緊急出口':'item_exit','實習工作服':'item_workwear','資源回收':'item_bin_recycle','廚餘':'item_bin_food','一般垃圾':'item_bin_general','健保卡':'item_nhicard','月餅':'item_mooncake'};
+const PEOPLE = {
+  rina:{zh:'Rina',img:'rina'}, amei:{zh:'阿蜜',img:'amei'}, chen:{zh:'陳導師',img:'chen'}, zhang:{zh:'張師傅',img:'zhang'},
+  ajiao:{zh:'王阿嬌',img:'ajiao'}, xiaoyang:{zh:'小陽',img:'xiaoyang'},
+  ayi:{zh:'宿舍阿姨',img:'ayi'}, xuezhang:{zh:'學長',img:'xuezhang'}, alian:{zh:'阿蓮',img:'alian'},
+  clerk:{zh:'店員',img:'clerk'}, passer:{zh:'路人',img:'passer'}, lin:{zh:'林老師',img:'lin'},
+  huang:{zh:'黃老闆',img:'huang'}, li:{zh:'李醫師',img:'li'}, guo:{zh:'郭大哥',img:'guo'},
+  tongxue:{zh:'同學',img:'tongxue'}, ajie:{zh:'阿傑',img:'ajie',c:'#2F6FA3',ch:'傑'}, coach:{zh:'教練',img:'coach'}, officer:{zh:'承辦人員',img:'teacher'}, mama:{zh:'媽媽',img:'mama'}, cousin:{zh:'表弟',img:'cousin'}, teacher:{zh:'老師',img:'teacher'}, prof:{zh:'大學老師',img:'teacher'}, photog:{zh:'攝影師',img:'host'}, newbie:{zh:'學妹',img:'h09'}, newbie2:{zh:'學妹',img:'h05'}, xinsheng:{zh:'新生',img:'h10'}, xinsheng2:{zh:'新生',img:'h04'}, customer:{zh:'客人',img:'customer'}, nurse:{zh:'護理師',img:'nurse'}, host:{zh:'主持人',img:'host'}, staff:{zh:'出納組',img:'staff'}, stranger:{zh:'陌生人',img:'stranger'}};
+const BG = __BG__;
+const SCENES = {
+  airport:{zh:'機場',bg:'linear-gradient(180deg,#DCEBF6 0 58%,#C9D4DC 58% 60%,#EEF2F5 60%)'},
+  dorm:{zh:'宿舍',bg:'linear-gradient(180deg,#F3EBDD 0 64%,#C8B79C 64%)'},
+  room:{zh:'302 房',bg:'linear-gradient(180deg,#E7EEF3 0 64%,#B7A388 64%)'},
+  office:{zh:'辦公室',bg:'linear-gradient(180deg,#E8EDE4 0 64%,#9FA9A0 64%)'},
+  hometown:{zh:'家鄉的家',bg:'linear-gradient(180deg,#F6E7CF 0 62%,#C98F5A 62%)'},
+  agency:{zh:'保薦單位',bg:'linear-gradient(180deg,#E4ECF2 0 64%,#8FA0AE 64%)'},
+  embassy:{zh:'台北經濟文化辦事處',bg:'linear-gradient(180deg,#E9EEF4 0 64%,#7E8FA3 64%)'},
+  meeting:{zh:'會議室',bg:'linear-gradient(180deg,#EDE9F2 0 64%,#A6A0B0 64%)'},
+  work:{zh:'實習',bg:'linear-gradient(180deg,#E9ECEF 0 66%,#8E979F 66%)'},
+  store:{zh:'便利商店',bg:'linear-gradient(180deg,#E3F3EF 0 18%,#2E9C8E 18% 24%,#F4F8F7 24% 66%,#CFD9D6 66%)'},
+  street:{zh:'街上',bg:'linear-gradient(180deg,#D7E8F4 0 60%,#9AA4AB 60%)'},
+  recycle:{zh:'回收區',bg:'linear-gradient(180deg,#EAF2EE 0 64%,#C9D4CF 64%)'},
+  lounge:{zh:'交誼廳',bg:'linear-gradient(180deg,#F3E9DA 0 64%,#C8B79C 64%)'},
+  campus:{zh:'校園',bg:'linear-gradient(180deg,#D7E8F4 0 60%,#D9CBB5 60%)'},
+  phone:{zh:'LINE',bg:'linear-gradient(180deg,#E4F6E8 0 100%)'},
+  bbq:{zh:'中秋烤肉',bg:'linear-gradient(180deg,#1E2B4A 0 60%,#4A3B2E 60%)'},
+  stage:{zh:'禮堂',bg:'linear-gradient(180deg,#5A1E24 0 62%,#3A2A22 62%)'},
+  newyear:{zh:'跨年晚會',bg:'linear-gradient(180deg,#141C33 0 62%,#3B4A36 62%)'},
+  nightmarket:{zh:'夜市',bg:'linear-gradient(180deg,#2B2238 0 58%,#6B4A2E 58%)'},
+  clinic:{zh:'診所',bg:'linear-gradient(180deg,#EAF4F4 0 64%,#C9D8D8 64%)'},
+  post:{zh:'郵局',bg:'linear-gradient(180deg,#EEF3E8 0 64%,#B9C7A9 64%)'},
+  adventure:{zh:'探索教育場地',bg:'linear-gradient(180deg,#CFE6F7 0 58%,#8CC36A 58%)'},
+  climb:{zh:'攀岩場',bg:'linear-gradient(180deg,#CFE6F7 0 30%,#BDB6A8 30%)'},
+  river:{zh:'河邊龍舟',bg:'linear-gradient(180deg,#CFE6F7 0 50%,#5E9BB8 50% 70%,#8CBF6A 70%)'},
+  banquet:{zh:'尾牙餐廳',bg:'linear-gradient(180deg,#7A2B22 0 62%,#4A2E22 62%)'},
+  temple:{zh:'廟口',bg:'linear-gradient(180deg,#2A1E30 0 60%,#7A4A2A 60%)'},
+  home:{zh:'陳導師家',bg:'linear-gradient(180deg,#F2E6D4 0 64%,#B89A78 64%)'},
+  classroom:{zh:'教室',bg:'linear-gradient(180deg,#E6EFE6 0 22%,#2F5A46 22% 46%,#E6EFE6 46% 66%,#C4A884 66%)'}};
+// 前傳（第 0 章）：在僑居地。一個「日子」就是一個事件，沒有行動選擇。
+const DAYS0 = [
+  {m:11,w:2,label:'前一年 11 月・招生宣導',main:'O01'},{m:12,w:2,label:'12 月・報名',main:'O02'},{m:1,w:3,label:'1 月・面試／審查',main:'O04'},
+  {m:2,w:3,label:'2 月・華語檢定',main:'O03'},{m:5,w:4,label:'5 月底・錄取公告',main:'O05'},{m:6,w:2,label:'6 月・辦簽證',main:'O06'},{m:7,w:4,label:'7 月最後一週・出發',main:'O07'}];
+// 第 1 章：7 月底抵達，8 月新生基礎訓練，月底廠商面試分組，9 月開學
+const DAYS1 = [
+  {m:7,w:4,main:'M01'},{m:8,w:1,label:'新生基礎訓練',main:'TR1',mainAt:0},{m:8,w:2,main:'B01',mainAt:1},
+  {m:8,w:3,main:'M02',mainSlots:1},{m:8,w:4},
+  {m:9,w:1,main:'M03'},{m:9,w:2},{m:9,w:3},{m:9,w:4}];
+const DAYS2 = [
+  {m:10,w:1,main:'M04',mainAt:2},{m:10,w:2,main:'M05',mainSlots:1},{m:10,w:3,main:'D10',mainSlots:0,typhoon:1},{m:10,w:4},
+  {m:11,w:1,main:'D13',mainSlots:1},{m:11,w:2,main:'M06',mainAt:1},{m:11,w:3,main:'D18',mainSlots:0},{m:11,w:4,main:'M07',mainSlots:1},
+  {m:12,w:1,main:'B02',mainAt:1},{m:12,w:2},{m:12,w:3},{m:12,w:5,label:'12 月 31 日',main:'M08',mainAt:2}];
+const DAYS3 = [
+  {m:1,w:1,main:'I01',mainAt:0},{m:1,w:2,main:'H01',mainAt:1},{m:1,w:3,main:'J01'},{m:1,w:4},
+  {m:2,w:1,main:'F01',mainAt:0},{m:2,w:2,main:'I02',mainAt:0},{m:2,w:3},{m:2,w:4},
+  {m:3,w:1,main:'I03',mainAt:0},{m:3,w:2,main:'G01',mainAt:1},{m:3,w:3,main:'Q01',mainAt:1},{m:3,w:4}];
+const REDO = {R10:'R10b', R11:'R11b', R12:'R12b', R14:'R14b', R17:'R17b', R21:'R21b'}; // 選錯的事件之後再出現一次（複習）
+const RND3 = ['R01','R02','R03','R04','R05','R10','R11'];
+const DAYS4 = [
+  {m:4,w:1,main:'I04',mainAt:0},{m:4,w:2,main:'P01',mainAt:1},{m:4,w:3},{m:4,w:4,main:'K01',mainAt:1},
+  {m:5,w:1,main:'I05',mainAt:0},{m:5,w:2,label:'5 月 17 日',main:'Q02',mainAt:0},{m:5,w:3,main:'K02'},{m:5,w:4},
+  {m:6,w:1,main:'I06',mainAt:0},{m:6,w:2,main:'K03',mainAt:0},{m:6,w:3,main:'Q03',mainAt:1},{m:6,w:4,main:'K04'}];
+const RND4 = ['R06','R07','R10','R11','R01','R02','R03','R04','R05'];
+const DAYS5 = [
+  {m:7,w:1,main:'N01',mainAt:1},{m:7,w:2,main:'X01',onlyIf:'school'},{m:7,w:3,main:'I07',mainAt:0},{m:7,w:4,main:'X02',onlyIf:'school'},
+  {m:8,w:1,main:'I08',mainAt:0},{m:8,w:2,main:'X03',onlyIf:'school'},{m:8,w:3,main:'N02',mainAt:1},{m:8,w:4,main:'Q04',mainAt:1},
+  {m:9,w:1,main:'N03',mainAt:0},{m:9,w:2,main:'X01',onlyIf:'school'},{m:9,w:3,main:'X02',onlyIf:'school'},{m:9,w:4,main:'X03',onlyIf:'school'}];
+const RND5 = ['R08','R09','R10','R11','R06','R07','R01','R02','R03','R04','R05'];
+const DAYS6 = [
+  {m:10,w:1,main:'I09',mainAt:0},{m:10,w:2,main:'Y01',mainAt:2},{m:10,w:3,main:'Y02',onlyIf:'work',mainAt:0},{m:10,w:4},
+  {m:11,w:1,main:'I10',mainAt:0},{m:11,w:2,main:'Y03'},{m:11,w:3,main:'Y04',mainAt:0},{m:11,w:4,main:'S01',mainAt:2},
+  {m:12,w:1,main:'I11',mainAt:0},{m:12,w:2,main:'Y02',onlyIf:'work',mainAt:0},{m:12,w:3},{m:12,w:4,label:'12 月 24 日',main:'Y05',mainAt:2}];
+const RND6 = ['R12','R13','R10','R11','R08','R09','R06','R07','R01','R02','R03','R04','R05'];
+const DAYS7 = [
+  {m:1,w:1,main:'I12',mainAt:0},{m:1,w:2},{m:1,w:3,main:'Z01',onlyIf:'school',mainAt:0},{m:1,w:4,main:'Z02',onlyIf:'work',mainAt:2},
+  {m:2,w:1,main:'I13',mainAt:0},{m:2,w:2,label:'除夕',main:'Z03',mainAt:2},{m:2,w:3},{m:2,w:4,label:'元宵節',main:'Z04',mainAt:2},
+  {m:3,w:1,label:'3 月 1 日',main:'Z05',mainAt:0},{m:3,w:2,main:'I14',mainAt:0},{m:3,w:3,main:'Z06',mainAt:1},{m:3,w:4}];
+const RND7 = ['R14','R15','R12','R13','R10','R11','R06','R07','R01','R02','R03','R04','R05'];
+const DAYS8 = [
+  {m:4,w:1,main:'I15',mainAt:0},{m:4,w:2,label:'清明節',main:'E01',mainAt:1},{m:4,w:3,main:'E03',mainAt:0},{m:4,w:4},
+  {m:5,w:1,main:'I16',mainAt:0},{m:5,w:2,label:'5 月 10 日',main:'E02',mainAt:0},{m:5,w:3,label:'母親節',main:'E05',mainAt:2},{m:5,w:4},
+  {m:6,w:1,main:'I17',mainAt:0},{m:6,w:2,label:'端午節',main:'E06',mainAt:1},{m:6,w:3,main:'E04',mainAt:0},{m:6,w:4,label:'結業式',main:'E07',mainAt:2}];
+const DAYS9 = [
+  {m:7,w:1,main:'I18',mainAt:0},{m:7,w:2,main:'T01',mainAt:1},{m:7,w:3,main:'T02',mainAt:1},{m:7,w:4},
+  {m:8,w:1,main:'I19',mainAt:0},{m:8,w:2,main:'T03',onlyIf:'work',mainAt:0},{m:8,w:3,main:'T04',onlyIf:'school',mainAt:1},{m:8,w:4,label:'中元節',main:'T05',mainAt:2},
+  {m:9,w:1,main:'I20',mainAt:0},{m:9,w:2,label:'開學',main:'T06',mainAt:0},{m:9,w:3,main:'T03',onlyIf:'work',mainAt:0},{m:9,w:4,main:'T04',onlyIf:'school',mainAt:1}];
+const DAYS10 = [
+  {m:10,w:1,main:'I21',mainAt:0},{m:10,w:2,main:'V01',mainAt:0},{m:10,w:3,main:'V03',mainAt:2},{m:10,w:4,main:'V07',mainAt:2},
+  {m:11,w:1,label:'畢業照',main:'V10',mainAt:1},{m:11,w:2,main:'V04',mainAt:1},{m:11,w:3,label:'11 月 15 日',main:'V05',mainAt:0},{m:11,w:4,main:'V06',mainAt:1},
+  {m:12,w:1,label:'輪調',main:'I23',mainAt:0},{m:12,w:2,main:'V02',mainAt:0},{m:12,w:3,label:'冬至',main:'V08',mainAt:2},{m:12,w:4,label:'學期末',main:'V09',mainAt:1}];
+const DAYS11 = [
+  {m:1,w:1,main:'I24',mainAt:0},{m:1,w:2,main:'U01',mainAt:2},{m:1,w:3,main:'U02',mainAt:1},{m:1,w:4,main:'U03',mainAt:2},
+  {m:2,w:1,main:'I25',mainAt:0},{m:2,w:2,label:'春節',main:'U04',mainAt:2},{m:2,w:3,main:'U05',mainAt:1},{m:2,w:4,main:'U06',mainAt:0},
+  {m:3,w:1,label:'輪調',main:'I26',mainAt:0},{m:3,w:2,main:'U09',mainAt:2},{m:3,w:3,label:'大學到校',main:'U07',mainAt:0},{m:3,w:4,label:'3 月考試',main:'U08',mainAt:0}];
+const DAYS12 = [
+  {m:4,w:1,label:'4 月初',main:'W02',mainAt:1},{m:4,w:2,main:'I27',mainAt:0},{m:4,w:3,main:'W01',mainAt:2},{m:4,w:4,main:'W03',mainAt:1},
+  {m:5,w:1,main:'I28',mainAt:0},{m:5,w:2,main:'W04',mainAt:1},{m:5,w:3,label:'大學到校',main:'W05',mainAt:0},{m:5,w:4,label:'5 月考試',main:'W06',mainAt:0},
+  {m:6,w:1,label:'畢業典禮',main:'W07',mainAt:1},{m:6,w:2,main:'I29',mainAt:0},{m:6,w:3,main:'W08',mainAt:1},{m:6,w:4,label:'最後一天',main:'W09',mainAt:2}];
+const RND12 = ['R27','R28','R25','R26','R22','R24','R16','R12','R13','R15','R20','R10'];
+const RND11 = ['R25','R26','R21','R22','R23','R24','R14','R15','R12','R13','R19','R20','R10','R11'];
+const RND10 = ['R21','R22','R23','R24','R19','R20','R16','R18','R15','R12','R13','R10','R11','R08','R09','R06','R07'];
+const RND9 = ['R19','R20','R16','R18','R15','R12','R13','R10','R11','R08','R09','R06','R07','R01','R02','R03','R04','R05'];
+const RND8 = ['R16','R17','R18','R15','R12','R13','R10','R11','R08','R09','R06','R07','R01','R02','R03','R04','R05'];
+const days = () => S.ch===0 ? DAYS0 : S.ch===12 ? DAYS12 : S.ch===11 ? DAYS11 : S.ch===10 ? DAYS10 : S.ch===9 ? DAYS9 : S.ch===8 ? DAYS8 : S.ch===7 ? DAYS7 : S.ch===6 ? DAYS6 : S.ch===5 ? DAYS5 : S.ch===4 ? DAYS4 : S.ch===3 ? DAYS3 : S.ch>=2 ? DAYS2 : DAYS1;
+// 兩組輪流：9/1、12/1、3/1、5/1 換組。甲組：9–11 在校、12–2 在職、3–4 在校、5–6 在職；乙組相反。7–8 月共同行程。
+function statusOf(day, chArg, grpArg){
+  if(!day) return 'common';
+  const CH=chArg??S.ch, GRP=grpArg??S.group;
+  const m=day.m, base=Math.floor((CH-1)/4)+1;
+  // 每 4 章一學年（7–9、10–12、1–3、4–6 月）；第 1、5、9 章的 7–8 月屬於上一學年
+  const yr = ((CH-1)%4===0 && m<9) ? base-1 : base;
+  if(yr<=0) return 'common';                        // 剛到台灣的 7–8 月：共同行程
+  let block;
+  if(m>=9 && m<=11) block=1; else if(m===12 || m<=2) block=2;
+  else if(yr>=3){ if(m<=4) block=3; else if(m<=6) block=4; else return 'common'; } // 三下：3–4、5–6 月
+  else block = m<=5 ? 3 : 4;                         // 一、二年級第二學期：3–5、6–8 月
+  const aSchool = block%2===0;                       // 甲組 9–11 實習、12–2 在校（招生網站）
+  return ((GRP||'A')==='A' ? aSchool : !aSchool) ? 'school' : 'work';
+}
+const SLOT = ['上午','下午','晚上'];
+const ACTIONS = [
+  {k:'class',zh:'上課',tr:{vi:'Lên lớp',id:'Masuk kelas',en:'Go to class',th:'เข้าเรียน',my:'အတန်းတက်'},fx:'體力−10 中文↑'},
+  {k:'pro',zh:'上專業課',tr:{vi:'Học chuyên ngành',id:'Pelajaran kejuruan',en:'Major class',th:'เรียนวิชาเฉพาะ',my:'အထူးပြုဘာသာ'},fx:'體力−10 專業技能+3'},
+  {k:'work',zh:'實習',tr:{vi:'Thực tập',id:'Magang',en:'Internship',th:'ฝึกงาน',my:'အလုပ်သင်'},fx:'體力−20 薪水次月發'},
+  {k:'shop',zh:'去便利商店',tr:{vi:'Đi cửa hàng tiện lợi',id:'Ke minimarket',en:'Convenience store',th:'ไปร้านสะดวกซื้อ',my:'စတိုးဆိုင်သွား'},fx:'存款−35 心情+3'},
+  {k:'out',zh:'跟阿蜜出去玩',tr:{vi:'Đi chơi với A Mật',id:'Main dengan A Mi',en:'Hang out with A-Mi',th:'ไปเที่ยวกับอาหมี่',my:'အာမိနဲ့ အပြင်ထွက်'},fx:'心情+20 存款−200'},
+  {k:'study',zh:'自己複習',tr:{vi:'Tự ôn bài',id:'Belajar sendiri',en:'Self-study',th:'ทบทวนเอง',my:'ကိုယ်တိုင်လေ့လာ'},fx:'中文↑'},
+  {k:'clean',zh:'整理房間、倒垃圾',tr:{vi:'Dọn phòng, đổ rác',id:'Bersihkan kamar, buang sampah',en:'Tidy room & take out trash',th:'จัดห้อง ทิ้งขยะ',my:'အခန်းရှင်း၊ အမှိုက်ပစ်'},fx:'整潔+20 體力−5'},
+  {k:'market',zh:'逛夜市',tr:{vi:'Đi chợ đêm',id:'Ke pasar malam',en:'Night market',th:'เดินตลาดกลางคืน',my:'ညဈေးလျှောက်'},fx:'心情+15 存款−150'},
+  {k:'job',zh:'打工',tr:{vi:'Làm thêm',id:'Kerja paruh waktu',en:'Part-time job',th:'ทำงานพาร์ตไทม์',my:'အချိန်ပိုင်းအလုပ်'},fx:'體力−15 本週打工 20 小時'},
+  {k:'post',zh:'去郵局寄包裹',tr:{vi:'Gửi bưu kiện',id:'Kirim paket',en:'Send a parcel home',th:'ส่งพัสดุกลับบ้าน',my:'ပါဆယ်ပို့'},fx:'存款−500 心情+10'},
+  {k:'call',zh:'打電話回家',tr:{vi:'Gọi về nhà',id:'Telepon keluarga',en:'Call home',th:'โทรกลับบ้าน',my:'အိမ်ကိုဖုန်းဆက်'},fx:'心情+20'},
+  {k:'rest',zh:'休息睡覺',tr:{vi:'Nghỉ ngơi',id:'Istirahat',en:'Rest',th:'พักผ่อน',my:'အနားယူ'},fx:'體力+40'}];
+const CARDS = {uniadmit:'科大錄取通知書',diploma:'高中畢業證書',yearbook:'畢業紀念冊',taxslip:'扣繳憑單',unibrochure:'大學招生簡章',resume:'中文自傳',tangyuan:'冬至湯圓',remitslip:'匯款收據',a1cert:'華語文能力測驗證書（A1）',admitletter:'錄取通知書',tocflA2cert:'華語文能力測驗證書（A2）',mentorbadge:'學長姐徽章',leaderbadge:'小組長名牌',sachet:'端午香包',tocflcert:'華語文能力測驗證書（B1）',luckydraw:'尾牙抽獎券',lantern:'元宵小燈籠',medal:'運動會獎牌',license:'技術士證照',adventure:'探索教育證書',stampcard:'各國印章卡',campusmap:'大學校園地圖',thankcard:'感謝卡',postcard:'文化之旅明信片',gardensign:'園遊會攤位招牌',easycard:'悠遊卡',exit:'緊急出口',umbrella:'雨傘',workwear:'實習工作服',mooncake:'月餅',mic:'麥克風',wishcard:'新年願望卡',nhicard:'健保卡'};
+const CARD_PY = {uniadmit:'kē dà lù qǔ tōng zhī shū',diploma:'gāo zhōng bì yè zhèng shū',yearbook:'bì yè jì niàn cè',taxslip:'kòu jiǎo píng dān',unibrochure:'dà xué zhāo shēng jiǎn zhāng',resume:'zhōng wén zì zhuàn',tangyuan:'dōng zhì tāng yuán',remitslip:'huì kuǎn shōu jù',a1cert:'huá yǔ wén néng lì cè yàn zhèng shū (A1)',admitletter:'lù qǔ tōng zhī shū',tocflA2cert:'huá yǔ wén néng lì cè yàn zhèng shū (A2)',mentorbadge:'xué zhǎng jiě huī zhāng',leaderbadge:'xiǎo zǔ zhǎng míng pái',sachet:'duān wǔ xiāng bāo',tocflcert:'huá yǔ wén néng lì cè yàn zhèng shū',luckydraw:'wěi yá chōu jiǎng quàn',lantern:'yuán xiāo xiǎo dēng lóng',medal:'yùn dòng huì jiǎng pái',license:'jì shù shì zhèng zhào',adventure:'tàn suǒ jiào yù zhèng shū',stampcard:'gè guó yìn zhāng kǎ',campusmap:'dà xué xiào yuán dì tú',thankcard:'gǎn xiè kǎ',postcard:'wén huà zhī lǚ míng xìn piàn',gardensign:'yuán yóu huì zhāo pái',easycard:'yōu yóu kǎ',exit:'jǐn jí chū kǒu',umbrella:'yǔ sǎn',workwear:'shí xí gōng zuò fú',mooncake:'yuè bǐng',mic:'mài kè fēng',wishcard:'xīn nián yuàn wàng kǎ',nhicard:'jiàn bǎo kǎ'};
+const TITLES = {tutor:'華語小老師',brave:'勇氣之星',world:'世界好朋友',yearstar:'一年級華語之星',interview:'面試高手',tidy:'宿舍模範生',cashier:'收銀小幫手',singer:'歌唱新星',zhstar:'華語小達人'};
+
+/* ---------- state ---------- */
+const KEY='twdiary_ch1_v1';
+const fresh = () => ({ch:1,missed:[],wish:null,parcel:0,screen:'title',hero:null,name:'',dept:null,lang:null,day:0,slot:0,
+  st:{hp:80,mood:60,money:3000,pop:10,skill:10,zh:0,tidy:100},trash:0,warn:0,minTidy:100,aff:{},seen:{},cards:[],titles:[],qTot:0,qOk:0,usedBank:[],pinyin:true,auto:true});
+let S = fresh();
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
+const load = () => { try{ const v = JSON.parse(localStorage.getItem(KEY)||'null'); if(v){ v.ch=v.ch||1; v.missed=v.missed||[]; } if(v&&v.st&&v.st.tidy==null){ v.st.tidy=100; v.trash=0; v.warn=0; v.minTidy=100; } return v && v.hero ? v : null; }catch(e){ return null; } };
+window.claude?.hot?.snapshot?.(() => S);
+
+/* ---------- helpers ---------- */
+const $ = (s,r=document) => r.querySelector(s);
+const el = (tag, attrs={}, ...kids) => { const e=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){ if(k==='class') e.className=v; else if(k.startsWith('on')) e.addEventListener(k.slice(2),v); else if(v!==null&&v!==undefined) e.setAttribute(k,v); }
+  for(const k of kids.flat()){ if(k==null) continue; e.append(k.nodeType? k : document.createTextNode(k)); } return e; };
+const hero = () => HEROES.find(h=>h.id===S.hero);
+const dept = () => DEPTS[S.dept||0];
+// 男主角的室友是阿傑（男生宿舍）；劇本寫阿蜜，顯示時換人。好感度仍記在 amei。
+const boyRoom = () => { const h = S.hero && HEROES.find(x=>x.id===S.hero); return !!h && !h.girl; };
+const role = (who) => (who==='amei' && boyRoom()) ? 'ajie' : (who==='newbie' && S.hero==='h09') ? 'newbie2' : (who==='xinsheng' && S.hero==='h10') ? 'xinsheng2' : who;
+const swapTr = (s) => { if(!s || !boyRoom()) return s||'';
+  if(/A-Mi\b/.test(s)) s = s.replace(/\bher\b/g,'his').replace(/\bshe\b/g,'he').replace(/\bShe\b/g,'He');
+  return s.replace(/A Mật/g,'A Kiệt').replace(/A-Mi\b/g,'A-Jie').replace(/A Mi\b/g,'A Jie').replace(/อาหมี่/g,'อาเจี๋ย').replace(/အာမိ/g,'အာကျဲ').replace(/អាមី/g,'អាជៀ'); };
+const L = (o) => swapTr((o && (o[S.lang] || o.en)) || '');
+const gear2 = () => dept().gear==='口罩' ? '安全帽' : '口罩';
+const fill = (s) => s.replace(/\{name\}/g,S.name||'我').replace(/\{home\}/g,hero().home.zh).replace(/\{dept\}/g,dept().zh)
+  .replace(/\{gear\}/g,dept().gear).replace(/\{gear2\}/g,gear2()).replace(/\{sib\}/g,hero().girl?'妹妹':'弟弟')
+  .replace(/\{work\}/g, dept().work.zh).replace(/\{senior\}/g, hero().girl?'學姊':'學長').replace(/阿蜜/g, boyRoom()?'阿傑':'阿蜜');
+const fillTr = (s) => s.replace(/\{work\}/g, L(dept().work)).replace(/\{home\}/g, (hero()||{home:{loc:''}}).home.loc).replace(/\{name\}/g, S.name||'').replace(/\{dept\}/g, dept().zh);
+const pyOf = (zh) => { // pinyin from build table with tokens
+  const t = DATA.py[zh]; if(!t) return '';
+  return t.replace(/\{name\}/g,S.name||'').replace(/\{home\}/g,DATA.py['#'+hero().home.zh]||'').replace(/\{dept\}/g,DATA.py['#'+dept().zh]||'')
+   .replace(/\{gear\}/g,DATA.py['#'+dept().gear]||'').replace(/\{gear2\}/g,DATA.py['#'+gear2()]||'')
+   .replace(/\{sib\}/g,hero().girl?'mèi mei':'dì di').replace(/\{work\}/g,DATA.py['#'+dept().work.zh]||'')
+   .replace(/\{senior\}/g, hero().girl?'xué jiě':'xué zhǎng').replace(/ā mì/g, boyRoom()?'ā jié':'ā mì');
+};
+let voice=null;
+// Rank voices: neural/natural Taiwan voices first, then any zh-TW, then other Mandarin.
+function zhVoices(){ try{ return speechSynthesis.getVoices().filter(v=>/^(zh|cmn)/i.test(v.lang)); }catch(e){ return []; } }
+function vScore(v){ const n=v.name, tw=/TW|Hant|台|臺/i.test(v.lang+n);
+  return (/Natural|Neural|Online|Premium|Enhanced|進階|增強/i.test(n)?100:0) + (/HsiaoChen|HsiaoYu|曉臻|曉雨/i.test(n)?40:0)
+    + (/Google/i.test(n)?30:0) + (/Mei-?Jia|美佳/i.test(n)?25:0) + (tw?50:0) - (/HK|Cantonese|粵|yue/i.test(v.lang+n)?200:0); }
+function pickVoice(){ const vs=zhVoices(); if(!vs.length) return;
+  voice = (S && S.voice && vs.find(v=>v.name===S.voice)) || vs.slice().sort((a,b)=>vScore(b)-vScore(a))[0]; }
+try{ speechSynthesis.onvoiceschanged = pickVoice; pickVoice(); }catch(e){}
+function speak(text){ try{ if(!voice) pickVoice(); speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text.replace(/[（(].*?[)）]/g,'')); u.lang=voice?voice.lang:'zh-TW'; if(voice) u.voice=voice; u.rate=(S&&S.rate)||.9; speechSynthesis.speak(u);}catch(e){} }
+function showCard(k){ return new Promise(res=>{
+  const zh=CARDS[k], im=IMG['item_'+k];
+  const ov=el('div',{class:'cardpop',role:'dialog','aria-label':'獲得收集卡：'+zh});
+  const card=el('div',{class:'cc'}, el('div',{class:'cc-tag'},'獲得收集卡'), im?el('img',{src:im,alt:''}):null,
+    el('div',{class:'cc-name'}, el('b',{},zh), el('button',{class:'speak',onclick:e=>{e.stopPropagation();speak(zh);},'aria-label':'朗讀'},'🔊')),
+    S.pinyin?el('i',{},CARD_PY[k]||''):null, el('div',{class:'cc-tap'},'點一下繼續'));
+  ov.append(card); document.body.append(ov); if(S.auto) speak(zh);
+  setTimeout(()=>ov.onclick=()=>{ ov.remove(); res(); },300);
+}); }
+function toast(msg){ const t=el('div',{class:'toast',role:'status'},msg); document.body.append(t); setTimeout(()=>t.remove(),2200); }
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ---------- screens ---------- */
+const app = $('#app');
+function render(){ app.innerHTML=''; ({title:renderTitle,setup:renderSetup,game:renderGame,end:renderEnd})[S.screen](); }
+
+function renderTitle(){
+  const saved = load();
+  const cast = el('div',{class:'cast'}, ['h03','h02','h11','h06','h07'].map(k=>el('img',{src:IMG[k],alt:''})));
+  app.append(el('section',{class:'title-screen'},
+    el('div',{class:'brand'}, el('div',{class:'seal','aria-hidden':'true',onclick:()=>{ devTaps++; if(devTaps>=5){ devTaps=0; askDevPin(); } }},el('span')), el('div',{}, el('h1',{},'台灣生活日記'), el('p',{},'青年高中僑生建教專班・華語養成遊戲'))),
+    cast,
+    el('div',{class:'chapter-tag'}, saved&&saved.ch===12 ? '三年級・第十二章　4–6 月：錄取通知・報稅・面試・畢業典禮' : saved&&saved.ch===11 ? '三年級・第十一章　1–3 月：扣繳憑單・志願表・春節・大學到校面試' : saved&&saved.ch===10 ? '三年級・第十章　10–12 月：報告・自傳・模擬面試・冬至' : saved&&saved.ch===9 ? '三年級・第九章　7–9 月：帶新生・小組長・志願調查' : saved&&saved.ch===8 ? '二年級・第八章　4–6 月：清明・B1 考試・端午・結業' : saved&&saved.ch===7 ? '二年級・第七章　1–3 月：專題・尾牙・除夕・元宵・輪調' : saved&&saved.ch===6 ? '二年級・第六章　10–12 月：國慶・運動會・技能檢定・聖誕節' : saved&&saved.ch===5 ? '二年級・第五章　7–9 月：迎新・探索教育・居留證延期' : saved&&saved.ch===4 ? '第四章　4–6 月：潑水節・文化週・大學參訪・畢業典禮' : saved&&saved.ch===3 ? '第三章　1–3 月：文化之旅・春節・園遊會' : saved&&saved.ch===2 ? '第二章　10–12 月：中秋・打工・跨年' : '第一章　7–9 月：抵達・面試・實習'),
+    saved ? el('button',{class:'btn',onclick:()=>{S=saved; if(S.ch===0){ runCh0(); return; } S.screen='game';render();runDay();}},'繼續遊戲　'+(UI.cont[saved.lang]||'Continue')) : null,
+    el('button',{class:saved?'btn ghost':'btn',onclick:()=>{S=fresh();S.screen='setup';render();}}, saved?'重新開始':'開始遊戲'),
+    el('button',{class:'btn ghost',onclick:()=>openSaveCode('')}, '用存檔代碼繼續'),
+    el('button',{class:'btn ghost',onclick:()=>startPrologue(saved)}, '前傳：出發前'),
+    el('button',{class:'btn ghost',onclick:()=>openMap(saved||{})}, '三年旅程地圖'),
+    el('a',{class:'info-link',href:fbUrl(saved||{}),target:'_blank',rel:'noopener'},'學生試玩回饋 ✎'),
+    el('a',{class:'info-link',href:'feedback/teacher/',target:'_blank',rel:'noopener'},'教師試玩回饋 ✎'),
+    el('a',{class:'info-link',href:'https://overseas.youth.tc.edu.tw',target:'_blank',rel:'noopener'},'青年高中 2027 年僑生新生入學資訊網 ↗'),
+    el('p',{class:'small'},'試作版：前傳＋第一到第十二章（一年級到三年級畢業），每章約 15–20 分鐘。進度會自動存在這台裝置的瀏覽器裡。建議戴耳機或打開聲音。')));
+}
+
+function renderSetup(){
+  const lang = S.lang || 'en';
+  const hs = el('div',{class:'heroes'}, HEROES.map(h=>el('button',{class:'hero-card','aria-pressed':String(S.hero===h.id),onclick:()=>{S.hero=h.id; if(!S.langSet) S.lang=h.home.lang; renderAgain();}},
+    el('img',{src:IMG[h.id],alt:h.home.zh+(h.girl?'女生':'男生')}), el('span',{class:'hc'},h.home.zh))));
+  const nameIn = el('input',{type:'text',id:'nm',maxlength:'12',placeholder:'例：阿明 / Minh',value:S.name||'',oninput:e=>{S.name=e.target.value.trim(); goBtn.disabled=!ready();}});
+  const dc = el('div',{class:'chips'}, DEPTS.map((d,i)=>el('button',{class:'chip','aria-pressed':String(S.dept===i),onclick:()=>{S.dept=i;renderAgain();}},d.zh)));
+  const lc = el('select',{id:'lg',onchange:e=>{S.lang=e.target.value;S.langSet=true;renderAgain();}}, Object.entries(LANGS).map(([k,v])=>{const o=el('option',{value:k},v); if((S.lang||'en')===k) o.selected=true; return o;}));
+  const ready = () => S.hero && S.name && S.dept!==null && S.dept!==undefined;
+  const goBtn = el('button',{class:'btn',onclick:()=>{ if(!ready()) return; S.lang=S.lang||hero().home.lang; S.group=S.group||(Math.random()<.5?'A':'B'); S.screen='game'; S.day=0; S.slot=0; if(S.prologue || START_PRE){ S.ch=0; save(); runCh0(); return; } save(); render(); chooseStart(); }}, '出發！　'+UI.go[S.lang||'en']);
+  goBtn.disabled = !ready();
+  app.append(el('section',{class:'setup'},
+    el('h2',{},'選擇你的主角　',el('span',{class:'small'},UI.pick[lang])), hs,
+    el('div',{class:'field'}, el('label',{for:'nm'},'你的名字　',el('span',{class:'small'},UI.name[lang])), nameIn),
+    el('div',{class:'field'}, el('span',{class:'lab'},'科別　',el('span',{class:'small'},UI.dept[lang])), dc),
+    el('div',{class:'field'}, el('label',{for:'lg'},'翻譯語言　',el('span',{class:'small'},UI.lang[lang])), lc),
+    goBtn));
+}
+function renderAgain(){ const y=window.scrollY; render(); window.scrollTo(0,y); }
+
+/* ---------- game screen ---------- */
+let stage, panel, hud;
+function renderGame(){
+  hud = el('div',{class:'hud'});
+  stage = el('div',{class:'stage'}, el('div',{class:'bg'}), el('div',{class:'place'}), el('div',{class:'fxpop'}));
+  panel = el('div',{class:'panel','aria-live':'polite'});
+  app.append(hud, stage, panel);
+  drawHud(); setScene('dorm',null);
+}
+function drawHud(){
+  const D=days(), d = D[S.day]||D[D.length-1];
+  hud.innerHTML='';
+  if(S.ch===0){ hud.append(el('div',{class:'when'}, el('b',{},d.label||''), el('span',{class:'slot'},'前傳')), el('button',{class:'gear','aria-label':'設定',onclick:openSettings},'⚙︎')); return; }
+  const bar=(cls,lab,v)=>el('div',{class:'meter '+cls},el('span',{},lab),el('div',{class:'bar'},el('i',{style:`width:${v}%`})));
+  hud.append(el('div',{class:'when'}, el('b',{},d.label||`${d.m} 月 第 ${d.w} 週`), el('span',{class:'slot'},SLOT[S.slot]||'晚上')),
+    el('button',{class:'gear','aria-label':'設定',onclick:openSettings},'⚙︎'),
+    el('div',{class:'meters'}, bar('hp','體力',S.st.hp), bar('mood','心情',S.st.mood), bar('skill','專業技能',S.st.skill), (()=>{const m=bar('tidy','宿舍整潔 '+(S.st.tidy??100),S.st.tidy??100); if((S.st.tidy??100)<60) m.classList.add('low'); return m;})(), el('div',{class:'money'},'$ '+S.st.money.toLocaleString())));
+}
+// 主角換裝：僑生專班冬天（12–2 月）穿運動外套和運動長褲（沒有購買制服外套）；
+// 其他月份的運動相關事件穿夏季運動服；沒有圖時用夏季制服
+let curEv=null;
+const SPORT_EV = new Set(['X01','X02','X03','Y03','G01','L_PE']);
+function heroImg(k){
+  const base=S.hero, d=(typeof days==='function' && days()[S.day])||{};
+  if(S.ch===0) return IMG[base+'_casual']||IMG[base]; // 前傳：在家鄉穿便服（沒有圖時用夏季制服）
+  if((d.m===12||d.m===1||d.m===2) && IMG[base+'_winter']) return IMG[base+'_winter'];
+  if((k==='adventure'||k==='climb'||SPORT_EV.has(curEv)) && IMG[base+'_sport']) return IMG[base+'_sport'];
+  return IMG[base];
+}
+// NPC 冬裝：12–2 月有「名稱_winter」圖就換上（學妹直接沿用主角 h09／h05 的冬裝）
+const MAMA = {'越南':'vn','印尼':'id','泰國':'th','緬甸':'my','菲律賓':'ph','馬來西亞':'ms','柬埔寨':'kh'}; // 媽媽依主角國家換人
+function npcImg(img){ if(img==='mama') return IMG['mama_'+(MAMA[hero().home.zh]||'vn')]; const d=(typeof days==='function' && days()[S.day])||{};
+  return ((d.m===12||d.m===1||d.m===2) && IMG[img+'_winter']) ? IMG[img+'_winter'] : IMG[img]; }
+function setScene(k, who){
+  who = who && role(who);
+  const sc = SCENES[k]||SCENES.dorm;
+  const bk = k==='work' ? 'bg_work_'+['it','bakery','kitchen','car','trade'][S.dept||0] : 'bg_'+k;
+  const b = $('.bg',stage);
+  if(BG[bk]){ b.style.background = 'center 55%/cover no-repeat url('+BG[bk]+')'; $('.place',stage).textContent=''; }
+  else { b.style.background = sc.bg; $('.place',stage).textContent = sc.zh; }
+  stage.querySelectorAll('.sprite,.avatar').forEach(e=>e.remove());
+  stage.prepend($('.bg',stage));
+  stage.append(el('img',{class:'sprite me',src:heroImg(k),alt:'你'}));
+  if(who){ const p=PEOPLE[who]; if(p.img) stage.append(el('img',{class:'sprite npc',src:npcImg(p.img),alt:p.zh}));
+    else stage.append(el('div',{class:'avatar',style:`background:${p.c}`},p.ch,el('small',{},p.zh))); }
+}
+function fxPop(txt){ $('.fxpop',stage).append(el('span',{},txt)); setTimeout(()=>{const f=$('.fxpop span',stage); f&&f.remove();},2500); }
+
+function waitTap(btnText){ return new Promise(res=>{ const b=el('button',{class:'next',onclick:()=>{res();}}, (btnText||UI.tap[S.lang]||'Tap')+' ▸'); panel.append(b); b.focus({preventScroll:true}); }); }
+
+/* Chinese line with its own speaker button (and pinyin when on) */
+function zhLine(raw, cls){
+  const zh = fill(raw);
+  const box = el('div',{class:'line'}, el('div',{style:'flex:1;min-width:0'}, el('p',{class:cls||'tr-sub'},zh), S.pinyin && pyOf(raw) ? el('p',{class:'py'},pyOf(raw)) : null),
+    el('button',{class:'speak sm','aria-label':'播放',onclick:()=>speak(zh.replace(/＿＿/g,'嗯'))},'🔊'));
+  return box;
+}
+let lastHidden=null;
+function showSay(st){
+  const who = st.say, zh = fill(st.homeVN && hero().home.zh==='越南' ? st.homeVN : st.zh);
+  panel.innerHTML='';
+  const name = who==='me' ? (S.name||'我') : PEOPLE[role(who)].zh;
+  panel.append(el('span',{class:'who'+(who==='me'?' me':'')},name));
+  const sp = el('button',{class:'speak','aria-label':'播放',onclick:()=>speak(zh)},'🔊');
+  if(st.listen){
+    const box = el('div',{}, el('p',{class:'hidden-text'},'？？？'));
+    const big = el('button',{class:'speak big',onclick:()=>speak(zh)},'🔊 '+UI.listen[S.lang]);
+    panel.append(el('div',{class:'line'}, box), big);
+    lastHidden = {box,zh};
+  } else {
+    panel.append(el('div',{class:'line'}, el('p',{class:'zh'},zh), sp));
+    if(S.pinyin) panel.append(el('p',{class:'py'},pyOf(st.homeVN && hero().home.zh==='越南' ? st.homeVN : st.zh)));
+  }
+  if(S.auto) speak(zh);
+}
+function revealHidden(){ if(!lastHidden) return; const {box,zh}=lastHidden; box.innerHTML=''; box.append(el('p',{class:'zh'},zh)); if(S.pinyin){ const k=Object.keys(DATA.py).find(k=>fill(k)===zh); if(k) box.append(el('p',{class:'py'},pyOf(k))); } lastHidden=null; }
+
+async function runSteps(steps, ctx){
+  for(const st of steps){
+    if(st.scene){ setScene(st.scene, st.npc); continue; }
+    if(st.n){ panel.innerHTML=''; panel.append(el('p',{class:'tr'},fillTr(L(st.n))), zhLine(st.n.zh)); await waitTap(); continue; }
+    if(st.say){ showSay(st); if(st.listen) continue; await waitTap(); continue; }
+    if(st.poster){ panel.innerHTML=''; panel.append(el('div',{class:'poster'}, el('h3',{},st.title||'徵　才'), el('button',{class:'speak big',style:'margin:0 auto 8px;display:block',onclick:()=>speak(st.poster.map(([a,b])=>(a?a+'，':'')+fill(b)).join('。'))},'🔊 唸給我聽'), el('dl',{}, st.poster.flatMap(([a,b])=>[el('dt',{},a),el('dd',{},fill(b))])))); continue; }
+    if(st.q){ await runQ(st.q, ctx); continue; }
+    if(st.fx){ applyFx(st.fx); continue; }
+    if(st.card){ if(!S.cards.includes(st.card)) S.cards.push(st.card); save(); await showCard(st.card); continue; }
+    if(st.title){ if(!S.titles.includes(st.title)) S.titles.push(st.title); toast('獲得稱號：'+TITLES[st.title]); continue; }
+    if(st.ifHomeZh){ await runSteps(st.ifHomeZh.includes(hero().home.zh)?st.then:st.else, ctx); continue; }
+    if(st.ifHome){ await runSteps(st.ifHome.includes(hero().home.lang)?st.then:st.else, ctx); continue; }
+    if(st.redo){ S.redo=S.redo||{}; if(!S.redo[st.redo]) S.redo[st.redo]={ch:S.ch,day:S.day}; save(); continue; }
+    if(st.violation){ S.viol=(S.viol||0)+st.violation; save(); continue; }
+    if(st.ifv){ await runSteps(S[st.ifv]?st.then:st.else, ctx); continue; }
+    if(st.link){ panel.innerHTML=''; panel.append(el('p',{class:'tr'},L(st.link.tr)), zhLine(st.link.zh), el('a',{class:'btn ghost linkbtn',href:st.link.href,target:'_blank',rel:'noopener'},st.link.label+' ↗')); await waitTap(); continue; }
+    if(st.ifMoney){ await runSteps(S.st.money>=st.ifMoney?st.then:st.else, ctx); continue; }
+    if(st.ifDept){ await runSteps(dept().zh===st.ifDept?st.then:st.else, ctx); continue; }
+    if(st.setv){ Object.assign(S, st.setv); save(); continue; }
+    if(st.thanks){ await thanksCard(ctx); continue; }
+    if(st.ifStatus){ await runSteps(statusOf(days()[S.day])===st.ifStatus?st.then:st.else, ctx); continue; }
+    if(st.ifTidy){ await runSteps(((S.st.tidy??100)>=st.ifTidy)?st.then:st.else, ctx); continue; }
+    if(st.trash0){ S.trash=0; continue; }
+    if(st.set){ S[st.set]=1; continue; }
+    if(st.exam){ const sc=await runExam(st.exam); S['exam'+S.ch]=sc; S['examN'+S.ch]=st.exam; const hit=st.res.find(([min])=>sc>=min); if(hit) await runSteps(hit[1], ctx); continue; }
+    if(st.ifScore){ await runSteps((ctx.ok>=st.ifScore)?st.then:st.else, ctx); continue; }
+  }
+}
+// 畢業典禮：把感謝卡送給這一年好感度最高的人
+const THANKS = {amei:'走，我們去吃東西慶祝！',ajiao:'有沒有吃飽？二年級也要常來喔！',xiaoyang:'歡迎光臨～下次也要來喔！',lin:'慢慢來，沒關係。你進步很多！',
+  chen:'有問題就來找我。二年級加油！',huang:'來喔！下次請你吃雞排！',zhang:'安全第一。明年也要好好做！',li:'多喝水，多休息。要照顧好身體！',
+  rina:'我以前也這樣！明年一起加油！',guo:'請先拿號碼牌……開玩笑的，謝謝你！',alian:'不客氣！我們是好朋友啊！'};
+async function thanksCard(ctx){
+  let best='amei'; Object.keys(THANKS).forEach(p=>{ if((S.aff[p]||0)>(S.aff[best]||0)) best=p; });
+  S.thanksTo=best; save();
+  const nm=PEOPLE[role(best)].zh, tw=UI.thanks[S.lang]||UI.thanks.en;
+  setScene('stage',best); panel.innerHTML='';
+  panel.append(el('p',{class:'tr'},tw[0]+nm+tw[1]), zhLine('你把感謝卡送給'+PEOPLE[best].zh+'。')); await waitTap();
+  await runSteps([{say:'me',zh:'謝謝你這一年的照顧！'},{say:best,zh:THANKS[best]},{fx:{mood:10,aff:{[best]:2}}}], ctx);
+}
+function applyFx(fx){
+  const names={hp:'體力',mood:'心情',money:'存款',skill:'專業技能',pop:'人緣',zh:'中文',tidy:'宿舍整潔'};
+  for(const [k,v] of Object.entries(fx)){
+    if(k==='aff'){ for(const [p,a] of Object.entries(v)){ S.aff[p]=(S.aff[p]||0)+a; fxPop(PEOPLE[role(p)].zh+' 好感 +'+a); } continue; }
+    S.st[k] = k==='money' ? Math.max(0,S.st[k]+v) : clamp(S.st[k]+v,0,100);
+    if(k!=='zh') fxPop(`${names[k]} ${v>0?'+':''}${v}`);
+  }
+  S.minTidy=Math.min(S.minTidy??100, S.st.tidy??100);
+  drawHud();
+}
+function feedback(ok){
+  const fb=el('div',{class:'fb '+(ok?'good':'oops'),role:'status'}, el('span',{class:'fb-i','aria-hidden':'true'},ok?'✓':'✗'),
+    el('b',{},ok?'答對了！':'再想想……'), el('span',{class:'fb-tr'},(ok?UI.good:UI.oops)[S.lang]||''));
+  requestAnimationFrame(()=>fb.scrollIntoView({block:'nearest',behavior:'smooth'})); return fb; }
+function optEmoji(o){ const z=fill(o.zh); if(ITEM_IMG[z]&&IMG[ITEM_IMG[z]]) return el('img',{src:IMG[ITEM_IMG[z]],alt:'',class:'ei'}); if(o.e) return o.e; return GEAR_E[z]||null; }
+function runQ(q, ctx){
+  return new Promise(resolve=>{
+    // panel keeps the listen line on top; question goes below
+    const keep = Array.from(panel.children);
+    panel.innerHTML=''; keep.forEach(k=>{ if(!k.classList.contains('next')) panel.append(k); });
+    panel.append(zhLine(q.p.zh,'prompt'), el('p',{class:'tr',style:'font-size:.9rem;color:var(--ink-2);margin-top:-6px'},L(q.p)));
+    if(q.stem) panel.append(zhLine(q.stem,'stem'));
+    let first=true; if(!q.free) S.qTot++; app.classList.add('q');
+    const opts = q.opts.map(o=>({...o})).sort(()=>Math.random()-.5);
+    const box = el('div',{class:'opts'});
+    const btns = opts.map(o=>{ const z=fill(o.zh); const e=optEmoji(o);
+      const b = el('button',{class:'opt'}, e?el('span',{class:'e','aria-hidden':'true'},e):null, el('span',{class:'o'}, el('b',{},z), S.pinyin&&pyOf(o.zh)?el('i',{},pyOf(o.zh)):null));
+      b.addEventListener('click',async()=>{
+        if(b.disabled) return; btns.forEach(x=>x.disabled=true);
+        const oldRetry=panel.querySelector('.retry'); if(oldRetry) oldRetry.remove();
+        if(q.free){ b.classList.add('ok'); revealHidden(); if(q.wish) S.wish=z; speak(z); await new Promise(r=>setTimeout(r,500));
+          app.classList.remove('q'); await runSteps(o.then||q.ok||[], ctx); save(); resolve(); return; }
+        if(o.ok){ b.classList.add('ok'); revealHidden(); if(first){ S.qOk++; ctx.ok=(ctx.ok||0)+1; S.st.zh=clamp(S.st.zh+1,0,100); if(q.bankNo) S.missed=S.missed.filter(x=>x!==q.bankNo);} speak(z.replace(/〔|〕/g,''));
+          const fb=feedback(true); box.after(fb);
+          await waitTap(); fb.remove(); panel.querySelectorAll('.next').forEach(x=>x.remove());
+          app.classList.remove('q'); await runSteps(o.then||q.ok||[], ctx); save(); resolve(); }
+        else { if(first && q.bankNo && !S.missed.includes(q.bankNo)) S.missed.push(q.bankNo); first=false; b.classList.add('no');
+          const wrongSteps = o.r || q.wrong || [];
+          const snapshot = Array.from(panel.children);
+          if(wrongSteps.length){ const fb=feedback(false); box.after(fb); await waitTap(); fb.remove(); panel.querySelectorAll('.next').forEach(x=>x.remove()); await runSteps(wrongSteps, ctx); }
+          if(o.end){ app.classList.remove('q'); save(); resolve(); return; } // 這個選擇的後果演完就結束，不再重選
+          panel.innerHTML=''; snapshot.forEach(k=>panel.append(k));
+          if(!panel.querySelector('.retry')) panel.insertBefore(el('p',{class:'small retry',role:'status'},UI.retry[S.lang]), box);
+          btns.forEach(x=>{ if(!x.classList.contains('no')) x.disabled=false; });
+        }
+      }); return b; });
+    btns.forEach(b=>box.append(b)); panel.append(box);
+    if(q.src) panel.append(el('p',{class:'src'},'題目來源：'+q.src));
+  });
+}
+
+/* ---------- exam: no retries, prefer questions missed before ---------- */
+async function runExam(n){
+  const missed = DATA.bank.filter(b=>S.missed.includes(b.no));
+  const rest = DATA.bank.filter(b=>!S.missed.includes(b.no)).sort(()=>Math.random()-.5);
+  const list = [...missed.sort(()=>Math.random()-.5), ...rest].slice(0,n);
+  let score=0;
+  for(let i=0;i<list.length;i++){
+    const b=list[i];
+    b.opts.forEach((o,j)=>{ DATA.py[o]=DATA.py[o]||b.opy[j]; }); DATA.py[b.full]=DATA.py[b.full]||b.py;
+    panel.innerHTML=''; app.classList.add('q');
+    panel.append(el('p',{class:'small'},`第 ${i+1} 題 / ${list.length}　${UI.exam[S.lang]} ${i+1}/${list.length}`), zhLine(DATA.P.fill.zh,'prompt'), zhLine(b.q,'stem'));
+    const box=el('div',{class:'opts'});
+    const ok = await new Promise(res=>{
+      const opts=b.opts.map((o,j)=>({zh:o,ok:j===0})).sort(()=>Math.random()-.5);
+      const btns=opts.map(o=>{ const bt=el('button',{class:'opt'}, el('span',{class:'o'}, el('b',{},o.zh), S.pinyin&&pyOf(o.zh)?el('i',{},pyOf(o.zh)):null));
+        bt.addEventListener('click',()=>{ if(bt.disabled) return; btns.forEach(x=>x.disabled=true);
+          btns.forEach((x,j)=>{ if(opts[j].ok) x.classList.add('ok'); }); if(!o.ok) bt.classList.add('no'); res(!!o.ok); }); return bt; });
+      btns.forEach(x=>box.append(x)); panel.append(box);
+    });
+    S.qTot++;
+    if(ok){ score++; S.qOk++; S.st.zh=clamp(S.st.zh+1,0,100); S.missed=S.missed.filter(x=>x!==b.no); }
+    else if(!S.missed.includes(b.no)) S.missed.push(b.no);
+    speak(b.full); box.after(feedback(ok)); panel.append(zhLine(b.full)); await waitTap(); save();
+  }
+  app.classList.remove('q');
+  panel.innerHTML=''; panel.append(zhLine(`答對 ${score} 題，一共 ${list.length} 題。`,'prompt')); await waitTap();
+  return score;
+}
+
+/* ---------- day loop ---------- */
+async function runEvent(id){ const prev=curEv; curEv=id; const ctx={ok:0}; try{ await runSteps(DATA.events[id], ctx); } finally { curEv=prev; } S.seen[id]=true; save(); }
+async function bankQuestion(intro, npc){
+  setScene(npc==='lin'?'classroom':'room', npc==='lin'?'lin':null);
+  panel.innerHTML=''; panel.append(el('p',{class:'tr'},L(intro)), zhLine(intro.zh)); await waitTap();
+  const pool = DATA.bank.filter(b=>!S.usedBank.includes(b.no)); const b = (pool.length?pool:DATA.bank)[Math.floor(Math.random()*(pool.length||DATA.bank.length))];
+  S.usedBank.push(b.no);
+  panel.innerHTML='';
+  const q = {p:DATA.P.fill, stem:b.q, src:'題庫 '+b.no, bankNo:b.no, opts:b.opts.map((o,i)=>({zh:o,ok:i===0})),
+    ok:[{n:{zh:b.full,...b.tr}}]};
+  b.opts.forEach((o,i)=>{ DATA.py[o]=DATA.py[o]||b.opy[i]; }); DATA.py[b.full]=DATA.py[b.full]||b.py;
+  await runQ(q,{ok:0});
+}
+// 薪水：在職組實習收入、在校組打工時薪，都先記入「應領」，次月 10 日發放。在職組扣勞保、健保（一年級 12 月以前的工作月還沒有健保，不扣）。
+const PAY = {labor:0.12*0.2, health:0.0517*0.3};
+const wk = () => { const d = days()[S.day]||{}; return d.m+'-'+d.w; };
+function accrue(kind, amt){ S.owed = S.owed||{work:{},part:{}}; const m = (days()[S.day]||{}).m; S.owed[kind][m] = (S.owed[kind][m]||0)+amt; }
+function slipRow(label, val, big){ return el('div',{class:'slip-row'+(big?' big':'')}, el('span',{},label), el('b',{}, (val<0?'−':'')+Math.abs(val).toLocaleString()+' 元')); }
+async function payDay(){
+  const cur = (days()[S.day]||{}).m; const o = S.owed||{work:{},part:{}};
+  const dueW = Object.keys(o.work).filter(m=>+m!==cur), dueP = Object.keys(o.part).filter(m=>+m!==cur);
+  if(!dueW.length && !dueP.length) return;
+  const MIN_INTERN = 30900; const gW = dueW.reduce((a,m)=>a+Math.max(MIN_INTERN,o.work[m]),0), gP = dueP.reduce((a,m)=>a+o.part[m],0);
+  // 在職組：勞保＋健保。在校打工：只扣勞保，部分工時投保薪資最低 11,100 元（依月計算）。
+  const labW = Math.round(gW*PAY.labor), labP = dueP.reduce((s,m)=>s+Math.round(Math.max(11100,o.part[m])*PAY.labor),0); // 部分工時投保薪資最低 11,100
+  const noNHI = m => S.ch<=2 || (S.ch===3 && +m===12); // 來台未滿 180 天：一年級 1 月才加入健保
+  const hea = dueW.reduce((s,m)=>s+(noNHI(m)?0:Math.round(Math.max(MIN_INTERN,o.work[m])*PAY.health)),0);
+  const lab = labW+labP, net = gW+gP-lab-hea;
+  dueW.forEach(m=>delete o.work[m]); dueP.forEach(m=>delete o.part[m]); S.owed = o;
+  if(!S.seen.D17 && gW>0) await runEvent('D17'); // 第一次領實習薪水
+  applyFx({money:net});
+  const T2 = UI.slip[S.lang]||UI.slip.en;
+  setScene('room',null); panel.innerHTML='';
+  panel.append(zhLine('薪水單'), el('p',{class:'tr'},T2.title), el('div',{class:'slip'},
+    slipRow(T2.gross, gW+gP), slipRow(T2.labor, -lab), ...(hea||!gW?[slipRow(T2.health, -hea)]:[el('div',{class:'slip-row'},el('span',{},T2.health),el('b',{},T2.noNHI||'—'))]), slipRow(T2.net, net, true)));
+  await waitTap();
+}
+function available(a){
+  const d=S.day, s=S.slot, tired=S.st.hp<20, ch2=S.ch>=2, day=days()[d]||{};
+  if(tired && !['rest','call'].includes(a.k)) return false;
+  if(ch2 && day.typhoon) return ['rest','call','clean','study'].includes(a.k) && (a.k!=='study'||s===2) && (a.k!=='clean'||s>0);
+  const st=statusOf(day);
+  if(a.k==='class') return s===0 && (st==='school' || st==='common');
+  if(a.k==='pro') return s===1 && st==='school';
+  if(a.k==='work') return st==='work' && s<2;
+  if(a.k==='out') return !ch2 && s>0;
+  if(a.k==='market') return ch2 && s===2;
+  if(a.k==='job') return ch2 && s===2 && !!S.seen.M05 && st==='school' && (S.jobHrs?.[wk()]||0) < 20;
+  if(a.k==='post') return ch2 && s===1 && d>=9 && !S.seen.D15;
+  if(a.k==='study') return s===2;
+  if(a.k==='clean') return s>0;
+  return true;
+}
+async function doAction(k){
+  const D=DATA.N, ch2=S.ch>=2;
+  if(k==='class'){ if(ch2 && S.day>=6 && !S.seen.D16){ await runEvent('D16'); }
+    else if(statusOf(days()[S.day])==='common' || Math.random()<.4) await bankQuestion(D.cls,'lin'); // 華語課（題庫）
+    else { const L=['L_GUO','L_ENG','L_MATH','L_MUSIC','L_PE'].filter(x=>x!==S.lastLesson); S.lastLesson=L[Math.floor(Math.random()*L.length)]; await runEvent(S.lastLesson); }
+    applyFx({hp:-10,mood:-5,zh:2}); }
+  else if(k==='pro'){ await runEvent('L_PRO'+(S.dept||0)); applyFx({hp:-10,skill:3}); }
+  else if(k==='study'){ await bankQuestion(D.study,null); applyFx({hp:-5,mood:-5,zh:2}); }
+  else if(k==='work'){ if(!S.seen.D06) await runEvent('D06'); else { setScene('work','zhang'); await say1(D.work); } applyFx({hp:-20,mood:-5,skill:5,aff:{zhang:1}}); accrue('work',600); }
+  else if(k==='shop'){
+    if(!S.seen.D01) await runEvent('D01');
+    else if(ch2 && S.day>=4 && !S.seen.D14) await runEvent('D14');
+    else if(!ch2 && S.day>6 && !S.seen.D05) await runEvent('D05');
+    else if(!S.seen.D02 && Math.random()<.7) await runEvent('D02');
+    else { setScene('store','xiaoyang'); await say1(D.shop); applyFx({money:-35,mood:3}); }
+  }
+  else if(k==='out'){ if(S.day>=3 && !S.seen.D03) await runEvent('D03'); else { setScene('street','amei'); await say1(D.out); } applyFx({hp:-10,mood:20,money:-200,pop:3,aff:{amei:1}}); }
+  else if(k==='market'){ if(!S.seen.D11) await runEvent('D11'); else { setScene('nightmarket','huang'); await say1(D.market); } applyFx({hp:-10,mood:15,money:-150,pop:2,aff:{huang:1}}); }
+  else if(k==='job'){ if(!S.seen.D12) await runEvent('D12'); else { setScene('store','xiaoyang'); await say1(D.job); } applyFx({hp:-15,aff:{xiaoyang:1}}); accrue('part',205*20); S.jobHrs=S.jobHrs||{}; S.jobHrs[wk()]=(S.jobHrs[wk()]||0)+20; }
+  else if(k==='post'){ await runEvent('D15'); }
+  else if(k==='clean'){ setScene('room',null); await say1(D.clean); S.trash=0; applyFx({tidy:20,hp:-5}); }
+  else if(k==='call'){ setScene('room',null); await say1(D.call); applyFx({mood:20}); }
+  else if(k==='rest'){ setScene('room',null); await say1(D.rest); applyFx({hp:40,mood:5}); }
+}
+async function say1(n){ panel.innerHTML=''; panel.append(el('p',{class:'tr'},fillTr(L(n))), zhLine(n.zh)); await waitTap(); }
+function chooseAction(){
+  return new Promise(res=>{
+    const day=days()[S.day]||{};
+    setScene(S.ch>=2 ? (day.typhoon?'room':'dorm') : (S.day>6?'work':'dorm'), null);
+    panel.innerHTML='';
+    panel.append(zhLine('今天'+SLOT[S.slot]+'要做什麼？','prompt'), el('p',{class:'tr',style:'font-size:.9rem;color:var(--ink-2);margin-top:-6px'},UI.what[S.lang]));
+    { const stt=statusOf(day); if(stt!=='common') panel.append(el('p',{class:'small'}, stt==='school' ? '本輪：在校上課（可以打工，每週不超過 20 小時）' : '本輪：在職實習')); }
+    if(S.ch>=2 && day.typhoon) panel.append(el('p',{class:'small'},fillTr(L(DATA.N.typhoon))));
+    if(S.st.hp<20) panel.append(el('p',{class:'small'},fillTr(L(DATA.N.tired))));
+    const g = el('div',{class:'actions'}, ACTIONS.filter(a=>available(a)).map(a=>el('button',{class:'act',onclick:()=>res(a.k)}, el('b',{},fill(a.zh)), el('span',{},swapTr(a.tr[S.lang])), el('em',{},a.fx))));
+    panel.append(g);
+  });
+}
+async function runDay(){
+  if(S.screen!=='game') return;
+  if(!S.group) S.group=(Math.random()<.5?'A':'B'); save();
+  drawHud();
+  while(S.day < days().length){
+    const d = days()[S.day];
+    // 實習是規定：在職月份一定有薪水（最低 30,900），每天都檢查一次
+    { S.owed=S.owed||{work:{},part:{}}; if(statusOf(d)==='work' && S.owed.work[d.m]===undefined){ S.owed.work[d.m]=0; save(); } }
+    let fullDay=false;
+    while(S.slot<3){
+      drawHud();
+      const at = d.mainAt ?? 0;
+      if(d.main && !S.seen[d.main] && S.slot===at && (!d.onlyIf || statusOf(d)===d.onlyIf)){
+        await runEvent(d.main);
+        if(d.mainAt!=null){ S.slot=at+1; save(); continue; }
+        if('mainSlots' in d){ S.slot=d.mainSlots; save(); }
+        else { fullDay=true; break; }
+      }
+      if(S.ch>=3){ // 隨機事件：每天 30%，下午觸發
+        if(S.rndDay!==S.day){ S.rndDay=S.day; const pool=(S.ch===3?RND3:S.ch===4?RND4:S.ch===5?RND5:S.ch===6?RND6:S.ch===7?RND7:S.ch===8?RND8:S.ch===9?RND9:S.ch===10?RND10:S.ch===11?RND11:RND12).filter(id=>!S.seen[id]);
+          const ready=Object.entries(S.redo||{}).filter(([b,i])=>REDO[b] && !S.seen[REDO[b]] && (S.ch>i.ch || S.day>=i.day+2)).map(([b])=>REDO[b]);
+          S.rnd = (ready.length && Math.random()<.6) ? ready[0] : (pool.length && Math.random()<.3) ? pool[Math.floor(Math.random()*pool.length)] : null; save(); }
+        if(S.rnd && S.slot===1){ const id=S.rnd; S.rnd=null; save(); await runEvent(id); }
+      }
+      if(S.ch<2){
+        if(S.slot===1 && S.day>=1 && !S.seen.D07){ await runEvent('D07'); }
+        if(S.slot===2 && S.day>=1 && !S.seen.D04){ await runEvent('D04'); }
+        else if(S.slot===2 && S.day>=2 && !S.seen.D08){ await runEvent('D08'); }
+        else if(S.slot===2 && S.day>=4 && !S.seen.D09){ await runEvent('D09'); }
+      }
+      if(S.ch>=2 && S.slot===2 && S.day>=8 && !S.seen.D19){ await runEvent('D19'); }
+      const k = await chooseAction();
+      await doAction(k);
+      S.slot++; save();
+    }
+    await endDay();
+  }
+  if((S.minTidy??100)>=80 && !S.titles.includes('tidy')) S.titles.push('tidy');
+  S.screen='end'; save(); render();
+}
+async function endDay(){
+  S.trash=(S.trash||0)+1;
+  S.st.tidy=clamp((S.st.tidy??100)-5,0,100); S.minTidy=Math.min(S.minTidy??100,S.st.tidy); // 住久了自然會亂
+  if(S.trash>=2 && S.seen.D07){ setScene('room',null); panel.innerHTML=''; await say1(DATA.N.trash); applyFx({tidy:-10}); }
+  if((S.st.tidy??100)<60){ if(!S.warn){ S.warn=1; await runEvent('W1'); } else { await runEvent('W2'); } }
+  if((days()[S.day]||{}).w===2) await payDay();
+  if(S.ch>=2 && S.st.mood<30){ await runEvent('W3'); }
+  if((S.viol||0)>=2 && !S.seen.W4){ await runEvent('W4'); }
+  panel.innerHTML=''; setScene('room',null);
+  panel.append(el('p',{class:'tr'},UI.night[S.lang]), zhLine('晚上了，該睡覺了。'));
+  await waitTap();
+  S.st.hp = clamp(S.st.hp+20,0,100); S.day++; S.slot=0; save(); drawHud();
+}
+/* ---------- 前傳：第 0 章「出發前」與開場動畫 ---------- */
+const PRE_EV = ['O01','O02','O03','O04','O05','O06','O07'];
+function startPrologue(saved){
+  if(saved && saved.hero){ // 已經有存檔：當作番外篇玩，玩完回到原本進度
+    const bk = JSON.stringify(saved);
+    S = JSON.parse(bk); S.sideBackup = bk; S.ch=0; S.day=0; S.slot=0; PRE_EV.forEach(k=>delete S.seen[k]);
+    save(); runCh0();
+  } else { S=fresh(); S.prologue=true; S.screen='setup'; render(); }
+}
+async function runCh0(){
+  S.screen='game'; render();
+  while(S.day < DAYS0.length){
+    drawHud(); const d=DAYS0[S.day];
+    if(!S.seen[d.main]) await runEvent(d.main);
+    S.day++; save();
+  }
+  if(S.sideBackup){ // 番外篇：把前傳拿到的卡片加回原本的存檔
+    const b = JSON.parse(S.sideBackup);
+    b.cards = b.cards||[]; (S.cards||[]).forEach(c=>{ if(!b.cards.includes(c)) b.cards.push(c); });
+    PRE_EV.forEach(k=>{ b.seen=b.seen||{}; b.seen[k]=true; });
+    S=b; save(); S.screen='title'; render(); toast('前傳完成！'); return;
+  }
+  S.prologue=false; S.ch=1; S.day=0; S.slot=0; save(); render(); runDay();
+}
+// 新玩家選擇起點：從家鄉出發（前傳，預設）或已經在台灣（開場動畫後直接第 1 章）
+// 招生管道的網址加 ?start=pre 會直接進前傳，不用選
+const START_PRE = (()=>{ try{ return new URLSearchParams(location.search).get('start')==='pre'; }catch(e){ return false; } })();
+const START_TXT = {
+  q:{vi:'Bạn muốn bắt đầu từ đâu?',id:'Mau mulai dari mana?',en:'Where do you want to start?',th:'อยากเริ่มจากตรงไหน',my:'ဘယ်ကနေ စချင်လဲ။'},
+  pre:{vi:'Xuất phát từ quê nhà (tiền truyện, khoảng 10 phút): đăng ký, thi TOCFL A1, lên đường sang Đài Loan',id:'Berangkat dari kampung halaman (prekuel, sekitar 10 menit): mendaftar, ujian TOCFL A1, berangkat ke Taiwan',en:'Start from home (prologue, about 10 min): apply, take TOCFL A1, leave for Taiwan',th:'เริ่มจากบ้านเกิด (ภาคก่อน ประมาณ 10 นาที): สมัคร สอบ TOCFL A1 ออกเดินทางไปไต้หวัน',my:'ဇာတိကနေ စမယ် (အစပိုင်း ၁၀ မိနစ်ခန့်) — လျှောက်ထား၊ TOCFL A1 ဖြေ၊ ထိုင်ဝမ်ကို ထွက်ခွာ'},
+  tw:{vi:'Tôi đã ở Đài Loan rồi, bắt đầu ngay',id:'Saya sudah di Taiwan, langsung mulai',en:'I’m already in Taiwan — start now',th:'ฉันอยู่ไต้หวันแล้ว เริ่มเลย',my:'ထိုင်ဝမ် ရောက်နေပြီ၊ တန်းစမယ်'}};
+// 試玩回饋問卷（放在 /twdiary/feedback/），自動帶入章節、語言、國家、科別
+function fbUrl(o){ o=o||{}; const q=new URLSearchParams({src:'game'}); if(o.ch!=null) q.set('ch',o.ch); if(o.lang) q.set('lang',o.lang);
+  const h=o.hero&&HEROES.find(x=>x.id===o.hero); if(h) q.set('home',h.home.zh); if(o.dept!=null&&DEPTS[o.dept]) q.set('dept',DEPTS[o.dept].zh); return 'feedback/?'+q.toString(); }
+const FB_TXT={vi:'Góp ý',id:'Beri masukan',en:'Give feedback',th:'ให้ความคิดเห็น',my:'အကြံပြုမယ်'};
+// 高棉文：把 KM 表補進所有有 vi／en 的翻譯物件（劇本、介面、行動、科別）
+function addKm(o){ if(Array.isArray(o)){ o.forEach(addKm); return; } if(!o||typeof o!=='object') return;
+  if(typeof o.en==='string' && 'vi' in o && o.km==null && KM[o.en]) o.km=KM[o.en];
+  for(const k in o){ const v=o[k]; if(v&&typeof v==='object') addKm(v); } }
+addKm([UI, DEPTS, ACTIONS, START_TXT, FB_TXT, DATA.N, DATA.events, DATA.P, DATA.bank]);
+UI.thanks.km=['អ្នកឲ្យកាតអរគុណទៅ ','។'];
+function chooseStart(){
+  hud.innerHTML=''; hud.append(el('div',{class:'when'}, el('b',{},'出發！'), el('span',{class:'slot'},'前傳')));
+  setScene('hometown', null); $('.sprite.me',stage) && ($('.sprite.me',stage).src = IMG[S.hero+'_casual']||IMG[S.hero]);
+  panel.innerHTML='';
+  const L2=k=>START_TXT[k][S.lang]||START_TXT[k].en;
+  panel.append(zhLine('你想從哪裡開始？'), el('p',{class:'tr'},L2('q')),
+    el('button',{class:'btn',style:'display:block;width:100%;margin-top:10px',onclick:()=>{ S.ch=0; S.day=0; S.slot=0; save(); runCh0(); }}, '從家鄉出發（前傳）', el('small',{style:'display:block;font-weight:400;margin-top:4px'},L2('pre'))),
+    el('button',{class:'btn ghost',style:'display:block;width:100%;margin-top:12px',onclick:()=>{ playOpening().then(runDay); }}, '我已經在台灣了，直接開始', el('small',{style:'display:block;font-weight:400;margin-top:4px'},L2('tw'))));
+}
+async function playOpening(){
+  const N=DATA.N, slides=[['hometown','op1'],['agency','op2'],
+    hero().home.zh==='緬甸' ? ['agency','op4m'] : ['classroom','op4'], ['classroom','op3'], ['hometown','op5'], ['airport','op6']];
+  let skip=false;
+  for(const [sc,k] of slides){
+    if(skip) break;
+    hud.innerHTML=''; hud.append(el('div',{class:'when'}, el('b',{},'出發前'), el('span',{class:'slot'},'前傳')));
+    setScene(sc, null);
+    $('.sprite.me',stage) && ($('.sprite.me',stage).src = IMG[S.hero+'_casual']||IMG[S.hero]);
+    panel.innerHTML='';
+    panel.append(el('p',{class:'tr'},L(N[k])), zhLine(N[k].zh));
+    if(k==='op1') panel.append(el('a',{class:'btn ghost linkbtn',href:'https://overseas.youth.tc.edu.tw',target:'_blank',rel:'noopener'},'青年高中 2027 年僑生新生入學資訊網 ↗'));
+    const sk = el('button',{class:'btn ghost',style:'margin-top:8px',onclick:()=>{ skip=true; sk.closest('.panel').querySelector('.next')?.click(); }},'跳過開場');
+    panel.append(sk);
+    await waitTap();
+  }
+  drawHud();
+}
+
+function startCh2(){
+  S.ch1 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=2; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.minTidy=S.st.tidy??100; S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+
+/* ---------- end ---------- */
+function startCh3(){
+  S.ch2 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=3; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh4(){
+  S.ch3 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=4; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh5(){
+  S.ch4 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=5; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh6(){
+  S.ch5 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=6; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh7(){
+  S.ch6 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=7; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh8(){
+  S.ch7 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=8; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh9(){
+  S.ch8 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=9; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh10(){
+  S.ch9 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=10; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh11(){
+  S.ch10 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=11; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+function startCh12(){
+  S.ch11 = {qOk:S.qOk, qTot:S.qTot};
+  S.ch=12; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0;
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,50);
+  S.screen='game'; save(); render(); runDay();
+}
+// 第十二章結局：通過 B1 → 直升科大＋四年後（依第十章路線）；沒通過 → 依規定返國
+function endingKeys(o){ o=o||S; if(!o.tocflB1) return ['endFail']; return ['endUni', ({work:'endWork',home:'endHome',grad:'endGrad'})[o.route]||'endOpen']; }
+function renderEnd(){
+  const ch=S.ch, ch2=ch>=2;
+  const ppl=['rina','amei','chen','zhang','ajiao','xiaoyang','alian','lin'].concat(ch2?['huang','li','guo']:[]);
+  const title = ch===12?'畢業了！':ch===11?'第十一章完成！':ch===10?'第十章完成！':ch===9?'第九章完成！':ch===8?'二年級結束！':ch===7?'第七章完成！':ch===6?'第六章完成！':ch===5?'第五章完成！':ch===4?'一年級結束！':ch===3?'第三章完成！':ch===2?'第二章完成！':'第一章完成！';
+  const done = (ch===12?UI.done12:ch===11?UI.done11:ch===10?UI.done10:ch===9?UI.done9:ch===8?UI.done8:ch===7?UI.done7:ch===6?UI.done6:ch===5?UI.done5:ch===4?UI.done4:ch===3?UI.done3:ch===2?UI.done2:UI.done)[S.lang];
+  const nextTxt = (ch===12?UI.next12:ch===11?UI.next11:ch===10?UI.next10:ch===9?UI.next9:ch===8?UI.next8:ch===7?UI.next7:ch===6?UI.next6:ch===5?UI.next5:ch===4?UI.next4:ch===3?UI.next3:ch===2?UI.next2:UI.next)[S.lang];
+  const nextBtn = ch===1 ? el('button',{class:'btn ch2',onclick:startCh2}, '繼續第二章　'+UI.ch2[S.lang])
+                : ch===2 ? el('button',{class:'btn ch2',onclick:startCh3}, '繼續第三章　'+UI.ch3[S.lang])
+                : ch===3 ? el('button',{class:'btn ch2',onclick:startCh4}, '繼續第四章　'+UI.ch4[S.lang])
+                : ch===4 ? el('button',{class:'btn ch2',onclick:startCh5}, '進入二年級：第五章　'+UI.ch5[S.lang])
+                : ch===5 ? el('button',{class:'btn ch2',onclick:startCh6}, '繼續第六章　'+UI.ch6[S.lang])
+                : ch===6 ? el('button',{class:'btn ch2',onclick:startCh7}, '繼續第七章　'+UI.ch7[S.lang])
+                : ch===7 ? el('button',{class:'btn ch2',onclick:startCh8}, '繼續第八章　'+UI.ch8[S.lang])
+                : ch===8 ? el('button',{class:'btn ch2',onclick:startCh9}, '進入三年級：第九章　'+UI.ch9[S.lang])
+                : ch===9 ? el('button',{class:'btn ch2',onclick:startCh10}, '繼續第十章　'+UI.ch10[S.lang])
+                : ch===10 ? el('button',{class:'btn ch2',onclick:startCh11}, '繼續第十一章　'+UI.ch11[S.lang])
+                : ch===11 ? el('button',{class:'btn ch2',onclick:startCh12}, '繼續第十二章　'+UI.ch12[S.lang]) : null;
+  const yr = ch===4 ? [['第一章',S.ch1],['第二章',S.ch2],['第三章',S.ch3],['第四章',{qOk:S.qOk,qTot:S.qTot}]]
+           : ch===8 ? [['第五章',S.ch5],['第六章',S.ch6],['第七章',S.ch7],['第八章',{qOk:S.qOk,qTot:S.qTot}]]
+           : ch===12 ? [['第九章',S.ch9],['第十章',S.ch10],['第十一章',S.ch11],['第十二章',{qOk:S.qOk,qTot:S.qTot}]] : null;
+  app.append(el('section',{class:'end'},
+    el('h2',{},title), el('p',{class:'tr'},done),
+    el('a',{class:'btn ghost',href:fbUrl(S),target:'_blank',rel:'noopener',style:'display:block;text-align:center;text-decoration:none;margin:8px 0'},'填寫試玩回饋　'+(FB_TXT[S.lang]||FB_TXT.en)),
+    el('div',{class:'statgrid'},
+      el('div',{class:'stat'},el('b',{},S.qOk+' / '+S.qTot),el('span',{},'一次就答對')),
+      el('div',{class:'stat'},el('b',{},'$'+S.st.money.toLocaleString()),el('span',{},'存款')),
+      el('div',{class:'stat'},el('b',{},String(S.st.tidy??100)),el('span',{},'宿舍整潔')),
+      el('div',{class:'stat'},el('b',{},S.st.skill),el('span',{},'專業技能'))),
+    ch2 && S.wish ? el('p',{class:'wish'},'新年願望：新的一年，我希望'+S.wish+'。') : null,
+    yr ? el('h3',{},ch===12?'三年級成績單':ch===8?'二年級成績單':'一年級成績單') : null,
+    yr ? el('div',{class:'statgrid'}, ...yr.map(([nm,r])=>el('div',{class:'stat'},el('b',{},r&&r.qTot?Math.round(100*r.qOk/r.qTot)+'%':'—'),el('span',{},nm+'一次答對')))) : null,
+    ch===8 ? el('p',{class:'wish'},'華語文能力測驗進階級（B1）：'+(S.tocflB1?'通過':'這次沒通過，三年級再挑戰')) : null,
+    ch===12 ? el('h3',{},'畢業以後') : null,
+    ch===12 ? el('div',{class:'ending'}, ...endingKeys().flatMap(k=>[el('p',{class:'wish'},fill(DATA.N[k].zh)), el('p',{class:'tr'},fillTr(L(DATA.N[k])))])) : null,
+    ch===12 && !S.tocflB1 ? el('p',{class:'small'},'提醒：照規定，高中畢業前要通過華語文能力測驗 B1，才能直升科大。華語每天都要練習！') : null,
+    ch===4 && S.exam4!=null ? el('p',{class:'wish'},'一年級華語期末考：'+S.exam4+' / '+(S.examN4||6)+' 題') : null,
+    ch===4 ? el('p',{class:'wish'},'華語文能力測驗 A2：'+(S.tocflA2?'通過 ✓':'八月可以重新報名再考')) : null,
+    ch===4 && S.wantDept ? el('p',{class:'wish'},'大學參訪時寫下的科系：'+S.wantDept) : null,
+    ch===4 && S.thanksTo ? el('p',{class:'wish'},'感謝卡送給：'+PEOPLE[role(S.thanksTo)].zh) : null,
+    el('h3',{},'朋友'),
+    el('div',{class:'friends'}, ppl.map(p=>{ const q=PEOPLE[role(p)]; return el('div',{class:'friend'}, q.img ? el('img',{src:IMG[q.img],alt:''}) : el('div',{style:`width:56px;height:56px;margin:0 auto 4px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:1.5rem;background:${q.c}`},q.ch), el('div',{},q.zh), el('div',{class:'hearts','aria-label':'好感 '+(S.aff[p]||0)},'♥'.repeat(Math.min(5,S.aff[p]||0))||'—')); })),
+    el('h3',{},'收集卡與稱號'),
+    el('div',{class:'cards'}, ...S.cards.map(c=>el('span',{class:'cardchip'}, IMG['item_'+c]?el('img',{src:IMG['item_'+c],alt:''}):null, CARDS[c])), ...S.titles.map(t=>el('span',{class:'cardchip'},'稱號：'+TITLES[t]))),
+    el('p',{class:'tr'},nextTxt),
+    nextBtn,
+    el('button',{class:'btn ghost',onclick:()=>openMap()},'看三年旅程地圖'),
+    el('button',{class:nextBtn?'btn ghost':'btn',onclick:()=>{ try{localStorage.removeItem(KEY);}catch(e){} S=fresh(); render(); }}, UI.again[S.lang])));
+}
+
+/* ---------- developer mode (tap the title seal or the 設定 heading 5 times) ---------- */
+let devTaps=0;
+// 開發者模式：要輸入老師密碼；只在這個分頁有效（關掉瀏覽器就失效）。程式裡只存密碼的雜湊值。
+try{ localStorage.removeItem('twdiary_dev'); }catch(e){}
+const isDev=()=>{ try{ return sessionStorage.getItem('twdiary_dev')==='1'; }catch(e){ return !!window.__dev; } };
+const setDev=(on)=>{ window.__dev=on; try{ on?sessionStorage.setItem('twdiary_dev','1'):sessionStorage.removeItem('twdiary_dev'); }catch(e){} };
+const DEV_HASH=0; // 開發者模式密碼的雜湊值；0 = 停用。設定方式：node tools/dev-hash.js 你的密碼
+const devHash=(str,seed=7)=>{ let h1=0xdeadbeef^seed,h2=0x41c6ce57^seed; for(let i=0;i<str.length;i++){ const ch=str.charCodeAt(i); h1=Math.imul(h1^ch,2654435761); h2=Math.imul(h2^ch,1597334677); }
+  h1=Math.imul(h1^(h1>>>16),2246822507); h1^=Math.imul(h2^(h2>>>13),3266489909); h2=Math.imul(h2^(h2>>>16),2246822507); h2^=Math.imul(h1^(h1>>>13),3266489909); return 4294967296*(2097151&h2)+(h1>>>0); };
+function askDevPin(){
+  if(isDev()){ openSettings(); return; }
+  const dlg=el('dialog',{'aria-label':'老師密碼'});
+  const inp=el('input',{type:'password',inputmode:'numeric',autocomplete:'off',maxlength:'20',style:'width:100%;font-size:1.2rem;padding:10px;border:1px solid var(--line);border-radius:10px;box-sizing:border-box',id:'dev-pin'});
+  const msg=el('p',{class:'small',role:'status',style:'margin:6px 0;min-height:1.2em'});
+  let tries=0;
+  const ok=()=>{ if(devHash('twdiary:'+inp.value.trim())===DEV_HASH){ setDev(true); dlg.close(); toast('已進入開發者模式'); openSettings(); }
+    else { tries++; inp.value=''; msg.textContent= tries>=5 ? '錯誤太多次，請稍後再試。' : '密碼不正確。'; if(tries>=5){ inp.disabled=true; setTimeout(()=>dlg.close(),1200); } } };
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') ok(); });
+  dlg.append(el('h3',{style:'margin:0 0 8px'},'老師密碼'), el('label',{for:'dev-pin',class:'small',style:'display:block;margin-bottom:6px'},'開發者模式只給老師使用，請輸入密碼。'), inp, msg,
+    el('div',{style:'display:flex;gap:8px;justify-content:space-between;margin-top:8px'}, el('button',{class:'btn ghost',onclick:()=>dlg.close()},'取消'), el('button',{class:'btn',onclick:ok},'確認')));
+  dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal(); inp.focus();
+}
+const EVNAME={TR1:'新生基礎訓練',I27:'內務檢查',I28:'內務檢查',I29:'內務檢查',W01:'畢業紀念冊美編',W02:'錄取通知',W03:'最後一場 B1 報名／小老師',W04:'第一次報所得稅',W05:'大學到校說明會・面試',W06:'華語檢定 B1（5 月）',W07:'畢業典禮',W08:'高中實習結束',W09:'最後一天・搬出宿舍',R27:'二手課本',R28:'大型垃圾',I24:'內務檢查',I25:'內務檢查',I26:'內務檢查・輪調',U01:'扣繳憑單',U02:'三下日程・志願表',U03:'學長回校分享',U04:'春節照顧學弟妹',U05:'B1 報名／小老師',U06:'實習年度考核',U09:'準備面試',U07:'大學到校說明會・面試',U08:'華語檢定 B1（3 月）',R25:'學弟借錢',R26:'停水公告',I21:'內務檢查',I22:'內務檢查',I23:'內務檢查・輪調',V01:'小組長報告／中文自傳',V02:'中文自傳／小組長報告',V03:'B1 重新報名／小老師',V04:'模擬面試',V05:'華語檢定 B1',V06:'交接',V07:'匯款回家',V08:'冬至湯圓',V09:'跟導師談未來',V10:'拍畢業照',R21:'趕進度',R21b:'趕進度（複習）',R22:'被誤會',R23:'天冷感冒',R24:'宿舍噪音',S01:'協助學校招生',O01:'看招生訊息・選科',O02:'報名・填志願',O03:'華語檢定 A1',O04:'面試／審查',O05:'錄取公告',O06:'辦簽證',O07:'出發',M01:'抵達台灣',D07:'垃圾分類',D04:'阿蜜的 LINE',D08:'房間不能煮東西',M02:'廠商面試',D09:'內務檢查',M03:'實習第一天',
+  D01:'阿嬌要一瓶水',D02:'外面下雨了',D03:'捷運站怎麼去',D05:'便當要加熱嗎',D06:'地上有水',W1:'阿姨約談',W2:'愛校服務',
+  M04:'中秋節烤肉',M05:'兼職面試',D10:'颱風停課',D17:'薪水日',H01:'辦健保卡',Q01:'報名華語檢定 A2',Q02:'華語檢定 A2 考試',Q03:'A2 成績公布',Q04:'A2 重新報考',D13:'感冒了',M06:'歌唱比賽',D18:'繳學雜費',M07:'期末小考',D19:'證件不能借人',M08:'跨年晚會',
+  D11:'黃老闆的雞排',D12:'第一次打工',D14:'網購退貨',D15:'寄包裹回家',D16:'問老師問題',W3:'想家',J01:'文化之旅',F01:'春節',G01:'園遊會',I01:'宿舍內務檢查',I02:'宿舍內務檢查',I03:'宿舍內務檢查',I04:'宿舍內務檢查',I05:'宿舍內務檢查',I06:'宿舍內務檢查',P01:'潑水節',N01:'接新生',X01:'探索教育①破冰',X02:'探索教育②蜘蛛網',X03:'探索教育③攀岩',N02:'居留證延期',N03:'二年級開學',I07:'宿舍內務檢查',I08:'宿舍內務檢查',R08:'颱風假',R09:'中暑',R10:'室友不收拾',R11:'偷煮火鍋',R10b:'室友又不收拾（複習）',R11b:'電磁爐煮泡麵（複習）',Y01:'國慶日煙火',Y02:'帶學妹實習',Y03:'運動會',Y04:'技能檢定',Y05:'聖誕交換禮物',I09:'宿舍內務檢查',I10:'宿舍內務檢查',I11:'宿舍內務檢查',R12:'詐騙簡訊',R12b:'LINE 中獎詐騙（複習）',R13:'公車讓座',Z01:'專題報告',Z02:'公司尾牙',Z03:'除夕圍爐',Z04:'元宵猜燈謎',Z05:'三月輪調',Z06:'報名華語文測驗',I12:'宿舍內務檢查',I13:'宿舍內務檢查',I14:'宿舍內務檢查',R14:'寒流電暖器',R14b:'室友想買電暖器（複習）',R15:'室友講電話太大聲',E01:'清明節',E02:'華語文能力測驗 B1',E03:'客訴處理／健康檢查',E04:'健康檢查／客訴處理',E05:'母親節',E06:'端午節',E07:'二年級結業',I15:'宿舍內務檢查',I16:'宿舍內務檢查',I17:'宿舍內務檢查',R16:'梅雨季',R17:'同學要闖紅燈',R17b:'又遇到長紅燈（複習）',B01:'學生證綁卡坐公車',T01:'新生說明會',T02:'B1 再考／華語小老師',T03:'實習小組長',T04:'3+4 升學說明',T05:'中元節普渡',T06:'三年級開學・生涯調查',I18:'宿舍內務檢查',I19:'宿舍內務檢查',I20:'宿舍內務檢查',R19:'新生想家',R20:'手機掉在公車上',B02:'學長要賣機車',R18:'同學無照騎車',W4:'導師約談',K01:'國際文化週',K02:'大學參訪',K03:'一年級期末考',K04:'畢業典禮',R06:'同學生日',R07:'超商集點',R01:'捷運過站',R02:'撿到錢包',R03:'阿嬌的水果',R04:'路上的貓',R05:'手機沒電'};
+// day on which each scheduled event happens: [chapter, day]
+const EVDAY={W02:[12,0],I27:[12,1],W01:[12,2],W03:[12,3],I28:[12,4],W04:[12,5],W05:[12,6],W06:[12,7],W07:[12,8],I29:[12,9],W08:[12,10],W09:[12,11],I24:[11,0],U01:[11,1],U02:[11,2],U03:[11,3],I25:[11,4],U04:[11,5],U05:[11,6],U06:[11,7],I26:[11,8],U09:[11,9],U07:[11,10],U08:[11,11],I21:[10,0],V01:[10,1],V03:[10,2],V07:[10,3],V10:[10,4],V04:[10,5],V05:[10,6],V06:[10,7],I23:[10,8],V02:[10,9],V08:[10,10],V09:[10,11],M01:[1,0],TR1:[1,1],D07:[1,1],D04:[1,1],D08:[1,2],M02:[1,3],D09:[1,4],M03:[1,5],
+  M04:[2,0],M05:[2,1],D10:[2,2],D17:[2,3],D13:[2,4],M06:[2,5],D18:[2,6],M07:[2,7],D19:[2,8],M08:[2,11],J01:[3,2],H01:[3,1],Q01:[3,10],Q02:[4,5],Q03:[4,10],Q04:[5,7],F01:[3,4],G01:[3,9],I01:[3,0],I02:[3,5],I03:[3,8],
+  I04:[4,0],P01:[4,1],K01:[4,3],I05:[4,4],K02:[4,6],I06:[4,8],K03:[4,9],K04:[4,11],
+  N01:[5,0],X01:[5,1],I07:[5,2],X02:[5,3],I08:[5,4],X03:[5,5],N02:[5,6],N03:[5,8],
+  I09:[6,0],Y01:[6,1],Y02:[6,2],I10:[6,4],Y03:[6,5],Y04:[6,6],S01:[6,7],I11:[6,8],Y05:[6,11],
+  I12:[7,0],Z01:[7,2],Z02:[7,3],I13:[7,4],Z03:[7,5],Z04:[7,7],Z05:[7,8],I14:[7,9],Z06:[7,10],
+  B01:[1,2],B02:[2,8],
+  I15:[8,0],E01:[8,1],E03:[8,2],I16:[8,4],E02:[8,5],E05:[8,6],I17:[8,8],E06:[8,9],E04:[8,10],E07:[8,11],
+  I18:[9,0],T01:[9,1],T02:[9,2],I19:[9,4],T03:[9,5],T04:[9,6],T05:[9,7],I20:[9,8],T06:[9,9]};
+const CH1_ALL=['TR1','M01','M02','M03','D01','D02','D03','D04','D05','D06','D07','D08','D09'];
+function devEnsureHero(){ if(!S.hero){ Object.assign(S,{hero:'h01',name:'測試',dept:0,lang:S.lang||'vi'}); } if(!S.group) S.group=(Math.random()<.5?'A':'B'); }
+function devGo(){ app.classList.remove('q'); S.screen='game'; save(); render(); runDay(); }
+function devJump(ch,day){
+  devEnsureHero();
+  if(ch===2 && S.ch<2){ S.ch1=S.ch1||{qOk:S.qOk,qTot:S.qTot}; }
+  S.ch=ch; S.day=day; S.slot=0;
+  for(const [id,[c,d]] of Object.entries(EVDAY)){ if(c<ch || (c===ch && d<day)) S.seen[id]=true; else delete S.seen[id]; }
+  if(ch>=2) CH1_ALL.forEach(id=>S.seen[id]=true);
+  devGo();
+}
+function devPlay(id){
+  devEnsureHero(); S.screen='game'; save(); render();
+  (async()=>{ await runEvent(id); runDay(); })();
+}
+function devPanel(dlg){
+  const opts=[];
+  [[1,DAYS1],[2,DAYS2],[3,DAYS3],[4,DAYS4],[5,DAYS5],[6,DAYS6],[7,DAYS7],[8,DAYS8],[9,DAYS9],[10,DAYS10],[11,DAYS11],[12,DAYS12]].forEach(([c,D])=>D.forEach((d,i)=>{
+    const ev=Object.entries(EVDAY).filter(([,v])=>v[0]===c&&v[1]===i).map(([k])=>k+' '+EVNAME[k]).join('、');
+    opts.push(el('option',{value:c+':'+i},`第${c}章　${d.label||d.m+' 月第 '+d.w+' 週'}${ev?'　'+ev:''}`)); }));
+  const dsel=el('select',{}, opts); dsel.value=(S.ch||1)+':'+(S.day||0);
+  const esel=el('select',{}, Object.keys(EVNAME).map(k=>el('option',{value:k},k+' '+EVNAME[k])));
+  const btn=(t,f)=>el('button',{class:'btn ghost',style:'padding:6px 10px;font-size:.85rem',onclick:f},t);
+  const stat=(t,fx)=>btn(t,()=>{ Object.assign(S.st,fx(S.st)); save(); if(S.screen==='game') drawHud(); toast('已設定：'+t); });
+  return el('div',{class:'devbox'},
+    el('b',{},'開發者模式'),
+    el('div',{class:'devrow'}, dsel, btn('跳到這天',()=>{ dlg.close(); const [c,d]=dsel.value.split(':').map(Number); devJump(c,d); })),
+    el('div',{class:'devrow'}, esel, btn('播放事件',()=>{ dlg.close(); devPlay(esel.value); })),
+    el('div',{class:'devrow'}, stat('體力 100',()=>({hp:100})), stat('心情 20',()=>({mood:20})), stat('整潔 50',()=>({tidy:50})), stat('存款 +5000',st=>({money:st.money+5000}))),
+    el('div',{class:'devrow'}, btn('看結局畫面',()=>{ dlg.close(); devEnsureHero(); S.screen='end'; save(); render(); }), btn('關閉開發者模式',()=>{ setDev(false); dlg.close(); toast('已關閉開發者模式'); })),
+    el('p',{class:'small',style:'margin:4px 0 0'},'「跳到這天」會把之前的主線事件標成看過，之後的重新開放。心情低於 30、整潔低於 60 會在睡前觸發想家與約談。'));
+}
+
+/* ---------- settings ---------- */
+/* ---------- 三年旅程地圖：12 章、在校／實習月份、玩過的活動、收集卡、結局 ---------- */
+const JOURNEY = {
+  1:{theme:'抵達台灣・基礎訓練・廠商面試・實習第一天', ev:['M01','TR1','B01','M02','M03','D07','D09'], cards:['easycard','umbrella','exit','workwear']},
+  2:{theme:'中秋・打工・跨年', ev:['M04','M05','D10','D13','M06','D18','M07','B02','M08'], cards:['mooncake','mic','wishcard']},
+  3:{theme:'文化之旅・春節・園遊會', ev:['H01','J01','F01','G01','Q01'], cards:['nhicard','postcard','gardensign']},
+  4:{theme:'潑水節・文化週・大學參訪・畢業典禮', ev:['P01','K01','Q02','K02','K03','Q03','K04'], cards:['stampcard','tocflA2cert','campusmap','thankcard']},
+  5:{theme:'迎新・探索教育・居留證延期', ev:['N01','X01','X02','X03','N02','Q04','N03'], cards:['adventure']},
+  6:{theme:'國慶・帶學妹・運動會・技能檢定・協助招生・聖誕節', ev:['Y01','Y02','Y03','Y04','S01','Y05'], cards:['medal','license']},
+  7:{theme:'專題・尾牙・除夕・元宵・輪調・報名 B1', ev:['Z01','Z02','Z03','Z04','Z05','Z06'], cards:['luckydraw','lantern']},
+  8:{theme:'清明・B1 考試・客訴與健檢・母親節・端午・結業', ev:['E01','E02','E03','E04','E05','E06','E07'], cards:['sachet','tocflcert']},
+  9:{theme:'新生說明會・小組長・升學說明・中元節・生涯調查', ev:['T01','T02','T03','T04','T05','T06'], cards:['mentorbadge','leaderbadge']},
+  10:{theme:'小組長報告・中文自傳・匯款・畢業照・模擬面試・冬至', ev:['V01','V03','V07','V10','V04','V05','V06','V02','V08','V09'], cards:['resume','remitslip','tangyuan']},
+  11:{theme:'扣繳憑單・志願表・學長分享・春節・考核・大學到校面試・B1', ev:['U01','U02','U03','U04','U05','U06','U09','U07','U08'], cards:['taxslip','unibrochure']},
+  12:{theme:'錄取通知・畢業紀念冊・最後一場 B1・報稅・大學到校面試・畢業典禮・實習結束', ev:['W02','W01','W03','W04','W05','W06','W07','W08','W09'], cards:['uniadmit','yearbook','diploma']}};
+const CH_ZH = ['一','二','三','四','五','六','七','八','九','十','十一','十二'];
+const svgEl = (html) => { const s=document.createElement('span'); s.setAttribute('aria-hidden','true'); s.style.display='inline-flex'; s.innerHTML=html; return s; };
+function openMap(src){
+  const d = src || (S.hero ? S : load()) || {};
+  const has = !!d.hero, cur = has ? (d.ch||1) : 0, finished = has && d.screen==='end';
+  const dlg = el('dialog',{class:'mapdlg','aria-label':'三年旅程地圖'});
+  const MON = {1:[7,8,9],2:[10,11,12],3:[1,2,3],4:[4,5,6]};
+  const doneN = has ? (finished ? cur : cur-1) : 0;
+  const head = el('div',{class:'jm-head'},
+    el('div',{style:'display:flex;justify-content:space-between;align-items:center;gap:8px'}, el('h2',{},'三年旅程地圖'), el('button',{class:'btn ghost',style:'min-height:44px;padding:0 14px',onclick:()=>dlg.close()},'關閉')),
+    el('div',{class:'small',style:'margin:0'}, has ? `已完成 ${doneN} 章${finished?'':'，目前在第 '+cur+' 章'}（共 12 章）　我的組別：${d.group==='B'?'乙組':'甲組'}` : '還沒開始遊戲。開始以後會分到甲組或乙組。'),
+    el('div',{class:'jm-bar'}, el('i',{style:`width:${Math.round(doneN/12*100)}%`})),
+    el('div',{class:'jm-legend'}, el('span',{class:'jm-pill jm-school'},'在校'), el('span',{class:'jm-pill jm-work'},'實習'), el('span',{class:'jm-pill jm-common'},'共同'), el('span',{class:'jm-pill jm-unk'},'？？？ 還沒遇到')));
+  const check = '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#0C7F73"/><path d="M4.5 8.2l2.3 2.3 4.7-4.7" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const dot = '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="#9A937F" stroke-width="1.4" stroke-dasharray="2.5 2"/></svg>';
+  const lock = '<svg width="14" height="14" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="none" stroke="#4A5560" stroke-width="1.6"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" fill="none" stroke="#4A5560" stroke-width="1.6"/></svg>';
+  const chapter = (no) => {
+    const J = JOURNEY[no], ms = MON[((no-1)%4)+1];
+    const st = !has ? (J?'open':'lock') : (no<cur || (no===cur&&finished)) ? 'done' : no===cur ? 'cur' : (J?'open':'lock');
+    const pills = ms.map(m=>{ const s = has ? statusOf({m}, no, d.group) : 'common'; return el('span',{class:'jm-pill jm-'+s}, m+'月 '+({school:'在校',work:'實習',common:'共同'})[s]); });
+    const card = el('div',{class:'jm-card'+(st==='cur'?' cur':st==='lock'?' lock':'')},
+      el('div',{class:'t'}, el('span',{},`第${CH_ZH[no-1]}章　${ms[0]}–${ms[2]} 月`),
+        st==='cur' ? el('span',{class:'jm-tag'},'你在這裡') : st==='lock' ? el('span',{class:'small',style:'margin:0;display:flex;gap:4px;align-items:center'}, svgEl(lock), '製作中') : null),
+      el('div',{class:'th'}, J ? J.theme : '之後開放'),
+      el('div',{style:'display:flex;gap:6px;flex-wrap:wrap'}, ...pills));
+    if(J){
+      const seen = d.seen||{}, cards = d.cards||[];
+      card.append(el('div',{class:'jm-ev'}, ...J.ev.map(id=> seen[id] ? el('div',{}, svgEl(check), el('span',{},EVNAME[id]||id)) : el('div',{}, svgEl(dot), el('span',{class:'q'},'？？？')))),
+        el('div',{class:'jm-cards'}, ...J.cards.map(k=> cards.includes(k) ? el('span',{class:'jm-k'}, IMG['item_'+k]?el('img',{src:IMG['item_'+k],alt:''}):null, CARDS[k]) : el('span',{class:'jm-k miss'},'？？？'))));
+    }
+    return el('div',{class:'jm-row'}, el('div',{class:'jm-rail'}, el('div',{class:'jm-node'+(st==='done'?' done':st==='cur'?' cur':'')}, String(no)), el('div',{class:'jm-line'+(st==='done'?' done':'')})), card);
+  };
+  const year = (name, goal, chs) => el('section',{class:'jm-year'}, el('h3',{}, name, el('small',{},goal)), ...chs.map(chapter));
+  const ends = el('section',{class:'jm-year'}, el('h3',{},'畢業以後', el('small',{},'三年級畢業時開放')),
+    el('div',{class:'jm-ends'}, ...[['endUni','直升科大','通過 B1，七月到合作廠商報到'],['endWork','留台工作','科大畢業後在台灣工作'],['endHome','回國發展','科大畢業後回家鄉'],['endGrad','讀研究所','科大畢業後繼續深造'],['endOpen','還在探索','科大畢業後再決定'],['endFail','依規定返國','畢業前沒通過 B1']].map(([k,a,b])=>{ const got = finished && cur===12 && endingKeys(d).includes(k); return el('div',{class:'jm-end'+(got?' got':'')}, got?svgEl(check.replace(/16/g,'26')):svgEl(lock.replace(/14/g,'26')), el('b',{},a), el('small',{},b)); })));
+  dlg.append(el('div',{class:'jm'}, head, year('一年級','華語 A1 → A2',[1,2,3,4]), year('二年級','華語 A2 → B1',[5,6,7,8]), year('三年級','華語 B1，畢業',[9,10,11,12]), ends));
+  dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal();
+  const c = dlg.querySelector('.jm-card.cur'); if(c) setTimeout(()=>c.scrollIntoView({block:'center'}),50);
+}
+/* ---------- 存檔代碼：壓縮存檔 → 代碼／QR Code，換裝置貼上或掃描就能接著玩 ---------- */
+const SAVE_PFX='TW1.';
+async function packSave(){
+  const o={...S}; delete o.usedBank;
+  let bytes=new TextEncoder().encode(JSON.stringify(o)), z='0';
+  if(window.CompressionStream){ try{ const cs=new CompressionStream('deflate-raw'); const w=cs.writable.getWriter(); w.write(bytes); w.close(); bytes=new Uint8Array(await new Response(cs.readable).arrayBuffer()); z='1'; }catch(e){} }
+  let s=''; for(let i=0;i<bytes.length;i++) s+=String.fromCharCode(bytes[i]);
+  return SAVE_PFX+z+btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+async function unpackSave(code){
+  code=(code||'').trim().replace(/\s+/g,'');
+  const m=code.match(/#save=(.+)$/); if(m) code=decodeURIComponent(m[1]);
+  if(!code.startsWith(SAVE_PFX)) throw new Error('prefix');
+  const z=code[SAVE_PFX.length]; let b64=code.slice(SAVE_PFX.length+1).replace(/-/g,'+').replace(/_/g,'/'); while(b64.length%4) b64+='=';
+  let bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+  if(z==='1'){ const ds=new DecompressionStream('deflate-raw'); const w=ds.writable.getWriter(); w.write(bytes); w.close(); bytes=new Uint8Array(await new Response(ds.readable).arrayBuffer()); }
+  const o=JSON.parse(new TextDecoder().decode(bytes));
+  if(!o || !o.hero || !o.st) throw new Error('data');
+  o.usedBank=o.usedBank||[]; o.missed=o.missed||[]; return o;
+}
+function applySave(o){
+  S=Object.assign(fresh(), o); if(S.screen!=='end') S.screen='game';
+  save(); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+  document.querySelectorAll('dialog').forEach(d=>d.close());
+  render(); if(S.screen==='game') runDay();
+}
+function saveWhere(o){ if(o.ch===0){ const d0=DAYS0[o.day]; return '前傳'+(d0?'　'+d0.label:'')+(o.name?'　'+o.name:''); } const d=(o.ch===12?DAYS12:o.ch===11?DAYS11:o.ch===10?DAYS10:o.ch===9?DAYS9:o.ch===8?DAYS8:o.ch===7?DAYS7:o.ch===6?DAYS6:o.ch===5?DAYS5:o.ch===4?DAYS4:o.ch===3?DAYS3:o.ch>=2?DAYS2:DAYS1)[o.day]; return '第'+'一二三四五六七八九十'[(o.ch||1)-1]+'章'+(d?'　'+(d.label||d.m+' 月第 '+d.w+' 週'):'　章末')+(o.name?'　'+o.name:''); }
+async function openSaveCode(prefill){
+  const dlg=el('dialog',{});
+  const box=el('div',{});
+  if(S.hero && S.screen!=='setup' && !prefill){
+    const code=await packSave();
+    const ta=el('textarea',{readonly:'',rows:'4',style:'width:100%;font:12px/1.4 ui-monospace,monospace;word-break:break-all;box-sizing:border-box'}); ta.value=code;
+    const cp=el('button',{class:'btn',onclick:async()=>{ let ok=false; try{ await navigator.clipboard.writeText(code); ok=true; }catch(e){ ta.select(); try{ ok=document.execCommand('copy'); }catch(e2){} } toast(ok?'已複製存檔代碼':'請長按代碼，選「全選」再複製'); }},'複製代碼');
+    const web=/^https?:/.test(location.protocol);
+    let qr=null;
+    if(web && window.qrcode){ try{ const q=qrcode(0,'L'); q.addData(location.origin+location.pathname+'#save='+code); q.make();
+      qr=el('div',{style:'width:min(260px,100%);margin:8px auto;background:#fff;padding:6px;border-radius:8px'}); qr.innerHTML=q.createSvgTag({cellSize:2,margin:2,scalable:true}); }catch(e){ qr=null; } }
+    box.append(el('h4',{style:'margin:4px 0'},'我的存檔代碼'), el('p',{class:'small',style:'margin:2px 0 6px'},saveWhere(S)),
+      el('p',{class:'tr',style:'font-size:.85rem;margin:0 0 6px'},UI.saveHint[S.lang]||UI.saveHint.en), ta,
+      el('div',{style:'display:flex;justify-content:center;margin:8px 0'},cp),
+      qr ? el('p',{class:'small',style:'text-align:center;margin:0'},'或用另一台裝置的相機掃描：') : el('p',{class:'small',style:'margin:0'},'遊戲放在學校網站時，這裡會出現 QR Code，用另一台裝置掃描就能接著玩。'), qr,
+      el('hr',{style:'margin:12px 0;border:0;border-top:1px solid var(--line)'}));
+  }
+  const inp=el('textarea',{rows:'3',placeholder:'把存檔代碼貼在這裡',style:'width:100%;font:12px/1.4 ui-monospace,monospace;box-sizing:border-box'}); if(prefill) inp.value=prefill;
+  const info=el('p',{class:'small',style:'margin:6px 0'});
+  let armed=false, pending=null;
+  const ld=el('button',{class:'btn',onclick:async()=>{
+    try{ pending = pending || await unpackSave(inp.value); }catch(e){ info.textContent='代碼不正確，請確認有完整複製。'; pending=null; return; }
+    const cur=load();
+    if(cur && cur.hero && !armed){ armed=true; info.textContent='讀到：'+saveWhere(pending)+'。這台裝置原本的進度（'+saveWhere(cur)+'）會被取代，再按一次確認。'; ld.textContent='確認載入'; return; }
+    applySave(pending); toast('已載入：'+saveWhere(pending));
+  }},'載入代碼');
+  inp.oninput=()=>{ armed=false; pending=null; ld.textContent='載入代碼'; info.textContent=''; };
+  box.append(el('h4',{style:'margin:4px 0'},'用存檔代碼繼續'), el('p',{class:'tr',style:'font-size:.85rem;margin:0 0 6px'},UI.loadHint[S.lang]||UI.loadHint.en), inp, info,
+    el('div',{style:'display:flex;gap:8px;justify-content:space-between;margin-top:8px'}, el('button',{class:'btn ghost',onclick:()=>dlg.close()},'關閉'), ld));
+  dlg.append(box); dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal();
+  if(prefill) ld.click();
+}
+function openSettings(){
+  const dlg = el('dialog',{});
+  const row=(lab,ctrl)=>{ if(ctrl.tagName==='SELECT') ctrl.style.maxWidth='62%'; return el('div',{class:'set-row'},el('span',{style:'white-space:nowrap'},lab),ctrl); };
+  const py = el('input',{type:'checkbox',id:'s-py'}); py.checked=S.pinyin; py.onchange=()=>{S.pinyin=py.checked;save();};
+  const au = el('input',{type:'checkbox',id:'s-au'}); au.checked=S.auto; au.onchange=()=>{S.auto=au.checked;save();};
+  const lg = el('select',{id:'s-lg'}, Object.entries(LANGS).map(([k,v])=>{const o=el('option',{value:k},v); if(S.lang===k)o.selected=true; return o;})); lg.onchange=()=>{S.lang=lg.value;save();};
+  const vs=zhVoices().sort((a,b)=>vScore(b)-vScore(a));
+  const vc = el('select',{id:'s-vc'}, vs.length? vs.map(v=>{const o=el('option',{value:v.name},v.name.replace(/^Microsoft /,'').replace(/ - Chinese.*$/,'')+(vScore(v)>=100?' ★':'')); if(voice&&voice.name===v.name)o.selected=true; return o;}) : [el('option',{},'（此裝置沒有中文語音）')]);
+  vc.onchange=()=>{S.voice=vc.value; pickVoice(); save(); speak('你好，歡迎來到台灣。');};
+  const rt = el('select',{id:'s-rt'}, [[.75,'慢'],[.9,'稍慢'],[1,'正常']].map(([v,t])=>{const o=el('option',{value:v},t); if(((S.rate)||.9)==v)o.selected=true; return o;}));
+  rt.onchange=()=>{S.rate=+rt.value; save(); speak('你好，歡迎來到台灣。');};
+  let armed=false;
+  const rs = el('button',{class:'btn ghost',onclick:()=>{ if(!armed){armed=true; rs.textContent='再按一次確認重新開始'; return;} try{localStorage.removeItem(KEY);}catch(e){} location.reload(); }},'重新開始');
+  dlg.append(...[el('h3',{style:'margin:0 0 8px',onclick:()=>{ devTaps++; if(devTaps>=5){ devTaps=0; dlg.close(); askDevPin(); } }},'設定'), isDev()?devPanel(dlg):null, row('顯示拼音',py), row('自動朗讀',au), row('朗讀聲音',vc), row('朗讀速度',rt), el('p',{style:'margin:2px 0 6px;font-size:.8rem;color:var(--ink-2)'},'★ 是較自然的聲音。電腦建議用 Edge 瀏覽器開啟，會有「HsiaoChen Online (Natural)」。'), row('翻譯語言',lg),
+    (S.hero && (S.screen==='game'||S.screen==='end')) ? el('div',{style:'margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px'},
+      el('button',{class:'btn',onclick:()=>{ save(); toast('已儲存：'+saveWhere(S)); }},'儲存進度'),
+      el('button',{class:'btn ghost',onclick:()=>{ save(); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} location.reload(); }},'回到主畫面')) : null,
+    (S.hero && S.screen==='game') ? el('p',{class:'small',style:'margin:6px 0 0'},'遊戲會自動存檔。回到主畫面後按「繼續遊戲」，會從這個時段重新開始。') : null,
+    el('div',{style:'margin-top:12px;display:flex;flex-direction:column;gap:8px'}, el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openMap(); }},'三年旅程地圖'), el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openSaveCode(); }},'存檔代碼（換裝置接著玩）')),
+    el('div',{style:'display:flex;gap:8px;justify-content:space-between;margin-top:14px'}, rs, el('button',{class:'btn',onclick:()=>dlg.close()},'關閉'))].filter(Boolean));
+  dlg.addEventListener('close',()=>dlg.remove());
+  document.body.append(dlg); dlg.showModal();
+}
+
+/* ---------- boot ---------- */
+function start(data){ if(data && data.hero && data.screen){ S=data; render(); if(S.screen==='game') runDay(); } else render();
+  const h=location.hash.match(/^#save=(.+)$/); if(h) setTimeout(()=>openSaveCode(decodeURIComponent(h[1])),300); }
+window.addEventListener('hashchange',()=>{ const h=location.hash.match(/^#save=(.+)$/); if(h) openSaveCode(decodeURIComponent(h[1])); });
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+</script>

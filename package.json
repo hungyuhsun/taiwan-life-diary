@@ -1,0 +1,15 @@
+{
+  "name": "taiwan-life-diary",
+  "version": "1.1.0",
+  "private": true,
+  "description": "台灣生活日記：給僑生建教專班的中文學習生活模擬遊戲（前傳＋12 章，越、印、泰、緬、高棉、英文輔助翻譯）",
+  "scripts": {
+    "build": "node src/build.js",
+    "dev-hash": "node tools/dev-hash.js"
+  },
+  "dependencies": {
+    "pinyin-pro": "3.29.5",
+    "qrcode-generator": "1.4.4"
+  },
+  "license": "SEE LICENSE IN LICENSE"
+}

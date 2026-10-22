@@ -1,0 +1,236 @@
+<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>[hidden]{display:none!important}body{margin:0}</style></head><body>
+<title>台灣生活日記 教師試玩回饋</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one narrow column like a lesson-plan sheet; numbered sections because the form is a sequence; owner gets a second tab with tallies. */
+:root{
+  --bg:#f3f6f4; --paper:#ffffff; --ink:#1d2a2b; --muted:#5d6e6c; --line:#d5dfdb;
+  --accent:#0d7a64; --accent-ink:#ffffff; --accent-soft:#e1f1ec; --mark:#e0a11b; --warn:#b4471f;
+  --f-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121a1a; --paper:#1a2424; --ink:#e4ecea; --muted:#9db0ac; --line:#2f3d3c;
+  --accent:#3fbf9c; --accent-ink:#0b1514; --accent-soft:#1d3530; --mark:#f0b940; --warn:#ef8a62; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a1a; --paper:#1a2424; --ink:#e4ecea; --muted:#9db0ac; --line:#2f3d3c;
+  --accent:#3fbf9c; --accent-ink:#0b1514; --accent-soft:#1d3530; --mark:#f0b940; --warn:#ef8a62; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:720px;margin:0 auto;display:grid;gap:22px}
+header{display:grid;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,6vw,40px);line-height:1.2;margin:0;text-wrap:balance}
+.lede{color:var(--muted);margin:0;max-width:60ch}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:15px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.status{font-size:14px;color:var(--muted);padding:10px 14px;border:1px dashed var(--line);border-radius:10px}
+.status.ok{border-style:solid;border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.status.err{border-style:solid;border-color:var(--warn);color:var(--warn)}
+form{display:grid;gap:14px}
+fieldset{margin:0;border:1px solid var(--line);border-radius:14px;background:var(--paper);padding:18px 18px 20px;display:grid;gap:12px;min-width:0}
+legend{display:contents}
+.qh{display:flex;gap:12px;align-items:baseline}
+.qn{font-family:var(--f-num);font-size:13px;color:var(--accent);flex:none;min-width:2ch}
+.qt{font-weight:700;font-size:17px}
+.req{color:var(--warn);font-weight:500;font-size:13px;margin-left:6px}
+.hint{color:var(--muted);font-size:14px;margin:-4px 0 0 calc(2ch + 12px)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chip span{display:inline-block;padding:7px 14px;border:1px solid var(--line);border-radius:999px;font-size:15px;background:var(--bg);transition:background .12s,border-color .12s}
+.chip input:checked+span{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chip input:focus-visible+span{outline:3px solid var(--mark);outline-offset:2px}
+.scale-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.scale-row:first-of-type{border-top:0}
+.scale-row .lbl{min-width:0}
+.scale-row .lbl b{display:block;font-weight:500}
+.scale-row .lbl small{color:var(--muted);font-size:13px}
+.scale{display:flex;gap:4px}
+.scale .chip span{width:40px;text-align:center;padding:7px 0;font-family:var(--f-num)}
+.scale-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);grid-column:2}
+.fix{grid-column:1/-1}
+.fix[hidden]{display:none!important}
+textarea,input[type=text]{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;resize:vertical}
+textarea:focus,input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px}
+.fix textarea{border-color:var(--mark)}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;font-size:16px;padding:12px 26px;border-radius:12px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500;padding:9px 16px;font-size:14px}
+.btn:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+.note{font-size:13px;color:var(--muted)}
+/* summary */
+.sum{display:grid;gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:10px;min-width:0}
+.card h3{margin:0;font-size:16px}
+.big{font-family:var(--f-num);font-size:34px;line-height:1}
+.bar{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) 3.2em;gap:10px;align-items:center;font-size:14px}
+.bar .track{height:10px;border-radius:5px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.bar .fill{height:100%;background:var(--accent)}
+.bar .fill.low{background:var(--warn)}
+.bar .v{font-family:var(--f-num);text-align:right;font-variant-numeric:tabular-nums}
+.quotes{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.quotes li{border-left:3px solid var(--mark);padding:2px 0 2px 12px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.quotes li i{display:block;font-style:normal;color:var(--muted);font-size:12px}
+.empty{color:var(--muted);font-size:14px}
+@media (max-width:520px){
+  .scale-row{grid-template-columns:1fr}
+  .scale-ends{grid-column:1}
+  .scale .chip span{width:44px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">青年高中 僑生建教專班</div>
+    <h1>台灣生活日記<br>教師試玩回饋</h1>
+    <p class="lede">謝謝老師試玩。這份問卷著重在<strong>內容是否正確</strong>：校規時程、實習薪資、生活資訊有沒有跟現場不符的地方。約 5–8 分鐘，不需要登入。</p>
+  </header>
+
+
+  <div class="status" id="status">填完按最下方「送出回饋」。答案會先暫存在這台裝置，關掉頁面也不會不見。</div>
+
+  <section id="view-form">
+    <form id="f" novalidate></form>
+  </section>
+</div>
+
+<script>
+const ACC=[
+  ['rules','學校規定與時程','入學流程、3+4 升學、華語文檢定 A2／B1、說明會與面試'],
+  ['work','建教實習與薪資','輪調、工時、勞保健保扣款、薪資單、工廠安全'],
+  ['life','生活資訊','居留證、健保卡、就醫、匯款、宿舍規定'],
+  ['real','情境真實度','人物反應、對話語氣、事件是否像學生真的會遇到']
+];
+const Q=[
+  {id:'name',t:'您的稱呼（方便後續請教，可不填）',type:'line',ph:'例：王老師'},
+  {id:'role',t:'您的身分',type:'radio',req:1,o:['專班導師','華語老師','建教／實習輔導','科主任或行政','其他']},
+  {id:'chapters',t:'試玩到的章節',type:'check',req:1,o:['前傳','第1章','第2章','第3章','第4章','第5章','第6章','第7章','第8章','第9章','第10章']},
+  {id:'acc',t:'內容正確性',type:'acc',req:1,h:'1 = 很多錯誤，5 = 完全正確。給 3 分以下時請寫出要修正的地方。'},
+  {id:'vocab',t:'詞彙量與難度',type:'radio',req:1,o:['偏簡單','剛好','偏難','難度跳太快'],h:'以學生當時的年級來看'},
+  {id:'natural',t:'中文對話自然嗎？',type:'scale1',req:1,ends:['很不自然','很自然']},
+  {id:'naturalNote',t:'不自然的句子（可貼原句＋建議）',type:'text',ph:'例：第3章 主管說「你很棒做得好」→ 建議「做得不錯喔」'},
+  {id:'langs',t:'您能檢查哪些語言的翻譯？',type:'check',o:['越南語','印尼語','泰語','緬甸語','英語','都不能']},
+  {id:'transNote',t:'翻譯錯誤或不通順的地方',type:'text',ph:'語言、章節、原文與建議譯文'},
+  {id:'contexts',t:'您會在哪些情況使用這個遊戲？',type:'check',o:['課堂一起玩','回家作業','早自習／空堂','實習前行前說明','輔導談話素材','不會使用']},
+  {id:'features',t:'希望加入的教師功能',type:'check',h:'可複選',o:['查看學生進度','詞彙表／學習單','指定章節給學生','測驗成績匯出','教師手冊','可列印的劇情文本']},
+  {id:'rec',t:'會推薦給其他老師或學生嗎？',type:'scale1',req:1,ends:['不會','一定會']},
+  {id:'nextScene',t:'下一章希望加入的情境',type:'text',ph:'例：三年級的升學面試、宿舍室友衝突、寄錢回家被詐騙…'},
+  {id:'bugs',t:'錯誤回報',type:'text',ph:'章節／事件名稱、裝置、發生了什麼'}
+];
+
+const $=s=>document.querySelector(s);
+const form=$('#f');
+function el(tag,attrs,...kids){const e=document.createElement(tag);for(const k in attrs||{}){if(k==='class')e.className=attrs[k];else if(k==='text')e.textContent=attrs[k];else e.setAttribute(k,attrs[k]);}kids.flat().forEach(c=>c!=null&&e.append(c));return e;}
+function chip(type,name,val,id){const i=el('input',{type,name,value:val,id});return el('label',{class:'chip'},i,el('span',{text:String(val)}));}
+
+let n=0;
+for(const q of Q){
+  n++;
+  const fs=el('fieldset',{id:'q-'+q.id});
+  fs.append(el('legend',{},el('div',{class:'qh'},el('span',{class:'qn',text:String(n).padStart(2,'0')}),el('span',{class:'qt',text:q.t},q.req?el('span',{class:'req',text:'必填'}):null))));
+  if(q.h) fs.append(el('p',{class:'hint',text:q.h}));
+  if(q.type==='radio'||q.type==='check'){
+    const box=el('div',{class:'opts'});
+    q.o.forEach((o,i)=>box.append(chip(q.type==='radio'?'radio':'checkbox',q.id,o,q.id+'-'+i)));
+    fs.append(box);
+  }else if(q.type==='scale1'){
+    const row=el('div',{class:'scale-row'},el('div',{class:'lbl'}),scaleBox(q.id),el('div',{class:'scale-ends'},el('span',{text:q.ends[0]}),el('span',{text:q.ends[1]})));
+    fs.append(row);
+  }else if(q.type==='acc'){
+    for(const [k,name,sub] of ACC){
+      const fix=el('div',{class:'fix',hidden:''},el('textarea',{id:'fix-'+k,name:'fix-'+k,rows:'2',placeholder:'哪裡不正確？正確的做法是？（例：第2章 薪資單的勞保金額）'}));
+      fs.append(el('div',{class:'scale-row'},el('div',{class:'lbl'},el('b',{text:name}),el('small',{text:sub})),scaleBox('acc-'+k),fix));
+    }
+  }else if(q.type==='line'){
+    fs.append(el('input',{type:'text',id:q.id,name:q.id,placeholder:q.ph||'',maxlength:'40'}));
+  }else{
+    fs.append(el('textarea',{id:q.id,name:q.id,rows:'3',placeholder:q.ph||''}));
+  }
+  form.append(fs);
+}
+function scaleBox(name){const b=el('div',{class:'scale',role:'radiogroup'});for(let v=1;v<=5;v++)b.append(chip('radio',name,v,name+'-'+v));return b;}
+const act=el('div',{class:'actions'},el('button',{class:'btn',type:'submit',id:'send'},'送出回饋'),el('span',{class:'note',id:'saved'}));
+form.append(act);
+
+// show correction box when an accuracy score is 3 or lower
+form.addEventListener('change',e=>{
+  const m=e.target.name&&e.target.name.match(/^acc-(\w+)$/);
+  if(m){const box=$('#fix-'+m[1]).parentElement;box.hidden=Number(e.target.value)>3;}
+  saveDraft();
+});
+form.addEventListener('input',saveDraft);
+
+function collect(){
+  const fd=new FormData(form),d={};
+  for(const q of Q){
+    if(q.type==='check') d[q.id]=fd.getAll(q.id);
+    else if(q.type==='scale1') d[q.id]=fd.get(q.id)?Number(fd.get(q.id)):null;
+    else if(q.type==='acc'){d.acc={};d.accFix={};for(const [k] of ACC){const v=fd.get('acc-'+k);d.acc[k]=v?Number(v):null;const t=(fd.get('fix-'+k)||'').trim();if(t&&v&&Number(v)<=3)d.accFix[k]=t.slice(0,2000);}}
+    else d[q.id]=(fd.get(q.id)||'').toString().trim().slice(0,2000)||null;
+  }
+  return d;
+}
+function fill(d){
+  if(!d) return;
+  for(const q of Q){
+    if(q.type==='check') (d[q.id]||[]).forEach(v=>{const i=form.querySelector(`input[name="${q.id}"][value="${CSS.escape(v)}"]`);if(i)i.checked=true;});
+    else if(q.type==='radio'||q.type==='scale1'){const i=d[q.id]!=null&&form.querySelector(`input[name="${q.id}"][value="${CSS.escape(String(d[q.id]))}"]`);if(i)i.checked=true;}
+    else if(q.type==='acc'){for(const [k] of ACC){const v=d.acc&&d.acc[k];if(v){const i=form.querySelector(`input[name="acc-${k}"][value="${v}"]`);if(i)i.checked=true;$('#fix-'+k).parentElement.hidden=v>3;}if(d.accFix&&d.accFix[k])$('#fix-'+k).value=d.accFix[k];}}
+    else if(d[q.id]) $('#'+q.id).value=d[q.id];
+  }
+}
+function missing(d){
+  const out=[];
+  for(const q of Q){ if(!q.req) continue;
+    if(q.type==='acc'){ if(ACC.some(([k])=>!d.acc[k])) out.push(q); }
+    else if(q.type==='check'){ if(!d[q.id].length) out.push(q); }
+    else if(d[q.id]==null) out.push(q);
+  }
+  return out;
+}
+const DKEY='twdiary-teacher-draft';
+function saveDraft(){try{localStorage.setItem(DKEY,JSON.stringify(collect()));}catch(e){}}
+function loadDraft(){try{return JSON.parse(localStorage.getItem(DKEY)||'null');}catch(e){return null;}}
+
+const status=$('#status');
+function setStatus(t,cls){status.textContent=t;status.className='status'+(cls?' '+cls:'');}
+
+const SCRIPT_URL='PASTE_APPS_SCRIPT_URL_HERE';
+function flat(d){
+  const o={form:'teacher',ua:navigator.userAgent};
+  for(const k in d){
+    if(k==='acc'){for(const [a] of ACC)o['acc_'+a]=d.acc[a]??'';}
+    else if(k==='accFix'){for(const [a] of ACC)o['fix_'+a]=d.accFix[a]||'';}
+    else o[k]=Array.isArray(d[k])?d[k].join('、'):(d[k]??'');
+  }
+  return o;
+}
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const d=collect(),miss=missing(d);
+  if(miss.length){setStatus('還有必填題沒有作答：'+miss.map(q=>q.t).join('、'),'err');$('#q-'+miss[0].id).scrollIntoView({behavior:'smooth',block:'center'});return;}
+  if(SCRIPT_URL.startsWith('PASTE')){setStatus('問卷還沒設定送出網址（SCRIPT_URL），請管理者先設定。答案已暫存在這台裝置。','err');return;}
+  const btn=$('#send');btn.disabled=true;btn.textContent='送出中…';
+  try{
+    await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(flat(d))});
+    try{localStorage.removeItem(DKEY);}catch(e){}
+    form.hidden=true;
+    setStatus('已送出，謝謝老師！如果還想補充，重新整理這頁再填一份即可。','ok');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(err){
+    setStatus('送出失敗，請確認網路後再按一次。答案還在畫面上。','err');
+    btn.disabled=false;btn.textContent='送出回饋';
+  }
+});
+fill(loadDraft());
+</script>
+</body></html>

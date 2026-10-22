@@ -1,0 +1,1502 @@
+[
+ {
+  "no": "1-13",
+  "q": "我＿＿王，我叫王大明。",
+  "full": "我姓王，我叫王大明。",
+  "py": "wǒ xìng wáng, wǒ jiào wáng dà míng.",
+  "opts": [
+   "姓",
+   "叫",
+   "是",
+   "有"
+  ],
+  "opy": [
+   "xìng",
+   "jiào",
+   "shì",
+   "yǒu"
+  ],
+  "tr": {
+   "vi": "Tôi họ Vương, tên là Vương Đại Minh.",
+   "id": "Marga saya Wang, nama saya Wang Daming.",
+   "en": "My surname is Wang; I'm Wang Daming.",
+   "th": "ผมแซ่หวัง ชื่อหวังต้าหมิง",
+   "my": "ကျွန်တော့်မျိုးရိုးက ဝမ်ပါ၊ နာမည် ဝမ်တာမင်းပါ။"
+  }
+ },
+ {
+  "no": "1-14",
+  "q": "她叫什麼＿＿？",
+  "full": "她叫什麼名字？",
+  "py": "tā jiào shén me míng zì?",
+  "opts": [
+   "名字",
+   "國",
+   "房間",
+   "學生"
+  ],
+  "opy": [
+   "míng zì",
+   "guó",
+   "fáng jiàn",
+   "xué shēng"
+  ],
+  "tr": {
+   "vi": "Cô ấy tên là gì?",
+   "id": "Siapa namanya?",
+   "en": "What's her name?",
+   "th": "เธอชื่ออะไร",
+   "my": "သူမနာမည် ဘယ်လိုခေါ်လဲ။"
+  }
+ },
+ {
+  "no": "1-15",
+  "q": "你是哪＿＿人？",
+  "full": "你是哪國人？",
+  "py": "nǐ shì nǎ guó rén?",
+  "opts": [
+   "國",
+   "本",
+   "張",
+   "杯"
+  ],
+  "opy": [
+   "guó",
+   "běn",
+   "zhāng",
+   "bēi"
+  ],
+  "tr": {
+   "vi": "Bạn là người nước nào?",
+   "id": "Kamu orang mana?",
+   "en": "What nationality are you?",
+   "th": "คุณเป็นคนประเทศอะไร",
+   "my": "ဘယ်နိုင်ငံသားလဲ။"
+  }
+ },
+ {
+  "no": "1-16",
+  "q": "他是學生＿＿？",
+  "full": "他是學生嗎？",
+  "py": "tā shì xué shēng ma?",
+  "opts": [
+   "嗎",
+   "了",
+   "的",
+   "很"
+  ],
+  "opy": [
+   "ma",
+   "liǎo",
+   "de",
+   "hěn"
+  ],
+  "tr": {
+   "vi": "Anh ấy là học sinh à?",
+   "id": "Apakah dia murid?",
+   "en": "Is he a student?",
+   "th": "เขาเป็นนักเรียนไหม",
+   "my": "သူက ကျောင်းသားလား။"
+  }
+ },
+ {
+  "no": "1-17",
+  "q": "我＿＿是老師，我是學生。",
+  "full": "我不是老師，我是學生。",
+  "py": "wǒ bú shì lǎo shī, wǒ shì xué shēng.",
+  "opts": [
+   "不",
+   "沒",
+   "很",
+   "也"
+  ],
+  "opy": [
+   "bù",
+   "méi",
+   "hěn",
+   "yě"
+  ],
+  "tr": {
+   "vi": "Tôi không phải giáo viên, tôi là học sinh.",
+   "id": "Saya bukan guru, saya murid.",
+   "en": "I'm not a teacher; I'm a student.",
+   "th": "ฉันไม่ใช่ครู ฉันเป็นนักเรียน",
+   "my": "ကျွန်တော် ဆရာမဟုတ်ပါဘူး၊ ကျောင်းသားပါ။"
+  }
+ },
+ {
+  "no": "1-18",
+  "q": "A：謝謝你！ B：不＿＿。",
+  "full": "A：謝謝你！ B：不客氣。",
+  "py": "xiè xiè nǐ! bú kè qì.",
+  "opts": [
+   "客氣",
+   "謝謝",
+   "好",
+   "對"
+  ],
+  "opy": [
+   "kè qì",
+   "xiè xiè",
+   "hǎo",
+   "duì"
+  ],
+  "tr": {
+   "vi": "Cảm ơn bạn! / Không có gì.",
+   "id": "Terima kasih! / Sama-sama.",
+   "en": "Thank you! / You're welcome.",
+   "th": "ขอบคุณ / ไม่เป็นไร",
+   "my": "ကျေးဇူးတင်ပါတယ်။ / ရပါတယ်။"
+  }
+ },
+ {
+  "no": "1-19",
+  "q": "這是我的＿＿，我們住在一起。",
+  "full": "這是我的室友，我們住在一起。",
+  "py": "zhè shì wǒ de shì yǒu, wǒ men zhù zài yì qǐ.",
+  "opts": [
+   "室友",
+   "老師",
+   "機場",
+   "名字"
+  ],
+  "opy": [
+   "shì yǒu",
+   "lǎo shī",
+   "jī chǎng",
+   "míng zì"
+  ],
+  "tr": {
+   "vi": "Đây là bạn cùng phòng của tôi, chúng tôi sống cùng nhau.",
+   "id": "Ini teman sekamarku, kami tinggal bersama.",
+   "en": "This is my roommate; we live together.",
+   "th": "นี่คือเพื่อนร่วมห้องของฉัน เราอยู่ด้วยกัน",
+   "my": "ဒါ ကျွန်တော့်အခန်းဖော်ပါ၊ ကျွန်တော်တို့ အတူနေကြတယ်။"
+  }
+ },
+ {
+  "no": "1-20",
+  "q": "我們的＿＿在學校裡面。",
+  "full": "我們的宿舍在學校裡面。",
+  "py": "wǒ men de sù shè zài xué xiào lǐ miàn.",
+  "opts": [
+   "宿舍",
+   "機場",
+   "台灣",
+   "越南"
+  ],
+  "opy": [
+   "sù shè",
+   "jī chǎng",
+   "tái wān",
+   "yuè nán"
+  ],
+  "tr": {
+   "vi": "Ký túc xá của chúng tôi ở trong trường.",
+   "id": "Asrama kami di dalam sekolah.",
+   "en": "Our dorm is inside the school.",
+   "th": "หอพักของเราอยู่ในโรงเรียน",
+   "my": "ကျွန်တော်တို့အဆောင်က ကျောင်းထဲမှာပါ။"
+  }
+ },
+ {
+  "no": "1-34",
+  "q": "你好，我＿＿阿明，是越南人。",
+  "full": "你好，我叫阿明，是越南人。",
+  "py": "nǐ hǎo, wǒ jiào ā míng, shì yuè nán rén.",
+  "opts": [
+   "叫",
+   "姓",
+   "有",
+   "在"
+  ],
+  "opy": [
+   "jiào",
+   "xìng",
+   "yǒu",
+   "zài"
+  ],
+  "tr": {
+   "vi": "Xin chào, tôi tên là A Minh, là người Việt Nam.",
+   "id": "Halo, nama saya A Ming, orang Vietnam.",
+   "en": "Hi, I'm A-Ming, from Vietnam.",
+   "th": "สวัสดี ผมชื่ออาหมิง เป็นคนเวียดนาม",
+   "my": "မင်္ဂလာပါ၊ ကျွန်တော့်နာမည် အာမင်းပါ၊ ဗီယက်နမ်လူမျိုးပါ။"
+  }
+ },
+ {
+  "no": "1-35",
+  "q": "我們是同學，也是＿＿。",
+  "full": "我們是同學，也是室友。",
+  "py": "wǒ men shì tóng xué, yě shì shì yǒu.",
+  "opts": [
+   "室友",
+   "老師",
+   "機場",
+   "名字"
+  ],
+  "opy": [
+   "shì yǒu",
+   "lǎo shī",
+   "jī chǎng",
+   "míng zì"
+  ],
+  "tr": {
+   "vi": "Chúng tôi là bạn học, cũng là bạn cùng phòng.",
+   "id": "Kami teman sekelas, juga teman sekamar.",
+   "en": "We are classmates and also roommates.",
+   "th": "เราเป็นเพื่อนร่วมชั้น และเป็นเพื่อนร่วมห้องด้วย",
+   "my": "ကျွန်တော်တို့ အတန်းဖော်တွေဖြစ်ပြီး အခန်းဖော်တွေလည်း ဖြစ်တယ်။"
+  }
+ },
+ {
+  "no": "1-36",
+  "q": "我是學生，他＿＿是學生。",
+  "full": "我是學生，他也是學生。",
+  "py": "wǒ shì xué shēng, tā yě shì xué shēng.",
+  "opts": [
+   "也",
+   "很",
+   "嗎",
+   "在"
+  ],
+  "opy": [
+   "yě",
+   "hěn",
+   "ma",
+   "zài"
+  ],
+  "tr": {
+   "vi": "Tôi là học sinh, anh ấy cũng là học sinh.",
+   "id": "Saya murid, dia juga murid.",
+   "en": "I'm a student, and he is a student too.",
+   "th": "ฉันเป็นนักเรียน เขาก็เป็นนักเรียน",
+   "my": "ကျွန်တော် ကျောင်းသားပါ၊ သူလည်း ကျောင်းသားပါ။"
+  }
+ },
+ {
+  "no": "1-37",
+  "q": "A：再見！ B：＿＿！",
+  "full": "A：再見！ B：再見！",
+  "py": "zài jiàn! zài jiàn!",
+  "opts": [
+   "再見",
+   "謝謝",
+   "你好",
+   "對不起"
+  ],
+  "opy": [
+   "zài jiàn",
+   "xiè xiè",
+   "nǐ hǎo",
+   "duì bù qǐ"
+  ],
+  "tr": {
+   "vi": "Tạm biệt! / Tạm biệt!",
+   "id": "Sampai jumpa! / Sampai jumpa!",
+   "en": "Goodbye! / Goodbye!",
+   "th": "ลาก่อน / ลาก่อน",
+   "my": "နောက်မှတွေ့မယ်။ / နောက်မှတွေ့မယ်။"
+  }
+ },
+ {
+  "no": "2-13",
+  "q": "請問這個＿＿錢？",
+  "full": "請問這個多少錢？",
+  "py": "qǐng wèn zhè ge duō shǎo qián?",
+  "opts": [
+   "多少",
+   "幾個",
+   "什麼",
+   "哪裡"
+  ],
+  "opy": [
+   "duō shǎo",
+   "jī ge",
+   "shén me",
+   "nǎ lǐ"
+  ],
+  "tr": {
+   "vi": "Xin hỏi cái này bao nhiêu tiền?",
+   "id": "Permisi, ini berapa harganya?",
+   "en": "Excuse me, how much is this?",
+   "th": "ขอถามหน่อย อันนี้ราคาเท่าไร",
+   "my": "ဒါ ဘယ်လောက်လဲ ခင်ဗျာ။"
+  }
+ },
+ {
+  "no": "2-14",
+  "q": "我想買一＿＿牛奶。",
+  "full": "我想買一瓶牛奶。",
+  "py": "wǒ xiǎng mǎi yì píng niú nǎi.",
+  "opts": [
+   "瓶",
+   "把",
+   "本",
+   "件"
+  ],
+  "opy": [
+   "píng",
+   "bǎ",
+   "běn",
+   "jiàn"
+  ],
+  "tr": {
+   "vi": "Tôi muốn mua một chai sữa.",
+   "id": "Saya ingin membeli sebotol susu.",
+   "en": "I'd like to buy a bottle of milk.",
+   "th": "ฉันอยากซื้อนมหนึ่งขวด",
+   "my": "နွားနို့တစ်ပုလင်း ဝယ်ချင်တယ်။"
+  }
+ },
+ {
+  "no": "2-15",
+  "q": "外面下雨了，幫我買一＿＿雨傘。",
+  "full": "外面下雨了，幫我買一把雨傘。",
+  "py": "wài miàn xià yǔ le, bāng wǒ mǎi yì bǎ yǔ sǎn.",
+  "opts": [
+   "把",
+   "杯",
+   "個",
+   "張"
+  ],
+  "opy": [
+   "bǎ",
+   "bēi",
+   "ge",
+   "zhāng"
+  ],
+  "tr": {
+   "vi": "Bên ngoài mưa rồi, mua giúp tôi một cây dù.",
+   "id": "Di luar hujan, tolong belikan saya payung.",
+   "en": "It's raining; please buy me an umbrella.",
+   "th": "ข้างนอกฝนตกแล้ว ช่วยซื้อร่มให้หน่อย",
+   "my": "အပြင်မှာ မိုးရွာနေပြီ၊ ထီးတစ်လက် ဝယ်ပေးပါ။"
+  }
+ },
+ {
+  "no": "2-16",
+  "q": "你需要袋子＿＿？",
+  "full": "你需要袋子嗎？",
+  "py": "nǐ xū yào dài zǐ ma?",
+  "opts": [
+   "嗎",
+   "呢",
+   "很",
+   "了"
+  ],
+  "opy": [
+   "ma",
+   "ne",
+   "hěn",
+   "liǎo"
+  ],
+  "tr": {
+   "vi": "Bạn có cần túi không?",
+   "id": "Apakah kamu perlu kantong?",
+   "en": "Do you need a bag?",
+   "th": "ต้องการถุงไหม",
+   "my": "အိတ် လိုလား။"
+  }
+ },
+ {
+  "no": "2-17",
+  "q": "這個便當很＿＿，只要七十九塊。",
+  "full": "這個便當很便宜，只要七十九塊。",
+  "py": "zhè ge biàn dāng hěn pián yi, zhǐ yào qī shí jiǔ kuài.",
+  "opts": [
+   "便宜",
+   "貴",
+   "大",
+   "好喝"
+  ],
+  "opy": [
+   "pián yi",
+   "guì",
+   "dà",
+   "hǎo hē"
+  ],
+  "tr": {
+   "vi": "Hộp cơm này rất rẻ, chỉ 79 tệ.",
+   "id": "Nasi kotak ini murah, hanya 79 dolar.",
+   "en": "This lunch box is cheap, only NT$79.",
+   "th": "ข้าวกล่องนี้ถูกมาก แค่ 79 เหรียญ",
+   "my": "ဒီထမင်းဘူး ဈေးပေါတယ်၊ ဒေါ်လာ 79 ပဲ။"
+  }
+ },
+ {
+  "no": "2-18",
+  "q": "我早上喜歡＿＿一杯咖啡。",
+  "full": "我早上喜歡喝一杯咖啡。",
+  "py": "wǒ zǎo shàng xǐ huān hē yì bēi kā fēi.",
+  "opts": [
+   "喝",
+   "吃",
+   "看",
+   "穿"
+  ],
+  "opy": [
+   "hē",
+   "chī",
+   "kàn",
+   "chuān"
+  ],
+  "tr": {
+   "vi": "Buổi sáng tôi thích uống một ly cà phê.",
+   "id": "Pagi hari saya suka minum secangkir kopi.",
+   "en": "I like a cup of coffee in the morning.",
+   "th": "ตอนเช้าฉันชอบดื่มกาแฟหนึ่งแก้ว",
+   "my": "မနက်မှာ ကော်ဖီတစ်ခွက် သောက်ရတာ ကြိုက်တယ်။"
+  }
+ },
+ {
+  "no": "2-19",
+  "q": "水二十塊，牛奶三十塊，牛奶比水＿＿。",
+  "full": "水二十塊，牛奶三十塊，牛奶比水貴。",
+  "py": "shuǐ èr shí kuài, niú nǎi sān shí kuài, niú nǎi bǐ shuǐ guì.",
+  "opts": [
+   "貴",
+   "便宜",
+   "好喝",
+   "少"
+  ],
+  "opy": [
+   "guì",
+   "pián yi",
+   "hǎo hē",
+   "shǎo"
+  ],
+  "tr": {
+   "vi": "Nước 20 tệ, sữa 30 tệ, sữa đắt hơn nước.",
+   "id": "Air 20 dolar, susu 30 dolar, susu lebih mahal daripada air.",
+   "en": "Water is NT$20 and milk is NT$30, so milk costs more than water.",
+   "th": "น้ำ 20 เหรียญ นม 30 เหรียญ นมแพงกว่าน้ำ",
+   "my": "ရေ ဒေါ်လာ 20၊ နွားနို့ ဒေါ်လာ 30၊ နွားနို့က ရေထက် ဈေးကြီးတယ်။"
+  }
+ },
+ {
+  "no": "2-20",
+  "q": "我要買兩＿＿咖啡。",
+  "full": "我要買兩杯咖啡。",
+  "py": "wǒ yào mǎi liǎng bēi kā fēi.",
+  "opts": [
+   "杯",
+   "把",
+   "本",
+   "張"
+  ],
+  "opy": [
+   "bēi",
+   "bǎ",
+   "běn",
+   "zhāng"
+  ],
+  "tr": {
+   "vi": "Tôi muốn mua hai ly cà phê.",
+   "id": "Saya mau membeli dua gelas kopi.",
+   "en": "I want to buy two cups of coffee.",
+   "th": "ฉันจะซื้อกาแฟสองแก้ว",
+   "my": "ကော်ဖီ နှစ်ခွက် ဝယ်မယ်။"
+  }
+ },
+ {
+  "no": "2-34",
+  "q": "一個飯糰＿＿一瓶水，一共多少錢？",
+  "full": "一個飯糰和一瓶水，一共多少錢？",
+  "py": "yí ge fàn tuán hé yì píng shuǐ, yí gòng duō shǎo qián?",
+  "opts": [
+   "和",
+   "很",
+   "也",
+   "要"
+  ],
+  "opy": [
+   "hé",
+   "hěn",
+   "yě",
+   "yào"
+  ],
+  "tr": {
+   "vi": "Một cái cơm nắm và một chai nước, tổng cộng bao nhiêu tiền?",
+   "id": "Satu nasi kepal dan sebotol air, semuanya berapa?",
+   "en": "A rice ball and a bottle of water: how much in total?",
+   "th": "ข้าวปั้นหนึ่งก้อนกับน้ำหนึ่งขวด ทั้งหมดเท่าไร",
+   "my": "ထမင်းလုံးတစ်လုံးနဲ့ ရေတစ်ပုလင်း စုစုပေါင်း ဘယ်လောက်လဲ။"
+  }
+ },
+ {
+  "no": "2-35",
+  "q": "這個便當很＿＿，要兩百塊。",
+  "full": "這個便當很貴，要兩百塊。",
+  "py": "zhè ge biàn dāng hěn guì, yào liǎng bǎi kuài.",
+  "opts": [
+   "貴",
+   "便宜",
+   "好",
+   "小"
+  ],
+  "opy": [
+   "guì",
+   "pián yi",
+   "hǎo",
+   "xiǎo"
+  ],
+  "tr": {
+   "vi": "Hộp cơm này rất đắt, những 200 tệ.",
+   "id": "Nasi kotak ini mahal, 200 dolar.",
+   "en": "This lunch box is expensive; it's NT$200.",
+   "th": "ข้าวกล่องนี้แพงมาก ตั้ง 200 เหรียญ",
+   "my": "ဒီထမင်းဘူး ဈေးကြီးတယ်၊ ဒေါ်လာ 200 တောင်။"
+  }
+ },
+ {
+  "no": "2-36",
+  "q": "我＿＿喝咖啡，不想喝茶。",
+  "full": "我想喝咖啡，不想喝茶。",
+  "py": "wǒ xiǎng hē kā fēi, bù xiǎng hē chá.",
+  "opts": [
+   "想",
+   "買",
+   "是",
+   "在"
+  ],
+  "opy": [
+   "xiǎng",
+   "mǎi",
+   "shì",
+   "zài"
+  ],
+  "tr": {
+   "vi": "Tôi muốn uống cà phê, không muốn uống trà.",
+   "id": "Saya mau minum kopi, tidak mau minum teh.",
+   "en": "I want coffee, not tea.",
+   "th": "ฉันอยากดื่มกาแฟ ไม่อยากดื่มชา",
+   "my": "ကော်ဖီ သောက်ချင်တယ်၊ လက်ဖက်ရည် မသောက်ချင်ဘူး။"
+  }
+ },
+ {
+  "no": "2-37",
+  "q": "一＿＿熱咖啡多少錢？",
+  "full": "一杯熱咖啡多少錢？",
+  "py": "yì bēi rè kā fēi duō shǎo qián?",
+  "opts": [
+   "杯",
+   "把",
+   "本",
+   "張"
+  ],
+  "opy": [
+   "bēi",
+   "bǎ",
+   "běn",
+   "zhāng"
+  ],
+  "tr": {
+   "vi": "Một ly cà phê nóng bao nhiêu tiền?",
+   "id": "Secangkir kopi panas berapa?",
+   "en": "How much is a hot coffee?",
+   "th": "กาแฟร้อนหนึ่งแก้วราคาเท่าไร",
+   "my": "ကော်ဖီပူ တစ်ခွက် ဘယ်လောက်လဲ။"
+  }
+ },
+ {
+  "no": "3-13",
+  "q": "現在＿＿點？",
+  "full": "現在幾點？",
+  "py": "xiàn zài jī diǎn?",
+  "opts": [
+   "幾",
+   "哪",
+   "什麼",
+   "誰"
+  ],
+  "opy": [
+   "jī",
+   "nǎ",
+   "shén me",
+   "shuí"
+  ],
+  "tr": {
+   "vi": "Bây giờ là mấy giờ?",
+   "id": "Sekarang jam berapa?",
+   "en": "What time is it now?",
+   "th": "ตอนนี้กี่โมง",
+   "my": "အခု ဘယ်နှနာရီလဲ။"
+  }
+ },
+ {
+  "no": "3-14",
+  "q": "我們早上八點＿＿課，十二點下課。",
+  "full": "我們早上八點上課，十二點下課。",
+  "py": "wǒ men zǎo shàng bā diǎn shàng kè, shí èr diǎn xià kè.",
+  "opts": [
+   "上",
+   "下",
+   "吃",
+   "買"
+  ],
+  "opy": [
+   "shàng",
+   "xià",
+   "chī",
+   "mǎi"
+  ],
+  "tr": {
+   "vi": "Chúng tôi vào học lúc 8 giờ sáng, tan học lúc 12 giờ.",
+   "id": "Kami masuk kelas jam 8 pagi, selesai jam 12.",
+   "en": "Our class starts at 8 a.m. and ends at 12.",
+   "th": "เราเข้าเรียนแปดโมงเช้า เลิกเรียนเที่ยง",
+   "my": "ကျွန်တော်တို့ မနက် ၈ နာရီ အတန်းတက်ပြီး ၁၂ နာရီ ဆင်းတယ်။"
+  }
+ },
+ {
+  "no": "3-15",
+  "q": "今天星期一，明天星期＿＿。",
+  "full": "今天星期一，明天星期二。",
+  "py": "jīn tiān xīng qī yī, míng tiān xīng qī èr.",
+  "opts": [
+   "二",
+   "三",
+   "五",
+   "天"
+  ],
+  "opy": [
+   "èr",
+   "sān",
+   "wǔ",
+   "tiān"
+  ],
+  "tr": {
+   "vi": "Hôm nay thứ Hai, ngày mai thứ Ba.",
+   "id": "Hari ini Senin, besok Selasa.",
+   "en": "Today is Monday; tomorrow is Tuesday.",
+   "th": "วันนี้วันจันทร์ พรุ่งนี้วันอังคาร",
+   "my": "ဒီနေ့ တနင်္လာ၊ မနက်ဖြန် အင်္ဂါ။"
+  }
+ },
+ {
+  "no": "3-16",
+  "q": "我＿＿中文課本。",
+  "full": "我有中文課本。",
+  "py": "wǒ yǒu zhōng wén kè běn.",
+  "opts": [
+   "有",
+   "是",
+   "在",
+   "很"
+  ],
+  "opy": [
+   "yǒu",
+   "shì",
+   "zài",
+   "hěn"
+  ],
+  "tr": {
+   "vi": "Tôi có sách giáo khoa tiếng Trung.",
+   "id": "Saya punya buku pelajaran Mandarin.",
+   "en": "I have a Chinese textbook.",
+   "th": "ฉันมีหนังสือเรียนภาษาจีน",
+   "my": "ကျွန်တော့်မှာ တရုတ်စာ ဖတ်စာအုပ် ရှိတယ်။"
+  }
+ },
+ {
+  "no": "3-17",
+  "q": "老師，我有一個＿＿。",
+  "full": "老師，我有一個問題。",
+  "py": "lǎo shī, wǒ yǒu yí ge wèn tí.",
+  "opts": [
+   "問題",
+   "教室",
+   "學校",
+   "星期"
+  ],
+  "opy": [
+   "wèn tí",
+   "jiào shì",
+   "xué xiào",
+   "xīng qī"
+  ],
+  "tr": {
+   "vi": "Thưa thầy, em có một câu hỏi.",
+   "id": "Pak Guru, saya punya pertanyaan.",
+   "en": "Teacher, I have a question.",
+   "th": "ครูครับ ผมมีคำถามหนึ่งข้อ",
+   "my": "ဆရာ၊ မေးခွန်းတစ်ခု ရှိပါတယ်။"
+  }
+ },
+ {
+  "no": "3-18",
+  "q": "明天有＿＿，今天要看書。",
+  "full": "明天有考試，今天要看書。",
+  "py": "míng tiān yǒu kǎo shì, jīn tiān yào kàn shū.",
+  "opts": [
+   "考試",
+   "下課",
+   "早上",
+   "筆"
+  ],
+  "opy": [
+   "kǎo shì",
+   "xià kè",
+   "zǎo shàng",
+   "bǐ"
+  ],
+  "tr": {
+   "vi": "Ngày mai có thi, hôm nay phải học bài.",
+   "id": "Besok ada ujian, hari ini harus belajar.",
+   "en": "There's an exam tomorrow, so I have to study today.",
+   "th": "พรุ่งนี้มีสอบ วันนี้ต้องอ่านหนังสือ",
+   "my": "မနက်ဖြန် စာမေးပွဲ ရှိလို့ ဒီနေ့ စာကျက်ရမယ်။"
+  }
+ },
+ {
+  "no": "3-19",
+  "q": "中文課在三樓的＿＿。",
+  "full": "中文課在三樓的教室。",
+  "py": "zhōng wén kè zài sān lóu de jiào shì.",
+  "opts": [
+   "教室",
+   "課本",
+   "星期",
+   "功課"
+  ],
+  "opy": [
+   "jiào shì",
+   "kè běn",
+   "xīng qī",
+   "gōng kè"
+  ],
+  "tr": {
+   "vi": "Lớp tiếng Trung ở phòng học tầng 3.",
+   "id": "Kelas Mandarin di ruang kelas lantai 3.",
+   "en": "Chinese class is in a classroom on the 3rd floor.",
+   "th": "วิชาภาษาจีนเรียนที่ห้องเรียนชั้นสาม",
+   "my": "တရုတ်စာ အတန်းက တတိယထပ် စာသင်ခန်းမှာ။"
+  }
+ },
+ {
+  "no": "3-20",
+  "q": "今天的＿＿很多，我晚上要寫。",
+  "full": "今天的功課很多，我晚上要寫。",
+  "py": "jīn tiān de gōng kè hěn duō, wǒ wǎn shàng yào xiě.",
+  "opts": [
+   "功課",
+   "教室",
+   "學校",
+   "筆"
+  ],
+  "opy": [
+   "gōng kè",
+   "jiào shì",
+   "xué xiào",
+   "bǐ"
+  ],
+  "tr": {
+   "vi": "Bài tập hôm nay nhiều lắm, tối nay tôi phải làm.",
+   "id": "PR hari ini banyak, malam nanti saya harus mengerjakannya.",
+   "en": "There's a lot of homework today; I'll do it tonight.",
+   "th": "การบ้านวันนี้เยอะมาก คืนนี้ฉันต้องทำ",
+   "my": "ဒီနေ့ အိမ်စာ များတယ်၊ ညကျ ရေးရမယ်။"
+  }
+ },
+ {
+  "no": "3-34",
+  "q": "現在八點十＿＿。",
+  "full": "現在八點十分。",
+  "py": "xiàn zài bā diǎn shí fēn.",
+  "opts": [
+   "分",
+   "點",
+   "天",
+   "星期"
+  ],
+  "opy": [
+   "fēn",
+   "diǎn",
+   "tiān",
+   "xīng qī"
+  ],
+  "tr": {
+   "vi": "Bây giờ là 8 giờ 10 phút.",
+   "id": "Sekarang jam 8 lewat 10.",
+   "en": "It's 8:10 now.",
+   "th": "ตอนนี้แปดโมงสิบนาที",
+   "my": "အခု ၈ နာရီ ၁၀ မိနစ်။"
+  }
+ },
+ {
+  "no": "3-35",
+  "q": "＿＿是星期一，明天是星期二。",
+  "full": "今天是星期一，明天是星期二。",
+  "py": "jīn tiān shì xīng qī yī, míng tiān shì xīng qī èr.",
+  "opts": [
+   "今天",
+   "明天",
+   "早上",
+   "下午"
+  ],
+  "opy": [
+   "jīn tiān",
+   "míng tiān",
+   "zǎo shàng",
+   "xià wǔ"
+  ],
+  "tr": {
+   "vi": "Hôm nay là thứ Hai, ngày mai là thứ Ba.",
+   "id": "Hari ini Senin, besok Selasa.",
+   "en": "Today is Monday, and tomorrow is Tuesday.",
+   "th": "วันนี้วันจันทร์ พรุ่งนี้วันอังคาร",
+   "my": "ဒီနေ့ တနင်္လာ၊ မနက်ဖြန် အင်္ဂါ။"
+  }
+ },
+ {
+  "no": "3-36",
+  "q": "請打開＿＿第十頁。",
+  "full": "請打開課本第十頁。",
+  "py": "qǐng dǎ kāi kè běn dì shí yè.",
+  "opts": [
+   "課本",
+   "教室",
+   "考試",
+   "問題"
+  ],
+  "opy": [
+   "kè běn",
+   "jiào shì",
+   "kǎo shì",
+   "wèn tí"
+  ],
+  "tr": {
+   "vi": "Hãy mở sách giáo khoa trang 10.",
+   "id": "Tolong buka buku halaman 10.",
+   "en": "Please open your textbook to page 10.",
+   "th": "กรุณาเปิดหนังสือเรียนหน้าสิบ",
+   "my": "ဖတ်စာအုပ် စာမျက်နှာ ၁၀ ကို ဖွင့်ပါ။"
+  }
+ },
+ {
+  "no": "3-37",
+  "q": "我＿＿上中文課，下午上專業課。",
+  "full": "我早上上中文課，下午上專業課。",
+  "py": "wǒ zǎo shàng shàng zhōng wén kè, xià wǔ shàng zhuān yè kè.",
+  "opts": [
+   "早上",
+   "下午",
+   "功課",
+   "學校"
+  ],
+  "opy": [
+   "zǎo shàng",
+   "xià wǔ",
+   "gōng kè",
+   "xué xiào"
+  ],
+  "tr": {
+   "vi": "Buổi sáng tôi học tiếng Trung, buổi chiều học chuyên ngành.",
+   "id": "Pagi saya belajar Mandarin, sore pelajaran kejuruan.",
+   "en": "I have Chinese in the morning and my major courses in the afternoon.",
+   "th": "ตอนเช้าฉันเรียนภาษาจีน ตอนบ่ายเรียนวิชาเฉพาะทาง",
+   "my": "မနက် တရုတ်စာ တက်ပြီး နေ့လယ် အသက်မွေးပညာ ဘာသာ တက်တယ်။"
+  }
+ },
+ {
+  "no": "5-13",
+  "q": "請問，火車站＿＿走？",
+  "full": "請問，火車站怎麼走？",
+  "py": "qǐng wèn, huǒ jū zhàn zěn me zǒu?",
+  "opts": [
+   "怎麼",
+   "什麼",
+   "哪",
+   "幾"
+  ],
+  "opy": [
+   "zěn me",
+   "shén me",
+   "nǎ",
+   "jī"
+  ],
+  "tr": {
+   "vi": "Xin hỏi, đến ga tàu hỏa đi đường nào?",
+   "id": "Permisi, ke stasiun kereta lewat mana?",
+   "en": "Excuse me, how do I get to the train station?",
+   "th": "ขอถามหน่อย ไปสถานีรถไฟเดินยังไง",
+   "my": "ရထားဘူတာ ဘယ်လိုသွားရလဲ။"
+  }
+ },
+ {
+  "no": "5-14",
+  "q": "便利商店在學校＿＿，很近。",
+  "full": "便利商店在學校旁邊，很近。",
+  "py": "biàn lì shāng diàn zài xué xiào páng biān, hěn jìn.",
+  "opts": [
+   "旁邊",
+   "很遠",
+   "怎麼",
+   "下車"
+  ],
+  "opy": [
+   "páng biān",
+   "hěn yuǎn",
+   "zěn me",
+   "xià jū"
+  ],
+  "tr": {
+   "vi": "Cửa hàng tiện lợi ở cạnh trường, rất gần.",
+   "id": "Minimarket ada di samping sekolah, dekat.",
+   "en": "The convenience store is next to the school, very close.",
+   "th": "ร้านสะดวกซื้ออยู่ข้างโรงเรียน ใกล้มาก",
+   "my": "စတိုးဆိုင်က ကျောင်းဘေးမှာ၊ အရမ်းနီးတယ်။"
+  }
+ },
+ {
+  "no": "5-15",
+  "q": "我每天＿＿捷運去學校。",
+  "full": "我每天坐捷運去學校。",
+  "py": "wǒ měi tiān zuò jié yùn qù xué xiào.",
+  "opts": [
+   "坐",
+   "走",
+   "去",
+   "來"
+  ],
+  "opy": [
+   "zuò",
+   "zǒu",
+   "qù",
+   "lái"
+  ],
+  "tr": {
+   "vi": "Ngày nào tôi cũng đi tàu điện ngầm đến trường.",
+   "id": "Setiap hari saya naik MRT ke sekolah.",
+   "en": "I take the MRT to school every day.",
+   "th": "ฉันนั่งรถไฟฟ้าไปโรงเรียนทุกวัน",
+   "my": "နေ့တိုင်း MRT စီးပြီး ကျောင်းသွားတယ်။"
+  }
+ },
+ {
+  "no": "5-16",
+  "q": "學校離宿舍很＿＿，走路兩分鐘。",
+  "full": "學校離宿舍很近，走路兩分鐘。",
+  "py": "xué xiào lí sù shè hěn jìn, zǒu lù liǎng fēn zhōng.",
+  "opts": [
+   "近",
+   "遠",
+   "大",
+   "多"
+  ],
+  "opy": [
+   "jìn",
+   "yuǎn",
+   "dà",
+   "duō"
+  ],
+  "tr": {
+   "vi": "Trường rất gần ký túc xá, đi bộ 2 phút.",
+   "id": "Sekolah dekat dengan asrama, jalan kaki 2 menit.",
+   "en": "The school is close to the dorm, a 2-minute walk.",
+   "th": "โรงเรียนใกล้หอพัก เดินสองนาที",
+   "my": "ကျောင်းက အဆောင်နဲ့ နီးတယ်၊ လမ်းလျှောက် ၂ မိနစ်။"
+  }
+ },
+ {
+  "no": "5-17",
+  "q": "你在＿＿？我在捷運站。",
+  "full": "你在哪裡？我在捷運站。",
+  "py": "nǐ zài nǎ lǐ? wǒ zài jié yùn zhàn.",
+  "opts": [
+   "哪裡",
+   "什麼",
+   "怎麼",
+   "誰"
+  ],
+  "opy": [
+   "nǎ lǐ",
+   "shén me",
+   "zěn me",
+   "shuí"
+  ],
+  "tr": {
+   "vi": "Bạn đang ở đâu? Tôi ở ga tàu điện ngầm.",
+   "id": "Kamu di mana? Saya di stasiun MRT.",
+   "en": "Where are you? I'm at the MRT station.",
+   "th": "คุณอยู่ที่ไหน ฉันอยู่ที่สถานีรถไฟฟ้า",
+   "my": "ဘယ်မှာလဲ။ ကျွန်တော် MRT ဘူတာမှာ။"
+  }
+ },
+ {
+  "no": "5-18",
+  "q": "到了！我們要＿＿車了。",
+  "full": "到了！我們要下車了。",
+  "py": "dào le! wǒ men yào xià jū le.",
+  "opts": [
+   "下",
+   "上",
+   "坐",
+   "走"
+  ],
+  "opy": [
+   "xià",
+   "shàng",
+   "zuò",
+   "zǒu"
+  ],
+  "tr": {
+   "vi": "Đến rồi! Chúng ta xuống xe thôi.",
+   "id": "Sudah sampai! Kita turun.",
+   "en": "We're here! Time to get off.",
+   "th": "ถึงแล้ว! เราต้องลงรถแล้ว",
+   "my": "ရောက်ပြီ! ဆင်းကြမယ်။"
+  }
+ },
+ {
+  "no": "5-19",
+  "q": "往前走，然後往＿＿轉。",
+  "full": "往前走，然後往右轉。",
+  "py": "wǎng qián zǒu, rán hòu wǎng yòu zhuǎn.",
+  "opts": [
+   "右",
+   "前",
+   "上",
+   "近"
+  ],
+  "opy": [
+   "yòu",
+   "qián",
+   "shàng",
+   "jìn"
+  ],
+  "tr": {
+   "vi": "Đi thẳng, sau đó rẽ phải.",
+   "id": "Jalan lurus, lalu belok kanan.",
+   "en": "Go straight, then turn right.",
+   "th": "เดินตรงไป แล้วเลี้ยวขวา",
+   "my": "တည့်တည့်သွားပြီး ညာဘက်ကို ကွေ့ပါ။"
+  }
+ },
+ {
+  "no": "5-20",
+  "q": "坐公車要用＿＿。",
+  "full": "坐公車要用悠遊卡。",
+  "py": "zuò gōng jū yào yòng yōu yóu kǎ.",
+  "opts": [
+   "悠遊卡",
+   "課本",
+   "筷子",
+   "雨傘"
+  ],
+  "opy": [
+   "yōu yóu kǎ",
+   "kè běn",
+   "kuài zi",
+   "yǔ sǎn"
+  ],
+  "tr": {
+   "vi": "Đi xe buýt phải dùng thẻ EasyCard.",
+   "id": "Naik bus pakai kartu EasyCard.",
+   "en": "You use an EasyCard to ride the bus.",
+   "th": "นั่งรถเมล์ต้องใช้บัตร EasyCard",
+   "my": "ဘတ်စ်ကားစီးရင် EasyCard သုံးရတယ်။"
+  }
+ },
+ {
+  "no": "5-34",
+  "q": "我＿＿公車去夜市。",
+  "full": "我坐公車去夜市。",
+  "py": "wǒ zuò gōng jū qù yè shì.",
+  "opts": [
+   "坐",
+   "走",
+   "在",
+   "看"
+  ],
+  "opy": [
+   "zuò",
+   "zǒu",
+   "zài",
+   "kàn"
+  ],
+  "tr": {
+   "vi": "Tôi đi xe buýt đến chợ đêm.",
+   "id": "Saya naik bus ke pasar malam.",
+   "en": "I take the bus to the night market.",
+   "th": "ฉันนั่งรถเมล์ไปตลาดกลางคืน",
+   "my": "ဘတ်စ်ကားစီးပြီး ညဈေး သွားတယ်။"
+  }
+ },
+ {
+  "no": "5-35",
+  "q": "便利商店在銀行＿＿，很近。",
+  "full": "便利商店在銀行旁邊，很近。",
+  "py": "biàn lì shāng diàn zài yín xíng páng biān, hěn jìn.",
+  "opts": [
+   "旁邊",
+   "遠",
+   "怎麼",
+   "哪裡"
+  ],
+  "opy": [
+   "páng biān",
+   "yuǎn",
+   "zěn me",
+   "nǎ lǐ"
+  ],
+  "tr": {
+   "vi": "Cửa hàng tiện lợi ở cạnh ngân hàng, rất gần.",
+   "id": "Minimarket ada di samping bank, dekat.",
+   "en": "The convenience store is next to the bank, very close.",
+   "th": "ร้านสะดวกซื้ออยู่ข้างธนาคาร ใกล้มาก",
+   "my": "စတိုးဆိုင်က ဘဏ်ဘေးမှာ၊ အရမ်းနီးတယ်။"
+  }
+ },
+ {
+  "no": "5-36",
+  "q": "請問，捷運站在＿＿？",
+  "full": "請問，捷運站在哪裡？",
+  "py": "qǐng wèn, jié yùn zhàn zài nǎ lǐ?",
+  "opts": [
+   "哪裡",
+   "什麼",
+   "怎麼",
+   "誰"
+  ],
+  "opy": [
+   "nǎ lǐ",
+   "shén me",
+   "zěn me",
+   "shuí"
+  ],
+  "tr": {
+   "vi": "Xin hỏi, ga tàu điện ngầm ở đâu?",
+   "id": "Permisi, stasiun MRT di mana?",
+   "en": "Excuse me, where is the MRT station?",
+   "th": "ขอถามหน่อย สถานีรถไฟฟ้าอยู่ที่ไหน",
+   "my": "MRT ဘူတာ ဘယ်မှာလဲ။"
+  }
+ },
+ {
+  "no": "5-37",
+  "q": "從這裡＿＿路去，十分鐘就到了。",
+  "full": "從這裡走路去，十分鐘就到了。",
+  "py": "cóng zhè lǐ zǒu lù qù, shí fēn zhōng jiù dào le.",
+  "opts": [
+   "走",
+   "坐",
+   "開",
+   "下"
+  ],
+  "opy": [
+   "zǒu",
+   "zuò",
+   "kāi",
+   "xià"
+  ],
+  "tr": {
+   "vi": "Từ đây đi bộ 10 phút là tới.",
+   "id": "Dari sini jalan kaki 10 menit sampai.",
+   "en": "It's a 10-minute walk from here.",
+   "th": "เดินจากที่นี่สิบนาทีก็ถึง",
+   "my": "ဒီကနေ လမ်းလျှောက်ရင် ၁၀ မိနစ်နဲ့ ရောက်တယ်။"
+  }
+ },
+ {
+  "no": "6-13",
+  "q": "早上八點＿＿，下午五點下班。",
+  "full": "早上八點上班，下午五點下班。",
+  "py": "zǎo shàng bā diǎn shàng bān, xià wǔ wǔ diǎn xià bān.",
+  "opts": [
+   "上班",
+   "休息",
+   "受傷",
+   "洗手"
+  ],
+  "opy": [
+   "shàng bān",
+   "xiū xi",
+   "shòu shāng",
+   "xǐ shǒu"
+  ],
+  "tr": {
+   "vi": "8 giờ sáng vào làm, 5 giờ chiều tan làm.",
+   "id": "Masuk kerja jam 8 pagi, pulang jam 5 sore.",
+   "en": "Work starts at 8 a.m. and ends at 5 p.m.",
+   "th": "เข้างานแปดโมงเช้า เลิกงานห้าโมงเย็น",
+   "my": "မနက် ၈ နာရီ အလုပ်ဝင်ပြီး ညနေ ၅ နာရီ ဆင်းတယ်။"
+  }
+ },
+ {
+  "no": "6-14",
+  "q": "這裡很危險，請＿＿。",
+  "full": "這裡很危險，請小心。",
+  "py": "zhè lǐ hěn wēi xiǎn, qǐng xiǎo xīn.",
+  "opts": [
+   "小心",
+   "加班",
+   "遲到",
+   "上班"
+  ],
+  "opy": [
+   "xiǎo xīn",
+   "jiā bān",
+   "chí dào",
+   "shàng bān"
+  ],
+  "tr": {
+   "vi": "Ở đây nguy hiểm, hãy cẩn thận.",
+   "id": "Di sini berbahaya, hati-hati.",
+   "en": "It's dangerous here; please be careful.",
+   "th": "ที่นี่อันตราย กรุณาระวัง",
+   "my": "ဒီနေရာ အန္တရာယ်များတယ်၊ သတိထားပါ။"
+  }
+ },
+ {
+  "no": "6-15",
+  "q": "進工廠以前，要先＿＿手。",
+  "full": "進工廠以前，要先洗手。",
+  "py": "jìn gōng chǎng yǐ qián, yào xiān xǐ shǒu.",
+  "opts": [
+   "洗",
+   "打",
+   "戴",
+   "吃"
+  ],
+  "opy": [
+   "xǐ",
+   "dǎ",
+   "dài",
+   "chī"
+  ],
+  "tr": {
+   "vi": "Trước khi vào nhà máy phải rửa tay.",
+   "id": "Sebelum masuk pabrik, cuci tangan dulu.",
+   "en": "Wash your hands before entering the factory.",
+   "th": "ก่อนเข้าโรงงานต้องล้างมือก่อน",
+   "my": "စက်ရုံထဲ မဝင်ခင် လက်ဆေးရမယ်။"
+  }
+ },
+ {
+  "no": "6-16",
+  "q": "我明天要去醫院，想＿＿一天。",
+  "full": "我明天要去醫院，想請假一天。",
+  "py": "wǒ míng tiān yào qù yī yuàn, xiǎng qǐng jiǎ yī tiān.",
+  "opts": [
+   "請假",
+   "加班",
+   "上班",
+   "打卡"
+  ],
+  "opy": [
+   "qǐng jiǎ",
+   "jiā bān",
+   "shàng bān",
+   "dǎ kǎ"
+  ],
+  "tr": {
+   "vi": "Ngày mai tôi phải đi bệnh viện, muốn xin nghỉ một ngày.",
+   "id": "Besok saya ke rumah sakit, mau izin satu hari.",
+   "en": "I have to go to the hospital tomorrow, so I'd like a day off.",
+   "th": "พรุ่งนี้ผมต้องไปโรงพยาบาล ขอลาหนึ่งวัน",
+   "my": "မနက်ဖြန် ဆေးရုံသွားရမှာမို့ တစ်ရက် ခွင့်ယူချင်တယ်။"
+  }
+ },
+ {
+  "no": "6-17",
+  "q": "他工作的時候不小心＿＿了。",
+  "full": "他工作的時候不小心受傷了。",
+  "py": "tā gōng zuò de shí hòu bù xiǎo xīn shòu shāng le.",
+  "opts": [
+   "受傷",
+   "休息",
+   "下班",
+   "洗手"
+  ],
+  "opy": [
+   "shòu shāng",
+   "xiū xi",
+   "xià bān",
+   "xǐ shǒu"
+  ],
+  "tr": {
+   "vi": "Anh ấy không cẩn thận bị thương khi làm việc.",
+   "id": "Dia tidak sengaja terluka saat bekerja.",
+   "en": "He accidentally got hurt while working.",
+   "th": "เขาบาดเจ็บโดยไม่ระวังตอนทำงาน",
+   "my": "သူ အလုပ်လုပ်ရင်း မတော်တဆ ဒဏ်ရာရသွားတယ်။"
+  }
+ },
+ {
+  "no": "6-18",
+  "q": "這裡＿＿進入。",
+  "full": "這裡禁止進入。",
+  "py": "zhè lǐ jìn zhǐ jìn rù.",
+  "opts": [
+   "禁止",
+   "危險",
+   "休息",
+   "打卡"
+  ],
+  "opy": [
+   "jìn zhǐ",
+   "wēi xiǎn",
+   "xiū xi",
+   "dǎ kǎ"
+  ],
+  "tr": {
+   "vi": "Cấm vào khu vực này.",
+   "id": "Dilarang masuk ke sini.",
+   "en": "No entry here.",
+   "th": "ห้ามเข้าที่นี่",
+   "my": "ဒီနေရာ ဝင်ခွင့်မပြု။"
+  }
+ },
+ {
+  "no": "6-19",
+  "q": "工作的時候要穿＿＿。",
+  "full": "工作的時候要穿工作服。",
+  "py": "gōng zuò de shí hòu yào chuān gōng zuò fú.",
+  "opts": [
+   "工作服",
+   "手套",
+   "口罩",
+   "安全帽"
+  ],
+  "opy": [
+   "gōng zuò fú",
+   "shǒu tào",
+   "kǒu zhào",
+   "ān quán mào"
+  ],
+  "tr": {
+   "vi": "Khi làm việc phải mặc quần áo bảo hộ.",
+   "id": "Saat bekerja harus memakai seragam kerja.",
+   "en": "Wear your work uniform while working.",
+   "th": "เวลาทำงานต้องใส่ชุดทำงาน",
+   "my": "အလုပ်လုပ်တဲ့အခါ အလုပ်ဝတ်စုံ ဝတ်ရမယ်။"
+  }
+ },
+ {
+  "no": "6-20",
+  "q": "今天很忙，我們要＿＿到晚上八點。",
+  "full": "今天很忙，我們要加班到晚上八點。",
+  "py": "jīn tiān hěn máng, wǒ men yào jiā bān dào wǎn shàng bā diǎn.",
+  "opts": [
+   "加班",
+   "請假",
+   "遲到",
+   "受傷"
+  ],
+  "opy": [
+   "jiā bān",
+   "qǐng jiǎ",
+   "chí dào",
+   "shòu shāng"
+  ],
+  "tr": {
+   "vi": "Hôm nay rất bận, chúng ta phải tăng ca đến 8 giờ tối.",
+   "id": "Hari ini sibuk, kita lembur sampai jam 8 malam.",
+   "en": "It's busy today; we'll work overtime until 8 p.m.",
+   "th": "วันนี้ยุ่งมาก เราต้องทำโอทีถึงสองทุ่ม",
+   "my": "ဒီနေ့ အလုပ်များတယ်၊ ည ၈ နာရီအထိ အချိန်ပို ဆင်းရမယ်။"
+  }
+ },
+ {
+  "no": "6-34",
+  "q": "工作以前要先＿＿卡。",
+  "full": "工作以前要先打卡。",
+  "py": "gōng zuò yǐ qián yào xiān dǎ kǎ.",
+  "opts": [
+   "打",
+   "洗",
+   "戴",
+   "穿"
+  ],
+  "opy": [
+   "dǎ",
+   "xǐ",
+   "dài",
+   "chuān"
+  ],
+  "tr": {
+   "vi": "Trước khi làm việc phải chấm công.",
+   "id": "Sebelum bekerja harus absen dulu.",
+   "en": "Clock in before you start work.",
+   "th": "ก่อนทำงานต้องตอกบัตรก่อน",
+   "my": "အလုပ်မစခင် ကတ်နှိပ်ရမယ်။"
+  }
+ },
+ {
+  "no": "6-35",
+  "q": "地上有水，走路要＿＿。",
+  "full": "地上有水，走路要小心。",
+  "py": "dì shàng yǒu shuǐ, zǒu lù yào xiǎo xīn.",
+  "opts": [
+   "小心",
+   "加班",
+   "禁止",
+   "受傷"
+  ],
+  "opy": [
+   "xiǎo xīn",
+   "jiā bān",
+   "jìn zhǐ",
+   "shòu shāng"
+  ],
+  "tr": {
+   "vi": "Dưới sàn có nước, đi lại phải cẩn thận.",
+   "id": "Ada air di lantai, hati-hati berjalan.",
+   "en": "There's water on the floor; walk carefully.",
+   "th": "พื้นมีน้ำ เดินระวังด้วย",
+   "my": "ကြမ်းပြင်မှာ ရေရှိတယ်၊ သတိထားပြီး လျှောက်ပါ။"
+  }
+ },
+ {
+  "no": "6-36",
+  "q": "我生病了，今天要＿＿。",
+  "full": "我生病了，今天要請假。",
+  "py": "wǒ shēng bìng le, jīn tiān yào qǐng jiǎ.",
+  "opts": [
+   "請假",
+   "加班",
+   "上班",
+   "遲到"
+  ],
+  "opy": [
+   "qǐng jiǎ",
+   "jiā bān",
+   "shàng bān",
+   "chí dào"
+  ],
+  "tr": {
+   "vi": "Tôi bị ốm, hôm nay phải xin nghỉ.",
+   "id": "Saya sakit, hari ini izin.",
+   "en": "I'm sick, so I need to take today off.",
+   "th": "ฉันป่วย วันนี้ต้องลา",
+   "my": "နေမကောင်းလို့ ဒီနေ့ ခွင့်ယူရမယ်။"
+  }
+ },
+ {
+  "no": "6-37",
+  "q": "機器很危險，工作的時候要戴＿＿。",
+  "full": "機器很危險，工作的時候要戴手套。",
+  "py": "jī qì hěn wēi xiǎn, gōng zuò de shí hòu yào dài shǒu tào.",
+  "opts": [
+   "手套",
+   "工作服",
+   "休息",
+   "主管"
+  ],
+  "opy": [
+   "shǒu tào",
+   "gōng zuò fú",
+   "xiū xi",
+   "zhǔ guǎn"
+  ],
+  "tr": {
+   "vi": "Máy móc nguy hiểm, khi làm việc phải đeo găng tay.",
+   "id": "Mesin berbahaya, saat bekerja harus pakai sarung tangan.",
+   "en": "Machines are dangerous; wear gloves while working.",
+   "th": "เครื่องจักรอันตราย เวลาทำงานต้องใส่ถุงมือ",
+   "my": "စက်တွေ အန္တရာယ်များတယ်၊ အလုပ်လုပ်တဲ့အခါ လက်အိတ် ဝတ်ရမယ်။"
+  }
+ }
+]

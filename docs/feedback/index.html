@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台灣生活日記｜試玩回饋</title>
+<meta name="theme-color" content="#26324A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='14' fill='none' stroke='%23A7AAAD' stroke-width='8'/%3E%3Cpath d='M20 6 A14 14 0 0 0 20 34' fill='none' stroke='%23E8741C' stroke-width='8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Sans+Thai:wght@400;700&amp;family=Noto+Sans+Myanmar:wght@400;700&amp;family=Noto+Sans+Khmer:wght@400;700&amp;display=swap">
+<style>
+:root{--ink:#1B2A36;--ink2:#4A5A68;--paper:#EEF2F5;--line:#D5DDE3;--orange:#E8741C;--orange-d:#B4520C;--peach:#FCE7D4;--navy:#26324A;--ok:#2C8A57}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans TC","Noto Sans Thai","Noto Sans Myanmar","Noto Sans Khmer","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.6}
+body[data-lang="my"],body[data-lang="km"]{line-height:1.9}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 48px}
+header{background:var(--navy);color:#fff}
+header .wrap{padding-top:20px;padding-bottom:20px}
+header h1{margin:0;font-size:1.5rem}
+header p{margin:4px 0 0;opacity:.85}
+.langs{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.langs button{font:inherit;font-size:.9rem;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;padding:7px 12px;border-radius:999px;min-height:40px;cursor:pointer}
+.langs button[aria-pressed="true"]{background:#fff;color:var(--navy)}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:16px}
+.card h2{margin:0 0 4px;font-size:1.1rem}
+.q{margin-top:18px}
+.q:first-of-type{margin-top:8px}
+.zh{display:block;font-size:.85rem;color:var(--ink2)}
+.lab{display:block;font-weight:700;margin-bottom:8px}
+.req{color:#C9402B;margin-left:4px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{position:relative}
+.opts input{position:absolute;opacity:0;width:1px;height:1px}
+.opts span{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 14px;min-height:44px;cursor:pointer}
+.opts input:checked+span{background:var(--peach);border-color:var(--orange);color:#8A3E08;font-weight:700}
+.opts input:focus-visible+span{outline:3px solid var(--orange);outline-offset:2px}
+.stars span{min-width:52px;text-align:center;font-size:1.05rem}
+.scale{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink2);margin-top:4px;max-width:330px}
+textarea{width:100%;min-height:84px;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:12px;resize:vertical}
+textarea:focus{outline:3px solid var(--orange);outline-offset:1px}
+.hint{font-size:.85rem;color:var(--ink2);margin-top:4px}
+.btn{display:block;width:100%;border:0;background:var(--orange);color:#fff;font:inherit;font-weight:700;font-size:1.15rem;padding:16px;border-radius:14px;box-shadow:0 4px 0 var(--orange-d);cursor:pointer;margin-top:22px}
+.btn[disabled]{opacity:.6;cursor:default}
+.err{color:#C9402B;font-weight:700;margin-top:12px;display:none}
+.done{display:none;text-align:center;padding:40px 20px}
+.done b{display:block;font-size:1.4rem;margin-bottom:8px;color:var(--ok)}
+.done a{color:var(--orange-d);font-weight:700}
+.bad{outline:2px solid #C9402B;border-radius:12px;outline-offset:4px}
+</style>
+</head>
+<body data-lang="zh">
+<header><div class="wrap">
+  <h1>台灣生活日記・試玩回饋</h1>
+  <p data-t="sub">謝謝你試玩！大約 3 分鐘，不用寫名字。</p>
+  <div class="langs" role="group" aria-label="Language">
+    <button type="button" data-l="zh">中文</button><button type="button" data-l="vi">Tiếng Việt</button><button type="button" data-l="id">Bahasa Indonesia</button><button type="button" data-l="th">ไทย</button><button type="button" data-l="km">ខ្មែរ</button><button type="button" data-l="my">မြန်မာ</button><button type="button" data-l="en">English</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+<form id="f" novalidate>
+  <div class="card">
+    <h2 data-t="sec1">關於你</h2>
+    <div class="q" data-name="country" data-req></div>
+    <div class="q" data-name="dept"></div>
+    <div class="q" data-name="grade" data-req></div>
+    <div class="q" data-name="progress" data-req></div>
+    <div class="q" data-name="device"></div>
+  </div>
+  <div class="card">
+    <h2 data-t="sec2">遊戲感受</h2>
+    <div class="q" data-name="fun" data-req></div>
+    <div class="q" data-name="cont"></div>
+    <div class="q" data-name="rec"></div>
+    <div class="q" data-name="diff" data-req></div>
+    <div class="q" data-name="trans"></div>
+  </div>
+  <div class="card">
+    <h2 data-t="sec3">學習</h2>
+    <div class="q" data-name="useful"></div>
+    <div class="q" data-name="helpful"></div>
+    <div class="q" data-name="hard"></div>
+  </div>
+  <div class="card">
+    <h2 data-t="sec4">問題與建議</h2>
+    <div class="q" data-name="problems"></div>
+    <div class="q" data-name="probch"></div>
+    <div class="q" data-name="like"></div>
+    <div class="q" data-name="wish"></div>
+    <p class="err" id="err" role="alert"></p>
+    <button class="btn" id="send" type="submit" data-t="send">送出</button>
+  </div>
+</form>
+<div class="card done" id="done" role="status">
+  <b data-t="thx">謝謝你的回饋！</b>
+  <p data-t="thx2">老師會用你的意見讓遊戲變得更好。</p>
+  <p><a href="../" data-t="back">回到遊戲</a></p>
+</div>
+</main>
+
+<script>
+// ====== 設定：部署 Google Apps Script（網頁應用程式）後，把網址貼在這裡 ======
+const SCRIPT_URL = 'PASTE_APPS_SCRIPT_URL_HERE';
+
+const LANGS=['zh','vi','id','th','my','km','en'];
+// 每題：t = 各語言題目；opts = [中文值, {各語言標籤}]（試算表一律存中文值）
+const Q = {
+ country:{type:'one',t:{zh:'你來自哪裡？',vi:'Bạn đến từ đâu?',id:'Kamu berasal dari mana?',th:'คุณมาจากที่ไหน',my:'ဘယ်ကလာလဲ။',en:'Where are you from?',km:'តើអ្នកមកពីណា?'},
+  opts:[['越南',{vi:'Việt Nam',id:'Vietnam',th:'เวียดนาม',my:'ဗီယက်နမ်',en:'Vietnam',km:'វៀតណាម'}],['印尼',{vi:'Indonesia',id:'Indonesia',th:'อินโดนีเซีย',my:'အင်ဒိုနီးရှား',en:'Indonesia',km:'ឥណ្ឌូនេស៊ី'}],['泰國',{vi:'Thái Lan',id:'Thailand',th:'ไทย',my:'ထိုင်း',en:'Thailand',km:'ថៃ'}],['緬甸',{vi:'Myanmar',id:'Myanmar',th:'เมียนมา',my:'မြန်မာ',en:'Myanmar',km:'មីយ៉ាន់ម៉ា'}],['菲律賓',{vi:'Philippines',id:'Filipina',th:'ฟิลิปปินส์',my:'ဖိလစ်ပိုင်',en:'Philippines',km:'ហ្វីលីពីន'}],['馬來西亞',{vi:'Malaysia',id:'Malaysia',th:'มาเลเซีย',my:'မလေးရှား',en:'Malaysia',km:'ម៉ាឡេស៊ី'}],['柬埔寨',{vi:'Campuchia',id:'Kamboja',th:'กัมพูชา',my:'ကမ္ဘောဒီးယား',en:'Cambodia',km:'កម្ពុជា'}],['其他',{vi:'Khác',id:'Lainnya',th:'อื่นๆ',my:'အခြား',en:'Other',km:'ផ្សេងៗ'}]]},
+ dept:{type:'one',t:{zh:'你讀（或想讀）哪一科？',vi:'Bạn học (hoặc muốn học) ngành nào?',id:'Jurusanmu (atau yang ingin dipilih)?',th:'คุณเรียน (หรืออยากเรียน) แผนกไหน',my:'ဘယ်ဌာန တက်နေ (သို့) တက်ချင်လဲ။',en:'Your department (or the one you want)?',km:'តើអ្នករៀន (ឬចង់រៀន) ផ្នែកណា?'},
+  opts:[['資訊科',{vi:'Tin học',id:'Informatika',th:'สารสนเทศ',my:'အိုင်တီ',en:'Information Technology',km:'ព័ត៌មានវិទ្យា'}],['烘焙食品科',{vi:'Làm bánh',id:'Tata boga roti',th:'เบเกอรี่',my:'မုန့်ဖုတ်',en:'Baking',km:'ធ្វើនំ'}],['餐飲管理科',{vi:'Quản lý ẩm thực',id:'Manajemen kuliner',th:'การจัดการอาหาร',my:'စားသောက်ရေး စီမံခန့်ခွဲမှု',en:'Food & Beverage',km:'ម្ហូបអាហារ និងភេសជ្ជៈ'}],['汽車科',{vi:'Ô tô',id:'Otomotif',th:'ยานยนต์',my:'မော်တော်ကား',en:'Automotive',km:'យានយន្ត'}],['商用資訊科',{vi:'Tin học thương mại',id:'Informatika bisnis',th:'สารสนเทศธุรกิจ',my:'စီးပွားရေး အိုင်တီ',en:'Business IT',km:'ព័ត៌មានវិទ្យាពាណិជ្ជកម្ម'}],['還沒決定',{vi:'Chưa quyết định',id:'Belum memutuskan',th:'ยังไม่ได้ตัดสินใจ',my:'မဆုံးဖြတ်ရသေး',en:'Not decided',km:'មិនទាន់សម្រេចចិត្ត'}]]},
+ grade:{type:'one',t:{zh:'你現在是？',vi:'Hiện tại bạn là?',id:'Sekarang kamu?',th:'ตอนนี้คุณเป็น',my:'အခု ဘယ်အဆင့်လဲ။',en:'You are now:',km:'ឥឡូវអ្នកជា៖'},
+  opts:[['還沒來台灣',{vi:'Chưa sang Đài Loan',id:'Belum ke Taiwan',th:'ยังไม่ได้มาไต้หวัน',my:'ထိုင်ဝမ် မရောက်သေး',en:'Not in Taiwan yet',km:'មិនទាន់មកតៃវ៉ាន់'}],['一年級',{vi:'Lớp 10 (năm 1)',id:'Kelas 10 (tahun 1)',th:'ปีหนึ่ง',my:'ပထမနှစ်',en:'Year 1',km:'ឆ្នាំទី 1'}],['二年級',{vi:'Lớp 11 (năm 2)',id:'Kelas 11 (tahun 2)',th:'ปีสอง',my:'ဒုတိယနှစ်',en:'Year 2',km:'ឆ្នាំទី 2'}],['三年級',{vi:'Lớp 12 (năm 3)',id:'Kelas 12 (tahun 3)',th:'ปีสาม',my:'တတိယနှစ်',en:'Year 3',km:'ឆ្នាំទី 3'}]]},
+ progress:{type:'one',t:{zh:'你玩到哪裡？',vi:'Bạn chơi đến đâu?',id:'Kamu main sampai mana?',th:'คุณเล่นถึงตรงไหน',my:'ဘယ်အထိ ကစားပြီးပြီလဲ။',en:'How far did you play?',km:'តើអ្នកលេងដល់ណាហើយ?'},
+  opts:[['前傳',{vi:'Tiền truyện',id:'Prekuel',th:'ภาคก่อน',my:'အစပိုင်း',en:'Prologue',km:'រឿងមុន'}],['第1–4章',{vi:'Chương 1–4',id:'Bab 1–4',th:'บทที่ 1–4',my:'အခန်း ၁–၄',en:'Chapters 1–4',km:'ជំពូក 1–4'}],['第5–8章',{vi:'Chương 5–8',id:'Bab 5–8',th:'บทที่ 5–8',my:'အခန်း ၅–၈',en:'Chapters 5–8',km:'ជំពូក 5–8'}],['第9–12章',{vi:'Chương 9–12',id:'Bab 9–12',th:'บทที่ 9–12',my:'အခန်း ၉–၁၂',en:'Chapters 9–12',km:'ជំពូក 9–12'}]]},
+ device:{type:'one',t:{zh:'你用什麼玩？',vi:'Bạn chơi bằng gì?',id:'Kamu main pakai apa?',th:'คุณเล่นด้วยอะไร',my:'ဘာနဲ့ ကစားလဲ။',en:'What did you play on?',km:'តើអ្នកលេងនឹងអ្វី?'},
+  opts:[['手機',{vi:'Điện thoại',id:'HP',th:'มือถือ',my:'ဖုန်း',en:'Phone',km:'ទូរស័ព្ទ'}],['電腦或平板',{vi:'Máy tính / máy tính bảng',id:'Komputer / tablet',th:'คอมพิวเตอร์ / แท็บเล็ต',my:'ကွန်ပျူတာ / တက်ဘလက်',en:'Computer / tablet',km:'កុំព្យូទ័រ / ថេប្លេត'}]]},
+ fun:{type:'star',t:{zh:'這個遊戲好玩嗎？',vi:'Game có vui không?',id:'Apakah game ini seru?',th:'เกมนี้สนุกไหม',my:'ဒီဂိမ်း ပျော်စရာကောင်းလား။',en:'Is the game fun?',km:'តើហ្គេមនេះសប្បាយទេ?'}},
+ cont:{type:'star',t:{zh:'你想繼續玩下一章嗎？',vi:'Bạn có muốn chơi tiếp chương sau không?',id:'Mau lanjut main bab berikutnya?',th:'อยากเล่นบทต่อไปไหม',my:'နောက်အခန်း ဆက်ကစားချင်လား။',en:'Do you want to play the next chapter?',km:'តើអ្នកចង់លេងជំពូកបន្ទាប់ទេ?'}},
+ rec:{type:'star',t:{zh:'你會推薦給學弟妹或家鄉的朋友嗎？',vi:'Bạn có giới thiệu cho đàn em hoặc bạn ở quê không?',id:'Akan kamu rekomendasikan ke adik kelas atau teman di kampung?',th:'จะแนะนำให้รุ่นน้องหรือเพื่อนที่บ้านเกิดไหม',my:'ညီငယ် (သို့) ဇာတိက သူငယ်ချင်းတွေကို အကြံပြုမလား။',en:'Would you recommend it to younger students or friends back home?',km:'តើអ្នកនឹងណែនាំដល់ប្អូនៗ ឬមិត្តនៅស្រុកកំណើតទេ?'}},
+ diff:{type:'one',t:{zh:'遊戲裡的中文難不難？',vi:'Tiếng Hoa trong game có khó không?',id:'Bahasa Mandarin di game sulit tidak?',th:'ภาษาจีนในเกมยากไหม',my:'ဂိမ်းထဲက တရုတ်စာ ခက်လား။',en:'How hard is the Chinese in the game?',km:'តើភាសាចិនក្នុងហ្គេមពិបាកទេ?'},
+  opts:[['太簡單',{vi:'Quá dễ',id:'Terlalu mudah',th:'ง่ายเกินไป',my:'လွယ်လွန်း',en:'Too easy',km:'ងាយពេក'}],['剛剛好',{vi:'Vừa phải',id:'Pas',th:'พอดี',my:'သင့်တော်',en:'Just right',km:'ល្មម'}],['有點難',{vi:'Hơi khó',id:'Agak sulit',th:'ค่อนข้างยาก',my:'နည်းနည်းခက်',en:'A bit hard',km:'ពិបាកបន្តិច'}],['太難',{vi:'Quá khó',id:'Terlalu sulit',th:'ยากเกินไป',my:'ခက်လွန်း',en:'Too hard',km:'ពិបាកពេក'}]]},
+ trans:{type:'one',t:{zh:'母語翻譯看得懂嗎？',vi:'Bản dịch tiếng mẹ đẻ có dễ hiểu không?',id:'Terjemahan bahasa ibu bisa dipahami?',th:'คำแปลภาษาแม่อ่านเข้าใจไหม',my:'မိခင်ဘာသာ ဘာသာပြန် နားလည်လား။',en:'Is the translation easy to understand?',km:'តើការបកប្រែភាសាកំណើតងាយយល់ទេ?'},
+  opts:[['看得懂',{vi:'Hiểu được',id:'Paham',th:'เข้าใจ',my:'နားလည်',en:'Yes',km:'យល់'}],['有些地方怪怪的',{vi:'Có chỗ hơi lạ',id:'Ada yang aneh',th:'บางที่แปลกๆ',my:'တချို့နေရာ ထူးဆန်း',en:'Some parts are odd',km:'ខ្លះចម្លែកបន្តិច'}],['看不懂',{vi:'Không hiểu',id:'Tidak paham',th:'ไม่เข้าใจ',my:'နားမလည်',en:'No',km:'មិនយល់'}],['沒有用翻譯',{vi:'Không dùng bản dịch',id:'Tidak pakai terjemahan',th:'ไม่ได้ใช้คำแปล',my:'ဘာသာပြန် မသုံး',en:'Didn’t use it',km:'មិនបានប្រើ'}]]},
+ useful:{type:'star',t:{zh:'玩完以後，我學到生活中用得到的中文。',vi:'Chơi xong, tôi học được tiếng Hoa dùng được trong cuộc sống.',id:'Setelah main, saya belajar Mandarin yang berguna sehari-hari.',th:'เล่นแล้ว ฉันได้เรียนภาษาจีนที่ใช้ในชีวิตจริง',my:'ကစားပြီးနောက် နေ့စဉ်ဘဝမှာ သုံးလို့ရတဲ့ တရုတ်စာ သင်ရတယ်။',en:'After playing, I learned Chinese I can use in daily life.',km:'លេងរួច ខ្ញុំបានរៀនភាសាចិនដែលអាចប្រើក្នុងជីវិតប្រចាំថ្ងៃ។'}},
+ helpful:{type:'many',max:3,t:{zh:'哪些內容最有幫助？（最多選 3 個）',vi:'Nội dung nào hữu ích nhất? (tối đa 3)',id:'Konten mana yang paling membantu? (maks. 3)',th:'เนื้อหาไหนมีประโยชน์ที่สุด (เลือกได้ 3)',my:'ဘယ်အကြောင်းအရာက အသုံးဝင်ဆုံးလဲ။ (၃ ခုအထိ)',en:'What was most helpful? (up to 3)',km:'ខ្លឹមសារណាដែលមានប្រយោជន៍ជាងគេ? (ច្រើនបំផុត 3)'},
+  opts:[['報名和華語檢定',{vi:'Đăng ký và thi TOCFL',id:'Pendaftaran dan TOCFL',th:'การสมัครและ TOCFL',my:'လျှောက်ထားခြင်းနဲ့ TOCFL',en:'Applying and TOCFL',km:'ការចុះឈ្មោះ និង TOCFL'}],['健保卡和看醫生',{vi:'Thẻ bảo hiểm và đi khám',id:'Kartu asuransi dan berobat',th:'บัตรประกันและหาหมอ',my:'ကျန်းမာရေးကတ်နဲ့ ဆေးခန်း',en:'Health card and doctors',km:'ប័ណ្ណធានារ៉ាប់រង និងការទៅពេទ្យ'}],['薪資單和打工',{vi:'Phiếu lương và làm thêm',id:'Slip gaji dan kerja paruh waktu',th:'สลิปเงินเดือนและงานพาร์ตไทม์',my:'လစာစာရင်းနဲ့ အချိန်ပိုင်းအလုပ်',en:'Payslips and part-time work',km:'តារាងប្រាក់ខែ និងការងារក្រៅម៉ោង'}],['機車和交通規定',{vi:'Xe máy và luật giao thông',id:'Motor dan aturan lalu lintas',th:'มอเตอร์ไซค์และกฎจราจร',my:'ဆိုင်ကယ်နဲ့ ယာဉ်စည်းကမ်း',en:'Scooters and traffic rules',km:'ម៉ូតូ និងច្បាប់ចរាចរណ៍'}],['匯款和防詐騙',{vi:'Gửi tiền và chống lừa đảo',id:'Kirim uang dan anti penipuan',th:'ส่งเงินและป้องกันการหลอกลวง',my:'ငွေပို့ခြင်းနဲ့ လိမ်လည်မှု ကာကွယ်',en:'Remittance and scams',km:'ការផ្ញើប្រាក់ និងការការពារការបោកប្រាស់'}],['宿舍規定',{vi:'Nội quy ký túc xá',id:'Aturan asrama',th:'กฎหอพัก',my:'အဆောင် စည်းကမ်း',en:'Dorm rules',km:'បទបញ្ជាអន្តេវាសិកដ្ឋាន'}],['實習和工作安全',{vi:'Thực tập và an toàn lao động',id:'Magang dan keselamatan kerja',th:'ฝึกงานและความปลอดภัย',my:'အလုပ်သင်နဲ့ လုပ်ငန်းခွင် ဘေးကင်း',en:'Internship and safety',km:'ការហាត់ការ និងសុវត្ថិភាព'}],['台灣節日',{vi:'Lễ hội Đài Loan',id:'Hari raya Taiwan',th:'เทศกาลไต้หวัน',my:'ထိုင်ဝမ် ပွဲတော်',en:'Taiwanese festivals',km:'បុណ្យតៃវ៉ាន់'}],['升學和面試',{vi:'Học lên và phỏng vấn',id:'Lanjut studi dan wawancara',th:'เรียนต่อและสัมภาษณ์',my:'ဆက်တက်ခြင်းနဲ့ အင်တာဗျူး',en:'University and interviews',km:'ការបន្តការសិក្សា និងការសម្ភាសន៍'}]]},
+ hard:{type:'text',t:{zh:'哪裡看不懂或太難？（可以寫母語）',vi:'Chỗ nào khó hiểu hoặc quá khó? (có thể viết tiếng mẹ đẻ)',id:'Bagian mana yang sulit dipahami? (boleh bahasa ibu)',th:'ตรงไหนไม่เข้าใจหรือยากเกินไป (เขียนภาษาแม่ได้)',my:'ဘယ်နေရာ နားမလည် (သို့) ခက်လွန်းလဲ။ (မိခင်ဘာသာနဲ့ ရေးလို့ရ)',en:'What was confusing or too hard? (any language)',km:'កន្លែងណាដែលមិនយល់ ឬពិបាកពេក? (អាចសរសេរភាសាកំណើត)'}},
+ problems:{type:'many',t:{zh:'有沒有遇到問題？（可以複選）',vi:'Bạn có gặp vấn đề gì không? (chọn nhiều)',id:'Ada masalah? (boleh pilih lebih dari satu)',th:'เจอปัญหาไหม (เลือกได้หลายข้อ)',my:'ပြဿနာ ကြုံခဲ့လား။ (အများကြီး ရွေးလို့ရ)',en:'Did you have any problems? (choose all)',km:'តើអ្នកជួបបញ្ហាទេ? (ជ្រើសបានច្រើន)'},
+  opts:[['卡住不能繼續',{vi:'Bị kẹt, không chơi tiếp được',id:'Macet, tidak bisa lanjut',th:'ค้าง เล่นต่อไม่ได้',my:'ရပ်သွားပြီး ဆက်မကစားနိုင်',en:'Got stuck',km:'គាំង លេងបន្តមិនបាន'}],['沒有聲音',{vi:'Không có âm thanh',id:'Tidak ada suara',th:'ไม่มีเสียง',my:'အသံမထွက်',en:'No sound',km:'គ្មានសំឡេង'}],['圖片沒出來',{vi:'Hình không hiện',id:'Gambar tidak muncul',th:'รูปไม่ขึ้น',my:'ပုံမပေါ်',en:'Images missing',km:'រូបភាពមិនបង្ហាញ'}],['存檔不見',{vi:'Mất dữ liệu lưu',id:'Simpanan hilang',th:'เซฟหาย',my:'သိမ်းထားတာ ပျောက်',en:'Lost my save',km:'ទិន្នន័យរក្សាទុកបាត់'}],['字太小',{vi:'Chữ quá nhỏ',id:'Huruf terlalu kecil',th:'ตัวหนังสือเล็กไป',my:'စာလုံး သေးလွန်း',en:'Text too small',km:'អក្សរតូចពេក'}],['沒有遇到問題',{vi:'Không có vấn đề',id:'Tidak ada masalah',th:'ไม่มีปัญหา',my:'ပြဿနာ မရှိ',en:'No problems',km:'គ្មានបញ្ហា'}]]},
+ probch:{type:'text',short:true,t:{zh:'問題在哪一章？發生了什麼事？',vi:'Vấn đề ở chương nào? Chuyện gì đã xảy ra?',id:'Masalah di bab mana? Apa yang terjadi?',th:'ปัญหาอยู่บทไหน เกิดอะไรขึ้น',my:'ပြဿနာ ဘယ်အခန်းမှာလဲ။ ဘာဖြစ်ခဲ့လဲ။',en:'Which chapter? What happened?',km:'បញ្ហានៅជំពូកណា? មានអ្វីកើតឡើង?'}},
+ like:{type:'text',t:{zh:'你最喜歡遊戲的哪個地方？',vi:'Bạn thích điều gì nhất trong game?',id:'Apa yang paling kamu suka dari game ini?',th:'ชอบอะไรในเกมนี้มากที่สุด',my:'ဂိမ်းထဲမှာ ဘာကို အကြိုက်ဆုံးလဲ။',en:'What did you like most?',km:'តើអ្នកចូលចិត្តអ្វីជាងគេក្នុងហ្គេម?'}},
+ wish:{type:'text',t:{zh:'希望遊戲加入什麼？（想學的情境、想遇到的事）',vi:'Bạn muốn game thêm gì? (tình huống muốn học, chuyện muốn gặp)',id:'Ingin game menambahkan apa? (situasi yang ingin dipelajari)',th:'อยากให้เกมเพิ่มอะไร (สถานการณ์ที่อยากเรียน)',my:'ဂိမ်းထဲ ဘာထပ်ထည့်စေချင်လဲ။ (သင်ချင်တဲ့ အခြေအနေ)',en:'What should we add? (situations you want to learn)',km:'ចង់ឲ្យហ្គេមបន្ថែមអ្វី? (ស្ថានភាពដែលចង់រៀន)'}}
+};
+const UI={
+ sub:{zh:'謝謝你試玩！大約 3 分鐘，不用寫名字。',vi:'Cảm ơn bạn đã chơi thử! Khoảng 3 phút, không cần ghi tên.',id:'Terima kasih sudah mencoba! Sekitar 3 menit, tanpa nama.',th:'ขอบคุณที่ทดลองเล่น! ประมาณ 3 นาที ไม่ต้องใส่ชื่อ',my:'စမ်းကစားပေးလို့ ကျေးဇူးပါ! ၃ မိနစ်ခန့်၊ နာမည် မရေးရ။',en:'Thanks for playing! About 3 minutes, no name needed.',km:'អរគុណដែលបានសាកលេង! ប្រហែល 3 នាទី មិនចាំបាច់សរសេរឈ្មោះ។'},
+ sec1:{zh:'關於你',vi:'Về bạn',id:'Tentang kamu',th:'เกี่ยวกับคุณ',my:'သင့်အကြောင်း',en:'About you',km:'អំពីអ្នក'},
+ sec2:{zh:'遊戲感受',vi:'Cảm nhận về game',id:'Kesan bermain',th:'ความรู้สึกต่อเกม',my:'ဂိမ်းအပေါ် ခံစားချက်',en:'How was the game?',km:'អារម្មណ៍ចំពោះហ្គេម'},
+ sec3:{zh:'學習',vi:'Học tập',id:'Belajar',th:'การเรียนรู้',my:'သင်ယူမှု',en:'Learning',km:'ការរៀនសូត្រ'},
+ sec4:{zh:'問題與建議',vi:'Vấn đề và góp ý',id:'Masalah dan saran',th:'ปัญหาและข้อเสนอแนะ',my:'ပြဿနာနဲ့ အကြံပြုချက်',en:'Problems and ideas',km:'បញ្ហា និងយោបល់'},
+ send:{zh:'送出',vi:'Gửi',id:'Kirim',th:'ส่ง',my:'ပို့မယ်',en:'Submit',km:'ផ្ញើ'},
+ sending:{zh:'送出中…',vi:'Đang gửi…',id:'Mengirim…',th:'กำลังส่ง…',my:'ပို့နေတယ်…',en:'Sending…',km:'កំពុងផ្ញើ…'},
+ need:{zh:'請回答標有 * 的題目。',vi:'Vui lòng trả lời các câu có dấu *.',id:'Mohon jawab pertanyaan bertanda *.',th:'กรุณาตอบข้อที่มี *',my:'* ပါတဲ့ မေးခွန်းတွေကို ဖြေပေးပါ။',en:'Please answer the questions marked *.',km:'សូមឆ្លើយសំណួរដែលមានសញ្ញា *។'},
+ fail:{zh:'送出失敗，請檢查網路後再試一次。',vi:'Gửi không thành công, hãy kiểm tra mạng rồi thử lại.',id:'Gagal mengirim, periksa internet lalu coba lagi.',th:'ส่งไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่',my:'မပို့နိုင်ပါ၊ အင်တာနက် စစ်ပြီး ထပ်ကြိုးစားပါ။',en:'Couldn’t send. Check your connection and try again.',km:'ផ្ញើមិនបាន។ សូមពិនិត្យអ៊ីនធឺណិត ហើយសាកម្តងទៀត។'},
+ nourl:{zh:'問卷還在設定中，請稍後再填。',vi:'Bảng khảo sát đang được thiết lập, vui lòng quay lại sau.',id:'Survei masih disiapkan, coba lagi nanti.',th:'แบบสอบถามยังตั้งค่าอยู่ กรุณากลับมาใหม่',my:'စစ်တမ်းကို ပြင်ဆင်နေဆဲ၊ နောက်မှ ပြန်ဖြည့်ပါ။',en:'The survey isn’t set up yet. Please try later.',km:'ការស្ទង់មតិកំពុងរៀបចំ សូមមកបំពេញពេលក្រោយ។'},
+ thx:{zh:'謝謝你的回饋！',vi:'Cảm ơn góp ý của bạn!',id:'Terima kasih atas masukanmu!',th:'ขอบคุณสำหรับความคิดเห็น!',my:'အကြံပြုချက်အတွက် ကျေးဇူးပါ!',en:'Thank you for your feedback!',km:'អរគុណសម្រាប់មតិយោបល់របស់អ្នក!'},
+ thx2:{zh:'老師會用你的意見讓遊戲變得更好。',vi:'Thầy cô sẽ dùng ý kiến của bạn để làm game tốt hơn.',id:'Guru akan memakai masukanmu untuk memperbaiki game.',th:'ครูจะนำความคิดเห็นของคุณไปพัฒนาเกมให้ดีขึ้น',my:'ဆရာ/ဆရာမတွေက ဂိမ်းကို ပိုကောင်းအောင် သင့်အကြံကို သုံးမယ်။',en:'Teachers will use your ideas to make the game better.',km:'គ្រូនឹងប្រើយោបល់របស់អ្នកដើម្បីធ្វើឲ្យហ្គេមកាន់តែល្អ។'},
+ back:{zh:'回到遊戲',vi:'Quay lại game',id:'Kembali ke game',th:'กลับไปที่เกม',my:'ဂိမ်းကို ပြန်သွားမယ်',en:'Back to the game',km:'ត្រឡប់ទៅហ្គេមវិញ'},
+ s1:{zh:'不喜歡',vi:'Không thích',id:'Tidak suka',th:'ไม่ชอบ',my:'မကြိုက်',en:'Not at all',km:'មិនចូលចិត្ត'},
+ s5:{zh:'非常喜歡',vi:'Rất thích',id:'Sangat suka',th:'ชอบมาก',my:'အရမ်းကြိုက်',en:'Very much',km:'ចូលចិត្តខ្លាំងណាស់'},
+ max3:{zh:'最多選 3 個',vi:'Tối đa 3',id:'Maksimal 3',th:'เลือกได้สูงสุด 3',my:'၃ ခုအထိ',en:'Up to 3',km:'ច្រើនបំផុត 3'}
+};
+const P=new URLSearchParams(location.search);
+let lang=(P.get('lang')||'').toLowerCase();
+if(!LANGS.includes(lang)){ const n=(navigator.language||'').toLowerCase(); lang=n.startsWith('vi')?'vi':(n.startsWith('id')||n.startsWith('ms'))?'id':n.startsWith('th')?'th':n.startsWith('my')?'my':n.startsWith('km')?'km':n.startsWith('en')?'en':'zh'; }
+const tr=(o)=>o[lang]||o.en||o.zh;
+
+function build(){
+  document.querySelectorAll('.q').forEach(box=>{
+    const name=box.dataset.name, q=Q[name], req=box.hasAttribute('data-req');
+    const keep=collectOne(name);
+    box.innerHTML='';
+    const lab=document.createElement('span'); lab.className='lab'; lab.id='l_'+name;
+    lab.textContent=lang==='zh'?q.t.zh:tr(q.t); if(req){const r=document.createElement('span');r.className='req';r.textContent='*';lab.append(r);}
+    if(lang!=='zh'){ const z=document.createElement('span'); z.className='zh'; z.textContent=q.t.zh; box.append(z); }
+    box.append(lab);
+    if(q.type==='text'){ const ta=document.createElement('textarea'); ta.name=name; ta.setAttribute('aria-labelledby','l_'+name); ta.maxLength=1000; if(q.short) ta.style.minHeight='56px'; ta.value=keep||''; box.append(ta); return; }
+    const g=document.createElement('div'); g.className='opts'+(q.type==='star'?' stars':''); g.setAttribute('role',q.type==='many'?'group':'radiogroup'); g.setAttribute('aria-labelledby','l_'+name);
+    const items=q.type==='star'?[1,2,3,4,5].map(v=>[String(v),null]):q.opts;
+    items.forEach(([v,labs])=>{
+      const l=document.createElement('label'), i=document.createElement('input'), s=document.createElement('span');
+      i.type=q.type==='many'?'checkbox':'radio'; i.name=name; i.value=v;
+      if(Array.isArray(keep)?keep.includes(v):keep===v) i.checked=true;
+      s.textContent=q.type==='star'?'★'.repeat(+v):(lang==='zh'?v:(labs[lang]||v));
+      if(q.type==='star') i.setAttribute('aria-label',v+' / 5');
+      if(q.max) i.addEventListener('change',()=>{ const c=g.querySelectorAll('input:checked'); if(c.length>q.max) i.checked=false; });
+      l.append(i,s); g.append(l);
+    });
+    box.append(g);
+    if(q.type==='star'){ const sc=document.createElement('div'); sc.className='scale'; const a=document.createElement('span'); a.textContent=tr(UI.s1); const b=document.createElement('span'); b.textContent=tr(UI.s5); sc.append(a,b); box.append(sc); }
+  });
+  document.querySelectorAll('[data-t]').forEach(e=>{ e.textContent=tr(UI[e.dataset.t]); });
+  document.documentElement.lang={zh:'zh-Hant-TW',vi:'vi',id:'id',th:'th',my:'my',en:'en'}[lang]; document.body.dataset.lang=lang;
+  document.querySelectorAll('.langs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.l===lang)));
+}
+function collectOne(name){
+  const els=[...document.querySelectorAll('[name="'+name+'"]')]; if(!els.length) return null;
+  if(els[0].tagName==='TEXTAREA') return els[0].value;
+  if(els[0].type==='checkbox') return els.filter(e=>e.checked).map(e=>e.value);
+  const c=els.find(e=>e.checked); return c?c.value:null;
+}
+document.querySelectorAll('.langs button').forEach(b=>b.addEventListener('click',()=>{ lang=b.dataset.l; build(); }));
+build();
+// 從遊戲帶入的預設值
+(function(){ const pre={country:P.get('home'),dept:P.get('dept')}; for(const [k,v] of Object.entries(pre)){ if(!v) continue; const i=document.querySelector('input[name="'+k+'"][value="'+CSS.escape(v)+'"]'); if(i) i.checked=true; }
+  const ch=+P.get('ch'); const pr=isNaN(ch)||P.get('ch')===null?null:ch===0?'前傳':ch<=4?'第1–4章':ch<=8?'第5–8章':'第9–10章'; if(pr){ const i=document.querySelector('input[name="progress"][value="'+pr+'"]'); if(i) i.checked=true; } })();
+
+document.getElementById('f').addEventListener('submit',async ev=>{
+  ev.preventDefault();
+  const err=document.getElementById('err'); err.style.display='none';
+  document.querySelectorAll('.bad').forEach(e=>e.classList.remove('bad'));
+  const missing=[...document.querySelectorAll('.q[data-req]')].filter(b=>{ const v=collectOne(b.dataset.name); return !v||(Array.isArray(v)&&!v.length); });
+  if(missing.length){ missing.forEach(b=>b.classList.add('bad')); err.textContent=tr(UI.need); err.style.display='block'; missing[0].scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  if(!/^https:\/\/script\.google\.com\//.test(SCRIPT_URL)){ err.textContent=tr(UI.nourl); err.style.display='block'; return; }
+  const a={}; Object.keys(Q).forEach(k=>{ const v=collectOne(k); a[k]=Array.isArray(v)?v.join('、'):(v||''); });
+  const payload={lang, src:P.get('src')||'', ch:P.get('ch')||'', glang:P.get('lang')||'', ua:navigator.userAgent.slice(0,200), ...a};
+  const btn=document.getElementById('send'); btn.disabled=true; btn.textContent=tr(UI.sending);
+  try{
+    await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+    document.getElementById('f').style.display='none'; const d=document.getElementById('done'); d.style.display='block'; d.scrollIntoView({behavior:'smooth'});
+  }catch(e){ err.textContent=tr(UI.fail); err.style.display='block'; btn.disabled=false; btn.textContent=tr(UI.send); }
+});
+</script>
+</body>
+</html>

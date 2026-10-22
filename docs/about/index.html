@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台灣生活日記｜僑生華語養成遊戲</title>
+<meta name="description" content="青年高中僑生建教專班的華語養成遊戲。從家鄉報名到在台灣的三年，一天一天學中文。免下載，手機打開就能玩。支援越南文、印尼文、泰文、緬甸文、英文。">
+<meta property="og:title" content="台灣生活日記｜在台灣的三年，一天一天學中文">
+<meta property="og:description" content="青年高中僑生建教專班的華語養成遊戲。免下載，手機打開就能玩。Tiếng Việt・Bahasa Indonesia・ไทย・မြန်မာ・English">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://app2.youth.tc.edu.tw/twdiary/about/">
+<meta property="og:image" content="https://app2.youth.tc.edu.tw/twdiary/about/img/og.jpg">
+<meta name="theme-color" content="#26324A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='14' fill='none' stroke='%23A7AAAD' stroke-width='8'/%3E%3Cpath d='M20 6 A14 14 0 0 0 20 34' fill='none' stroke='%23E8741C' stroke-width='8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Noto+Sans+Thai:wght@400;700&amp;family=Noto+Sans+Myanmar:wght@400;700&amp;family=Noto+Sans+Khmer:wght@400;700&amp;display=swap">
+<style>
+:root{--ink:#1B2A36;--ink2:#4A5A68;--paper:#EEF2F5;--card:#FFFFFF;--line:#D5DDE3;--orange:#E8741C;--orange-d:#B4520C;--peach:#FCE7D4;--navy:#26324A}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans TC","Noto Sans Thai","Noto Sans Myanmar","Noto Sans Khmer","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.6}
+body[data-lang="my"],body[data-lang="km"]{line-height:1.9}
+img{max-width:100%}
+a{color:var(--orange-d)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.disp{font-family:"LXGW WenKai TC","Noto Sans TC",serif;font-weight:700}
+.btn{display:inline-block;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;font-size:1.1rem;padding:15px 30px;border-radius:14px;box-shadow:0 4px 0 var(--orange-d)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.pill{display:inline-block;background:var(--peach);color:#8A3E08;font-weight:700;font-size:.9rem;padding:7px 14px;border-radius:999px}
+header .wrap{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px;font-size:1.5rem}
+nav{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+nav a{color:var(--ink);text-decoration:none;padding:10px 2px}
+nav a.btn{color:#fff;padding:11px 18px;font-size:1rem}
+.langs{display:flex;flex-wrap:wrap;gap:6px}
+.langs button{font:inherit;font-size:.9rem;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 12px;border-radius:999px;cursor:pointer;min-height:40px}
+.langs button[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.hero{display:flex;flex-wrap:wrap;gap:40px;align-items:center;padding-top:16px;padding-bottom:64px}
+.hero .txt{flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+.hero h1{margin:0;font-size:clamp(2.6rem,6vw,4rem);line-height:1.1;letter-spacing:.03em}
+.hero .tag{margin:0;font-size:clamp(1.3rem,2.6vw,1.8rem);font-weight:700}
+.hero p{margin:0;font-size:1.1rem;color:var(--ink2);max-width:34em}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.small{font-size:.95rem;color:var(--ink2)}
+.pic{flex:1 1 460px;min-width:0;height:440px;border-radius:28px;border:1px solid var(--line);position:relative;overflow:hidden;background:url("img/bg_campus.webp") center/cover}
+.pic::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(180deg,rgba(238,242,245,0),rgba(238,242,245,.85))}
+.pic .cast{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;align-items:flex-end;z-index:1}
+.pic .cast img{height:260px;margin-right:-18px}.pic .cast img:last-child{margin-right:0}
+.band{background-color:var(--navy);background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0 6px,transparent 6px 22px),repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 6px,transparent 6px 22px);color:#fff}
+.band .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:24px;padding-top:36px;padding-bottom:36px}
+.band b{display:block;font-size:2.2rem;line-height:1.2}
+.band span{opacity:.88}
+section.sec{padding-top:72px;padding-bottom:40px}
+h2{margin:0 0 10px;font-size:clamp(1.8rem,3.5vw,2.3rem)}
+.lead{margin:0 0 28px;font-size:1.1rem;color:var(--ink2);max-width:42em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:10px}
+.card h3{margin:0;font-size:1.2rem}.card p{margin:0;color:var(--ink2)}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.steps li{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:6px;position:relative}
+.steps .when{font-weight:700;color:var(--orange-d)}
+.steps .what{font-weight:700}
+.steps .note{font-size:.92rem;color:var(--ink2)}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px;justify-items:center}
+.shots figure{margin:0;width:100%;max-width:290px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+.phone{width:100%;border:10px solid var(--ink);border-radius:36px;overflow:hidden;background:var(--paper)}
+.phone img{display:block;width:100%}
+figcaption b{display:block;font-size:1.05rem}figcaption span{color:var(--ink2)}
+.years{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
+.year{background:var(--paper);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:12px}
+.year .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.year .hd b{font-size:1.5rem}
+.year ul{margin:0;padding-left:1.2em;line-height:1.9}
+.white{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}@media(min-width:640px){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.cards div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.cards img{width:90px;height:90px;object-fit:contain}
+.cards i{font-style:normal;font-size:.85rem;color:var(--ink2)}
+.teach{background:#fff;border:1px solid var(--line);border-radius:28px;padding:36px;display:flex;flex-wrap:wrap;gap:30px;align-items:center}
+.teach img{height:210px}
+.teach div{flex:1 1 400px;min-width:0}
+.teach ul{margin:0;padding-left:1.2em;line-height:1.9}
+.cta{background:url("img/bg_nightmarket.webp") center/cover;margin-top:40px}
+.cta .shade{background:rgba(27,42,54,.84);color:#fff}
+.cta .wrap{display:flex;flex-wrap:wrap;gap:36px;align-items:center;justify-content:space-between;padding-top:64px;padding-bottom:64px}
+.cta .txt{flex:1 1 400px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.cta h2{margin:0;color:#fff}
+.cta p{margin:0;opacity:.92}
+.qr{background:#fff;border-radius:22px;padding:16px}
+.qr img{width:190px;display:block}
+.cta .link{color:#FFD2A8}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;padding-top:26px;padding-bottom:40px;color:var(--ink2);font-size:.9rem}
+@media (max-width:520px){.pic{height:340px}.pic .cast img{height:200px}.teach{padding:24px}}
+</style>
+</head>
+<body data-lang="zh">
+
+<header><div class="wrap">
+  <div class="brand"><svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" fill="none" stroke="#A7AAAD" stroke-width="8"></circle><path d="M20 6 A14 14 0 0 0 20 34" fill="none" stroke="#E8741C" stroke-width="8"></path></svg><span class="disp">台灣生活日記</span></div>
+  <nav aria-label="頁面導覽">
+    <a href="#prologue" data-i18n="nav1">報名到出發</a>
+    <a href="#features" data-i18n="nav2">遊戲特色</a>
+    <a href="#journey" data-i18n="nav3">三年旅程</a>
+    <a href="#teachers" data-i18n="nav4">給老師</a>
+    <a class="btn" href="../?start=pre" data-i18n="play">開始玩</a>
+  </nav>
+  <div class="langs" role="group" aria-label="Language">
+    <button type="button" data-l="zh" aria-pressed="true">中文</button>
+    <button type="button" data-l="vi" aria-pressed="false">Tiếng Việt</button>
+    <button type="button" data-l="id" aria-pressed="false">Bahasa Indonesia</button>
+    <button type="button" data-l="th" aria-pressed="false">ไทย</button>
+    <button type="button" data-l="my" aria-pressed="false">မြန်မာ</button>
+    <button type="button" data-l="km" aria-pressed="false">ខ្មែរ</button>
+    <button type="button" data-l="en" aria-pressed="false">English</button>
+  </div>
+</div></header>
+
+<main>
+<section class="wrap hero">
+  <div class="txt">
+    <span class="pill" data-i18n="badge">青年高中 僑生建教專班 ・ 華語養成遊戲</span>
+    <h1 class="disp">台灣生活日記</h1>
+    <p class="tag" data-i18n="tagline">在台灣的三年，一天一天學中文</p>
+    <p data-i18n="intro">從家鄉報名、考華語檢定，到來台灣上課、實習、打工、過節、辦健保卡……生活裡的每一件事，都是一題中文。選對了，日子越過越順；選錯了，陳導師會教你怎麼做。</p>
+    <div class="row">
+      <a class="btn" href="../?start=pre" data-i18n="play2">立即開始玩</a>
+      <a class="btn ghost" href="https://overseas.youth.tc.edu.tw" target="_blank" rel="noopener" data-i18n="admit">新生入學資訊網 ↗</a>
+    </div>
+    <span class="small" data-i18n="free">免下載，手機打開就能玩・進度自動存檔・可換裝置接著玩</span>
+  </div>
+  <div class="pic"><div class="cast">
+    <img src="img/h01.webp" alt=""><img src="img/h02.webp" alt=""><img src="img/h05.webp" alt=""><img src="img/h08.webp" alt="">
+  </div></div>
+</section>
+
+<section class="band"><div class="wrap">
+  <div><b class="disp" data-i18n="s1b">前傳＋12 章</b><span data-i18n="s1">從家鄉報名到三年後畢業，全部開放</span></div>
+  <div><b class="disp">A1 → B1</b><span data-i18n="s2">詞彙依 TOCFL 詞表逐章加深</span></div>
+  <div><b class="disp" data-i18n="s3b">6 種母語</b><span data-i18n="s3">越南文、印尼文、泰文、緬甸文、高棉文、英文輔助翻譯</span></div>
+  <div><b class="disp" data-i18n="s4b">15–20 分鐘</b><span data-i18n="s4">一章的長度，下課就能玩一段</span></div>
+</div></section>
+
+<section class="wrap sec" id="prologue">
+  <h2 class="disp" data-i18n="p_h">從家鄉報名到出發</h2>
+  <p class="lead" data-i18n="p_lead">遊戲的前傳「出發前」跟著真實的招生時程走。正式日期請以新生入學資訊網公告為準。</p>
+  <ol class="steps">
+    <li><span class="when" data-i18n="p1w">前一年 11 月</span><span class="what" data-i18n="p1">學校開始招生宣導</span><span class="note" data-i18n="p1n">上新生入學資訊網，看招生訊息，選想讀的科</span></li>
+    <li><span class="when" data-i18n="p2w">12 月</span><span class="what" data-i18n="p2">向當地保薦單位報名</span><span class="note" data-i18n="p2n">早點報名，就能參加學校的華語學習輔導</span></li>
+    <li><span class="when" data-i18n="p3w">1 月底以前</span><span class="what" data-i18n="p3">保薦單位面試或審查</span><span class="note" data-i18n="p3n">每週上華語輔導課</span></li>
+    <li><span class="when" data-i18n="p4w">2 月底以前</span><span class="what" data-i18n="p4">通過華語文能力測驗 A1</span><span class="note" data-i18n="p4n">可以報名以後再考</span></li>
+    <li><span class="when" data-i18n="p5w">5 月底</span><span class="what" data-i18n="p5">錄取公告</span><span class="note" data-i18n="p5n">收到錄取通知書，6 月辦簽證</span></li>
+    <li><span class="when" data-i18n="p6w">7 月最後一週</span><span class="what" data-i18n="p6">抵達台灣</span><span class="note" data-i18n="p6n">學校接機，8 月新生基礎訓練，9 月開學</span></li>
+  </ol>
+  <p style="margin-top:20px"><a class="btn ghost" href="https://overseas.youth.tc.edu.tw" target="_blank" rel="noopener" data-i18n="admit2">青年高中 2027 年僑生新生入學資訊網 ↗</a></p>
+</section>
+
+<section class="wrap sec" id="features">
+  <h2 class="disp" data-i18n="f_h">學中文，就是過生活</h2>
+  <p class="lead" data-i18n="f_lead">不背課本，而是在宿舍、工廠、便利商店、夜市和診所裡，用中文解決真正會遇到的事。</p>
+  <div class="grid">
+    <div class="card"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E8741C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg><h3 data-i18n="f1h">真實的僑生生活</h3><p data-i18n="f1">在校和實習輪流。看薪資單、學生證搭公車、宿舍內務檢查、住滿 180 天辦健保卡、到郵局匯款回家，都是真的會遇到的事。</p></div>
+    <div class="card"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E8741C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg><h3 data-i18n="f2h">聽、讀、選，一步一步</h3><p data-i18n="f2">每句話都能按下去聽。拼音和母語翻譯可以打開或關掉，程度越好，提示就越少。</p></div>
+    <div class="card"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E8741C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path></svg><h3 data-i18n="f3h">選錯也能學會</h3><p data-i18n="f3">沒駕照騎機車、闖紅燈、把存摺借人……選錯會看到後果，老師教你正確做法，過幾天還會再遇到一次。</p></div>
+    <div class="card"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E8741C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="13" height="16" rx="2"></rect><path d="M8 4V2.5h13V18h-5"></path></svg><h3 data-i18n="f4h">收集卡與好幾種結局</h3><p data-i18n="f4">過節、比賽、考試都會拿到紀念卡。畢業時依你的選擇出現不同結局，每一種都是好結局。</p></div>
+  </div>
+</section>
+
+<section class="wrap sec">
+  <h2 class="disp" data-i18n="g_h">遊戲畫面</h2>
+  <div class="shots">
+    <figure><div class="phone"><img src="img/shot_2_event.webp" alt=""></div><figcaption><b data-i18n="g1">看海報、聽問題</b><span data-i18n="g1n">按喇叭聽中文，選出答案</span></figcaption></figure>
+    <figure><div class="phone"><img src="img/shot_4_journey.webp" alt=""></div><figcaption><b data-i18n="g2">安排每一天</b><span data-i18n="g2n">照顧體力、心情和存款</span></figcaption></figure>
+    <figure><div class="phone"><img src="img/shot_3_payslip.webp" alt=""></div><figcaption><b data-i18n="g3">看懂薪資單</b><span data-i18n="g3n">勞保、健保為什麼要扣？</span></figcaption></figure>
+  </div>
+</section>
+
+<section class="white" id="journey" style="margin-top:40px"><div class="wrap sec">
+  <h2 class="disp" data-i18n="j_h">三年旅程</h2>
+  <p class="lead" data-i18n="j_lead">跟著建教專班的行事曆走：一年級下學期通過 A2，畢業前一定要通過 B1，才能直升合作科技大學（3+4 學制，科大是「四天實習、兩天上課」的輪調專班）。</p>
+  <div class="years">
+    <div class="year"><div class="hd"><b class="disp" data-i18n="y1">一年級</b><span class="pill">A1 → A2</span></div>
+      <ul><li data-i18n="y1a">抵達台灣、新生基礎訓練、廠商面試</li><li data-i18n="y1b">第一次實習、中秋、跨年、春節</li><li data-i18n="y1c">住滿 180 天，辦健保卡</li><li data-i18n="y1d">華語文能力測驗 A2</li></ul>
+      <span class="small" data-i18n="y1e">第 1–4 章</span></div>
+    <div class="year"><div class="hd"><b class="disp" data-i18n="y2">二年級</b><span class="pill">A2 → B1</span></div>
+      <ul><li data-i18n="y2a">當學長姐，帶學弟妹</li><li data-i18n="y2b">運動會、技能檢定</li><li data-i18n="y2c">公司尾牙、元宵猜燈謎</li><li data-i18n="y2d">華語文能力測驗 B1、協助學校招生</li></ul>
+      <span class="small" data-i18n="y2e">第 5–8 章</span></div>
+    <div class="year"><div class="hd"><b class="disp" data-i18n="y3">三年級</b><span class="pill" data-i18n="y3p">B1・畢業</span></div>
+      <ul><li data-i18n="y3a">新生說明會換你分享經驗、拍畢業照</li><li data-i18n="y3b">實習當小組長、寫中文自傳、第一次報稅</li><li data-i18n="y3c">模擬面試，大學老師到校說明會＋面試</li><li data-i18n="y3d">畢業典禮；通過 B1 直升科大，看見四年後的自己</li></ul>
+      <span class="small" data-i18n="y3e">第 9–12 章</span></div>
+  </div>
+</div></section>
+
+<section class="wrap sec">
+  <h2 class="disp" data-i18n="c_h">收集你的台灣回憶</h2>
+  <p class="lead" data-i18n="c_lead">每張卡都有中文名稱和發音，收進三年旅程地圖裡。</p>
+  <div class="cards">
+    <div><img src="img/item_easycard.webp" alt=""><b>悠遊卡</b><i>yōu yóu kǎ</i></div>
+    <div><img src="img/item_mooncake.webp" alt=""><b>月餅</b><i>yuè bǐng</i></div>
+    <div><img src="img/item_nhicard.webp" alt=""><b>健保卡</b><i>jiàn bǎo kǎ</i></div>
+    <div><img src="img/item_medal.webp" alt=""><b>獎牌</b><i>jiǎng pái</i></div>
+    <div><img src="img/item_lantern.webp" alt=""><b>小燈籠</b><i>xiǎo dēng lóng</i></div>
+    <div><img src="img/item_uniadmit.webp" alt=""><b>科大錄取通知書</b><i>kē dà lù qǔ tōng zhī shū</i></div>
+    <div><img src="img/item_diploma.webp" alt=""><b>高中畢業證書</b><i>gāo zhōng bì yè zhèng shū</i></div>
+    <div><img src="img/item_yearbook.webp" alt=""><b>畢業紀念冊</b><i>bì yè jì niàn cè</i></div>
+  </div>
+</section>
+
+<section class="wrap sec" id="teachers">
+  <div class="teach">
+    <img src="img/chen.webp" alt="">
+    <div>
+      <h2 class="disp" data-i18n="t_h">給老師的話</h2>
+      <ul>
+        <li data-i18n="t1">事件時間和學校行事曆同步，可以當作活動、實習、檢定前的預習。</li>
+        <li data-i18n="t2">每章詞彙都對照 TOCFL 詞表，從 A1 逐步加到 B1。</li>
+        <li data-i18n="t3">存檔代碼可以換手機、換電腦接著玩，不需要帳號。</li>
+        <li data-i18n="t4">題目答錯的地方會收進複習，晚上「自己複習」時再練一次。</li>
+      </ul>
+      <a class="btn" href="../feedback/teacher/" target="_blank" rel="noopener" data-i18n="t5" style="margin-top:12px">填寫教師試玩回饋</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta"><div class="shade"><div class="wrap">
+  <div class="txt">
+    <h2 class="disp" data-i18n="e_h">今天，就從家鄉出發</h2>
+    <p data-i18n="e1">用手機掃描 QR Code，或點下面的按鈕，打開就能玩。建議戴耳機或打開聲音。</p>
+    <div class="row" style="align-items:center">
+      <a class="btn" href="../?start=pre" data-i18n="play2">立即開始玩</a>
+      <a class="link" href="https://overseas.youth.tc.edu.tw" target="_blank" rel="noopener" data-i18n="admit">新生入學資訊網 ↗</a>
+    </div>
+  </div>
+  <div class="qr"><img src="img/qr.png" alt="QR Code: app2.youth.tc.edu.tw/twdiary"></div>
+</div></div></section>
+</main>
+
+<footer><div class="wrap">
+  <span data-i18n="ft1">台灣生活日記・青年高中 僑生建教專班 華語養成遊戲</span>
+  <span data-i18n="ft2">角色與場景皆為原創插畫</span>
+</div></footer>
+
+<script>
+const T={
+vi:{nav1:'Đăng ký đến lên đường',nav2:'Đặc điểm',nav3:'Hành trình 3 năm',nav4:'Dành cho giáo viên',play:'Chơi ngay',
+badge:'Trường THPT Thanh Niên · Lớp hợp tác Hoa kiều · Game học tiếng Hoa',tagline:'Ba năm ở Đài Loan, mỗi ngày học thêm một chút tiếng Hoa',
+intro:'Từ đăng ký ở quê nhà, thi TOCFL, đến sang Đài Loan đi học, thực tập, làm thêm, đón lễ, làm thẻ bảo hiểm y tế… mỗi việc trong cuộc sống đều là một bài tiếng Hoa. Chọn đúng thì mọi việc suôn sẻ; chọn sai thì thầy Trần sẽ chỉ cho bạn cách làm.',
+play2:'Chơi ngay',admit:'Trang thông tin tuyển sinh ↗',free:'Không cần tải · mở bằng điện thoại là chơi · tự động lưu · đổi thiết bị vẫn chơi tiếp',
+s1b:'Tiền truyện + 12 chương',s1:'Từ đăng ký ở quê đến tốt nghiệp, đã mở toàn bộ',s2:'Từ vựng tăng dần theo bảng từ TOCFL',s3b:'6 ngôn ngữ',s3:'Dịch hỗ trợ tiếng Việt, Indonesia, Thái, Myanmar, Khmer, Anh',s4b:'15–20 phút',s4:'Mỗi chương, chơi được trong giờ ra chơi',
+p_h:'Từ đăng ký đến lên đường',p_lead:'Tiền truyện “Trước khi lên đường” đi theo lịch tuyển sinh thực tế. Ngày chính thức xin xem trang thông tin tuyển sinh.',
+p1w:'Tháng 11 năm trước',p1:'Trường bắt đầu quảng bá tuyển sinh',p1n:'Xem thông tin trên trang tuyển sinh, chọn ngành muốn học',
+p2w:'Tháng 12',p2:'Đăng ký tại đơn vị bảo tiến ở địa phương',p2n:'Đăng ký sớm để tham gia lớp phụ đạo tiếng Hoa của trường',
+p3w:'Trước cuối tháng 1',p3:'Đơn vị bảo tiến phỏng vấn hoặc xét hồ sơ',p3n:'Học phụ đạo tiếng Hoa mỗi tuần',
+p4w:'Trước cuối tháng 2',p4:'Đậu TOCFL A1',p4n:'Có thể thi sau khi đăng ký',
+p5w:'Cuối tháng 5',p5:'Công bố trúng tuyển',p5n:'Nhận giấy báo, tháng 6 làm visa',
+p6w:'Tuần cuối tháng 7',p6:'Đến Đài Loan',p6n:'Trường đón ở sân bay; tháng 8 huấn luyện cơ bản, tháng 9 khai giảng',
+admit2:'Trang thông tin tuyển sinh Hoa kiều 2027 của trường Thanh Niên ↗',
+f_h:'Học tiếng Hoa chính là sống',f_lead:'Không học thuộc sách, mà dùng tiếng Hoa để giải quyết việc thật ở ký túc xá, nhà máy, cửa hàng tiện lợi, chợ đêm và phòng khám.',
+f1h:'Cuộc sống du học sinh thật',f1:'Luân phiên học và thực tập. Đọc phiếu lương, đi xe buýt bằng thẻ học sinh, kiểm tra phòng ký túc xá, làm thẻ bảo hiểm y tế sau 180 ngày, gửi tiền về nhà ở bưu điện.',
+f2h:'Nghe, đọc, chọn từng bước',f2:'Câu nào cũng bấm nghe được. Có thể bật/tắt phiên âm và bản dịch; trình độ càng cao thì gợi ý càng ít.',
+f3h:'Chọn sai cũng học được',f3:'Đi xe máy không bằng lái, vượt đèn đỏ, cho mượn sổ tiết kiệm… chọn sai sẽ thấy hậu quả, thầy cô chỉ cách đúng và vài ngày sau sẽ gặp lại.',
+f4h:'Thẻ sưu tập và nhiều kết thúc',f4:'Lễ hội, thi đấu, kỳ thi đều có thẻ kỷ niệm. Khi tốt nghiệp, kết thúc tùy vào lựa chọn của bạn — kết thúc nào cũng tốt.',
+g_h:'Hình ảnh trong game',g1:'Đọc áp phích, nghe câu hỏi',g1n:'Bấm loa nghe tiếng Hoa rồi chọn đáp án',g2:'Sắp xếp mỗi ngày',g2n:'Chăm lo sức khỏe, tâm trạng và tiền tiết kiệm',g3:'Đọc hiểu phiếu lương',g3n:'Vì sao phải trừ bảo hiểm?',
+j_h:'Hành trình ba năm',j_lead:'Theo lịch của lớp hợp tác: học kỳ 2 lớp 10 đậu A2; trước khi tốt nghiệp phải đậu B1 mới được học thẳng lên đại học đối tác (hệ 3+4, đại học là lớp luân phiên 4 ngày thực tập, 2 ngày học).',
+y1:'Lớp 10',y1a:'Đến Đài Loan, huấn luyện cơ bản, phỏng vấn nhà máy',y1b:'Lần đầu thực tập, Trung thu, Giao thừa, Tết',y1c:'Đủ 180 ngày, làm thẻ bảo hiểm y tế',y1d:'TOCFL A2',y1e:'Chương 1–4',
+y2:'Lớp 11',y2a:'Làm đàn anh đàn chị, dẫn dắt đàn em',y2b:'Hội thao, thi chứng chỉ kỹ năng',y2c:'Tiệc tất niên công ty, đố đèn Nguyên tiêu',y2d:'TOCFL B1, giúp trường tuyển sinh',y2e:'Chương 5–8',
+y3:'Lớp 12',y3p:'B1 · Tốt nghiệp',y3a:'Buổi gặp mặt tân sinh đến lượt bạn chia sẻ, chụp ảnh tốt nghiệp',y3b:'Làm tổ trưởng khi thực tập, viết tự giới thiệu bằng tiếng Hoa, lần đầu khai thuế',y3c:'Phỏng vấn thử; thầy cô đại học đến trường giới thiệu và phỏng vấn',y3d:'Lễ tốt nghiệp; đậu B1 để học thẳng lên đại học và thấy bản thân bốn năm sau',y3e:'Chương 9–12',
+c_h:'Sưu tập kỷ niệm Đài Loan',c_lead:'Mỗi thẻ có tên tiếng Hoa và phát âm, được lưu trong bản đồ hành trình ba năm.',
+t_h:'Dành cho giáo viên',t5:'Gửi góp ý của giáo viên',t1:'Thời gian sự kiện khớp với lịch của trường, dùng để chuẩn bị trước các hoạt động, thực tập, kỳ thi.',t2:'Từ vựng mỗi chương đều đối chiếu bảng từ TOCFL, tăng dần từ A1 đến B1.',t3:'Mã lưu cho phép đổi điện thoại, máy tính để chơi tiếp, không cần tài khoản.',t4:'Câu trả lời sai được đưa vào phần ôn tập để luyện lại vào buổi tối.',
+e_h:'Hôm nay, hãy lên đường từ quê nhà',e1:'Quét mã QR bằng điện thoại hoặc bấm nút bên dưới để chơi ngay. Nên đeo tai nghe hoặc bật âm thanh.',
+ft1:'Taiwan Life Diary · Game học tiếng Hoa của lớp hợp tác Hoa kiều, trường THPT Thanh Niên',ft2:'Nhân vật và bối cảnh đều là minh họa nguyên tác'},
+id:{nav1:'Dari daftar sampai berangkat',nav2:'Fitur',nav3:'Perjalanan 3 tahun',nav4:'Untuk guru',play:'Main',
+badge:'SMA Youth · Kelas kerja sama siswa perantauan · Game belajar Mandarin',tagline:'Tiga tahun di Taiwan, belajar Mandarin sedikit demi sedikit setiap hari',
+intro:'Dari mendaftar di kampung halaman, ujian TOCFL, sampai sekolah, magang, kerja paruh waktu, merayakan hari raya, dan membuat kartu asuransi kesehatan di Taiwan… setiap hal dalam hidup adalah satu soal bahasa Mandarin. Pilih benar, hidup makin lancar; pilih salah, Pak Chen akan mengajarimu caranya.',
+play2:'Main sekarang',admit:'Situs info penerimaan ↗',free:'Tanpa unduh · langsung main di HP · tersimpan otomatis · bisa lanjut di perangkat lain',
+s1b:'Prekuel + 12 bab',s1:'Dari mendaftar di kampung sampai lulus, semua sudah dibuka',s2:'Kosakata bertahap sesuai daftar kata TOCFL',s3b:'6 bahasa',s3:'Terjemahan bantu: Vietnam, Indonesia, Thai, Myanmar, Khmer, Inggris',s4b:'15–20 menit',s4:'Satu bab, cukup dimainkan saat istirahat',
+p_h:'Dari mendaftar sampai berangkat',p_lead:'Prekuel “Sebelum Berangkat” mengikuti jadwal penerimaan yang sebenarnya. Tanggal resmi lihat di situs info penerimaan.',
+p1w:'November tahun sebelumnya',p1:'Sekolah mulai promosi penerimaan',p1n:'Lihat info di situs penerimaan, pilih jurusan',
+p2w:'Desember',p2:'Mendaftar di lembaga penjamin setempat',p2n:'Daftar lebih awal agar bisa ikut bimbingan Mandarin sekolah',
+p3w:'Sebelum akhir Januari',p3:'Wawancara atau seleksi berkas oleh lembaga penjamin',p3n:'Ikut bimbingan Mandarin setiap minggu',
+p4w:'Sebelum akhir Februari',p4:'Lulus TOCFL A1',p4n:'Boleh ujian setelah mendaftar',
+p5w:'Akhir Mei',p5:'Pengumuman penerimaan',p5n:'Terima surat penerimaan, Juni urus visa',
+p6w:'Minggu terakhir Juli',p6:'Tiba di Taiwan',p6n:'Dijemput sekolah di bandara; Agustus pelatihan dasar, September mulai sekolah',
+admit2:'Situs info penerimaan siswa perantauan 2027 SMA Youth ↗',
+f_h:'Belajar Mandarin adalah menjalani hidup',f_lead:'Bukan menghafal buku, tapi memakai bahasa Mandarin untuk urusan nyata di asrama, pabrik, minimarket, pasar malam, dan klinik.',
+f1h:'Kehidupan siswa perantauan yang nyata',f1:'Bergantian sekolah dan magang. Membaca slip gaji, naik bus dengan kartu pelajar, pemeriksaan kamar asrama, kartu asuransi kesehatan setelah 180 hari, kirim uang ke rumah lewat kantor pos.',
+f2h:'Dengar, baca, pilih — langkah demi langkah',f2:'Setiap kalimat bisa didengarkan. Pinyin dan terjemahan bisa dinyalakan atau dimatikan; makin mahir, makin sedikit bantuan.',
+f3h:'Salah pilih pun tetap belajar',f3:'Naik motor tanpa SIM, menerobos lampu merah, meminjamkan buku tabungan… pilihan salah ada akibatnya, guru mengajari cara yang benar, dan beberapa hari kemudian kamu akan mengalaminya lagi.',
+f4h:'Kartu koleksi dan banyak akhir cerita',f4:'Hari raya, lomba, dan ujian memberi kartu kenangan. Saat lulus, akhir cerita bergantung pada pilihanmu — semuanya akhir yang baik.',
+g_h:'Tampilan game',g1:'Baca poster, dengar pertanyaan',g1n:'Tekan speaker, dengar Mandarin, pilih jawaban',g2:'Atur setiap hari',g2n:'Jaga stamina, suasana hati, dan tabungan',g3:'Pahami slip gaji',g3n:'Kenapa ada potongan asuransi?',
+j_h:'Perjalanan tiga tahun',j_lead:'Mengikuti kalender kelas kerja sama: semester 2 kelas 10 lulus A2; sebelum lulus wajib lulus B1 agar bisa langsung masuk universitas mitra (sistem 3+4, universitasnya kelas rotasi 4 hari magang, 2 hari kuliah).',
+y1:'Kelas 10',y1a:'Tiba di Taiwan, pelatihan dasar, wawancara perusahaan',y1b:'Magang pertama, Festival Pertengahan Musim Gugur, malam tahun baru, Imlek',y1c:'Genap 180 hari, membuat kartu asuransi kesehatan',y1d:'TOCFL A2',y1e:'Bab 1–4',
+y2:'Kelas 11',y2a:'Menjadi kakak kelas, membimbing adik kelas',y2b:'Pekan olahraga, ujian sertifikat keahlian',y2c:'Pesta akhir tahun perusahaan, tebak teka-teki lampion',y2d:'TOCFL B1, membantu promosi sekolah',y2e:'Bab 5–8',
+y3:'Kelas 12',y3p:'B1 · Lulus',y3a:'Sesi orientasi siswa baru giliranmu berbagi, foto kelulusan',y3b:'Jadi ketua kelompok saat magang, menulis otobiografi Mandarin, lapor pajak pertama kali',y3c:'Latihan wawancara; dosen universitas datang ke sekolah untuk sesi informasi dan wawancara',y3d:'Wisuda; lulus B1 untuk langsung masuk universitas dan melihat dirimu empat tahun kemudian',y3e:'Bab 9–12',
+c_h:'Kumpulkan kenangan Taiwan',c_lead:'Setiap kartu punya nama Mandarin dan pelafalannya, tersimpan di peta perjalanan tiga tahun.',
+t_h:'Untuk guru',t5:'Isi masukan guru',t1:'Waktu kejadian sesuai kalender sekolah, bisa dipakai sebagai persiapan sebelum kegiatan, magang, atau ujian.',t2:'Kosakata tiap bab dibandingkan dengan daftar kata TOCFL, bertahap dari A1 ke B1.',t3:'Kode simpan memungkinkan lanjut di HP atau komputer lain, tanpa akun.',t4:'Soal yang salah masuk ke latihan ulang dan dilatih lagi saat “belajar sendiri” di malam hari.',
+e_h:'Hari ini, mulai dari kampung halaman',e1:'Pindai QR Code dengan HP atau tekan tombol di bawah untuk langsung main. Disarankan memakai earphone atau menyalakan suara.',
+ft1:'Taiwan Life Diary · Game belajar Mandarin untuk kelas kerja sama siswa perantauan SMA Youth',ft2:'Karakter dan latar adalah ilustrasi orisinal'},
+th:{nav1:'ตั้งแต่สมัครถึงออกเดินทาง',nav2:'จุดเด่น',nav3:'เส้นทางสามปี',nav4:'สำหรับครู',play:'เล่นเลย',
+badge:'โรงเรียนเยาวชน · ห้องเรียนความร่วมมือนักเรียนจีนโพ้นทะเล · เกมเรียนภาษาจีน',tagline:'สามปีในไต้หวัน เรียนภาษาจีนทีละนิดทุกวัน',
+intro:'ตั้งแต่สมัครที่บ้านเกิด สอบ TOCFL จนถึงมาเรียน ฝึกงาน ทำงานพาร์ตไทม์ ฉลองเทศกาล และทำบัตรประกันสุขภาพที่ไต้หวัน… ทุกเรื่องในชีวิตคือโจทย์ภาษาจีน เลือกถูกชีวิตก็ราบรื่น เลือกผิดอาจารย์เฉินจะสอนวิธีที่ถูกต้อง',
+play2:'เล่นเลยตอนนี้',admit:'เว็บไซต์ข้อมูลรับสมัคร ↗',free:'ไม่ต้องดาวน์โหลด · เปิดในมือถือก็เล่นได้ · บันทึกอัตโนมัติ · เปลี่ยนเครื่องเล่นต่อได้',
+s1b:'ภาคก่อน + 12 บท',s1:'ตั้งแต่สมัครที่บ้านเกิดจนเรียนจบ เปิดครบทุกบทแล้ว',s2:'คำศัพท์ยากขึ้นทีละบทตามรายการคำ TOCFL',s3b:'6 ภาษา',s3:'คำแปลช่วยภาษาเวียดนาม อินโดนีเซีย ไทย เมียนมา เขมร อังกฤษ',s4b:'15–20 นาที',s4:'ความยาวหนึ่งบท เล่นได้ตอนพัก',
+p_h:'ตั้งแต่สมัครถึงออกเดินทาง',p_lead:'ภาคก่อน “ก่อนออกเดินทาง” ดำเนินตามกำหนดการรับสมัครจริง วันที่เป็นทางการโปรดดูที่เว็บไซต์ข้อมูลรับสมัคร',
+p1w:'พฤศจิกายนของปีก่อน',p1:'โรงเรียนเริ่มประชาสัมพันธ์รับสมัคร',p1n:'ดูข้อมูลบนเว็บไซต์รับสมัคร เลือกแผนกที่อยากเรียน',
+p2w:'ธันวาคม',p2:'สมัครที่หน่วยงานรับรองในประเทศ',p2n:'สมัครเร็วจะได้เข้าติวภาษาจีนของโรงเรียน',
+p3w:'ก่อนสิ้นเดือนมกราคม',p3:'หน่วยงานรับรองสัมภาษณ์หรือพิจารณาเอกสาร',p3n:'เรียนติวภาษาจีนทุกสัปดาห์',
+p4w:'ก่อนสิ้นเดือนกุมภาพันธ์',p4:'สอบ TOCFL A1 ให้ผ่าน',p4n:'สอบหลังสมัครได้',
+p5w:'ปลายเดือนพฤษภาคม',p5:'ประกาศผลการรับสมัคร',p5n:'ได้รับหนังสือตอบรับ เดือนมิถุนายนทำวีซ่า',
+p6w:'สัปดาห์สุดท้ายของเดือนกรกฎาคม',p6:'เดินทางถึงไต้หวัน',p6n:'โรงเรียนไปรับที่สนามบิน สิงหาคมอบรมพื้นฐาน กันยายนเปิดเรียน',
+admit2:'เว็บไซต์ข้อมูลรับสมัครนักเรียนจีนโพ้นทะเล 2027 ของโรงเรียนเยาวชน ↗',
+f_h:'เรียนภาษาจีน คือการใช้ชีวิต',f_lead:'ไม่ต้องท่องหนังสือ แต่ใช้ภาษาจีนแก้ปัญหาจริงในหอพัก โรงงาน ร้านสะดวกซื้อ ตลาดกลางคืน และคลินิก',
+f1h:'ชีวิตนักเรียนจีนโพ้นทะเลของจริง',f1:'สลับกันเรียนและฝึกงาน อ่านสลิปเงินเดือน ขึ้นรถเมล์ด้วยบัตรนักเรียน ตรวจห้องหอพัก ทำบัตรประกันสุขภาพหลังอยู่ครบ 180 วัน ส่งเงินกลับบ้านที่ไปรษณีย์',
+f2h:'ฟัง อ่าน เลือก ทีละขั้น',f2:'ทุกประโยคกดฟังได้ เปิดหรือปิดพินอินและคำแปลได้ ยิ่งเก่งขึ้น คำใบ้ก็ยิ่งน้อยลง',
+f3h:'เลือกผิดก็ได้เรียนรู้',f3:'ขี่มอเตอร์ไซค์โดยไม่มีใบขับขี่ ฝ่าไฟแดง ให้คนยืมสมุดบัญชี… เลือกผิดจะเห็นผลที่ตามมา ครูสอนวิธีที่ถูกต้อง และอีกไม่กี่วันจะเจอสถานการณ์นี้อีก',
+f4h:'การ์ดสะสมและตอนจบหลายแบบ',f4:'เทศกาล การแข่งขัน และการสอบจะได้การ์ดที่ระลึก ตอนจบการศึกษาตอนจบขึ้นกับการเลือกของคุณ ทุกแบบเป็นตอนจบที่ดี',
+g_h:'ภาพในเกม',g1:'อ่านโปสเตอร์ ฟังคำถาม',g1n:'กดลำโพงฟังภาษาจีนแล้วเลือกคำตอบ',g2:'วางแผนแต่ละวัน',g2n:'ดูแลพลังกาย อารมณ์ และเงินเก็บ',g3:'อ่านสลิปเงินเดือนให้เข้าใจ',g3n:'ทำไมต้องหักค่าประกัน?',
+j_h:'เส้นทางสามปี',j_lead:'ตามปฏิทินของห้องเรียนความร่วมมือ: ภาคเรียนที่สองของปีหนึ่งผ่าน A2 ก่อนจบต้องผ่าน B1 จึงจะเรียนต่อมหาวิทยาลัยที่ร่วมมือได้ (ระบบ 3+4 มหาวิทยาลัยเป็นห้องเรียนสลับ ฝึกงาน 4 วัน เรียน 2 วัน)',
+y1:'ปีหนึ่ง',y1a:'ถึงไต้หวัน อบรมพื้นฐาน สัมภาษณ์กับบริษัท',y1b:'ฝึกงานครั้งแรก ไหว้พระจันทร์ ข้ามปี ตรุษจีน',y1c:'อยู่ครบ 180 วัน ทำบัตรประกันสุขภาพ',y1d:'TOCFL A2',y1e:'บทที่ 1–4',
+y2:'ปีสอง',y2a:'เป็นรุ่นพี่ ดูแลรุ่นน้อง',y2b:'กีฬาสี สอบใบรับรองฝีมือ',y2c:'งานเลี้ยงปีใหม่บริษัท ทายปริศนาโคมไฟ',y2d:'TOCFL B1 ช่วยโรงเรียนประชาสัมพันธ์รับสมัคร',y2e:'บทที่ 5–8',
+y3:'ปีสาม',y3p:'B1 · จบการศึกษา',y3a:'งานแนะนำนักเรียนใหม่ ถึงตาคุณเล่าประสบการณ์ ถ่ายรูปรับปริญญา',y3b:'เป็นหัวหน้ากลุ่มตอนฝึกงาน เขียนอัตชีวประวัติภาษาจีน ยื่นภาษีครั้งแรก',y3c:'ฝึกสัมภาษณ์ อาจารย์มหาวิทยาลัยมาบรรยายและสัมภาษณ์ที่โรงเรียน',y3d:'พิธีจบการศึกษา ผ่าน B1 เพื่อเรียนต่อมหาวิทยาลัย และเห็นตัวเองในอีกสี่ปี',y3e:'บทที่ 9–12',
+c_h:'สะสมความทรงจำในไต้หวัน',c_lead:'การ์ดทุกใบมีชื่อภาษาจีนและคำอ่าน เก็บไว้ในแผนที่เส้นทางสามปี',
+t_h:'สำหรับครู',t5:'ส่งความคิดเห็นของครู',t1:'เวลาของเหตุการณ์ตรงกับปฏิทินโรงเรียน ใช้เตรียมตัวก่อนกิจกรรม การฝึกงาน และการสอบได้',t2:'คำศัพท์แต่ละบทเทียบกับรายการคำ TOCFL เพิ่มจาก A1 ไปถึง B1',t3:'รหัสบันทึกใช้เล่นต่อบนมือถือหรือคอมพิวเตอร์เครื่องอื่นได้ ไม่ต้องมีบัญชี',t4:'ข้อที่ตอบผิดจะเข้าไปอยู่ในส่วนทบทวน ฝึกอีกครั้งตอน “ทบทวนเอง” ตอนกลางคืน',
+e_h:'วันนี้ เริ่มออกเดินทางจากบ้านเกิด',e1:'สแกน QR Code ด้วยมือถือ หรือกดปุ่มด้านล่างเพื่อเล่นได้ทันที แนะนำให้ใส่หูฟังหรือเปิดเสียง',
+ft1:'Taiwan Life Diary · เกมเรียนภาษาจีนของห้องเรียนความร่วมมือนักเรียนจีนโพ้นทะเล โรงเรียนเยาวชน',ft2:'ตัวละครและฉากเป็นภาพวาดต้นฉบับ'},
+my:{nav1:'လျှောက်ထားခြင်းမှ ထွက်ခွာခြင်းအထိ',nav2:'ထူးခြားချက်',nav3:'သုံးနှစ် ခရီး',nav4:'ဆရာ/ဆရာမများအတွက်',play:'ကစားမယ်',
+badge:'Youth အထက်တန်းကျောင်း · ပြည်ပတရုတ်ကျောင်းသား ပူးပေါင်းအတန်း · တရုတ်စာ သင်ယူရေးဂိမ်း',tagline:'ထိုင်ဝမ်မှာ သုံးနှစ်၊ နေ့တိုင်း တရုတ်စာ နည်းနည်းချင်း သင်မယ်',
+intro:'ဇာတိမှာ လျှောက်ထားခြင်း၊ TOCFL ဖြေခြင်းကနေ ထိုင်ဝမ်မှာ ကျောင်းတက်၊ အလုပ်သင်၊ အချိန်ပိုင်းအလုပ်၊ ပွဲတော်၊ ကျန်းမာရေးအာမခံကတ် လုပ်ခြင်းအထိ… ဘဝထဲက အရာအားလုံးဟာ တရုတ်စာ မေးခွန်းတစ်ခုပါ။ မှန်ရင် ချောချောမွေ့မွေ့၊ မှားရင် ဆရာချန်က မှန်ကန်တဲ့နည်းကို သင်ပေးမယ်။',
+play2:'အခုပဲ ကစားမယ်',admit:'ကျောင်းသားသစ် ဝက်ဘ်ဆိုက် ↗',free:'ဒေါင်းလုဒ် မလို · ဖုန်းနဲ့ ဖွင့်ရုံပဲ · အလိုအလျောက် သိမ်းဆည်း · စက်ပြောင်းပြီး ဆက်ကစားနိုင်',
+s1b:'အစပိုင်း + အခန်း ၁၂',s1:'ဇာတိမှာ လျှောက်ထားခြင်းမှ ကျောင်းပြီးတဲ့အထိ၊ အားလုံး ဖွင့်ထားပြီ',s2:'TOCFL စကားလုံးစာရင်းအတိုင်း အဆင့်လိုက် ခက်လာ',s3b:'ဘာသာစကား ၆ မျိုး',s3:'ဗီယက်နမ်၊ အင်ဒိုနီးရှား၊ ထိုင်း၊ မြန်မာ၊ ခမာ၊ အင်္ဂလိပ် ဘာသာပြန်',s4b:'၁၅–၂၀ မိနစ်',s4:'အခန်းတစ်ခန်း၊ အားလပ်ချိန်မှာ ကစားနိုင်',
+p_h:'လျှောက်ထားခြင်းမှ ထွက်ခွာခြင်းအထိ',p_lead:'“မထွက်ခွာမီ” အစပိုင်းက တကယ့် ကျောင်းဝင်ခွင့်အချိန်ဇယားအတိုင်း သွားတယ်။ တရားဝင်ရက်စွဲကို ကျောင်းသားသစ် ဝက်ဘ်ဆိုက်မှာ ကြည့်ပါ။',
+p1w:'အရင်နှစ် နိုဝင်ဘာ',p1:'ကျောင်းက ကျောင်းသားခေါ်ယူရေး ကြော်ငြာ စတင်',p1n:'ဝက်ဘ်ဆိုက်မှာ ကြည့်ပြီး တက်ချင်တဲ့ဌာန ရွေး',
+p2w:'ဒီဇင်ဘာ',p2:'ဒေသခံ အာမခံအဖွဲ့မှာ လျှောက်ထား',p2n:'စောစော လျှောက်ရင် ကျောင်းရဲ့ တရုတ်စာ သင်တန်း တက်နိုင်',
+p3w:'ဇန်နဝါရီ မကုန်ခင်',p3:'အာမခံအဖွဲ့က အင်တာဗျူး သို့မဟုတ် စိစစ်',p3n:'အပတ်တိုင်း တရုတ်စာ သင်တန်း',
+p4w:'ဖေဖော်ဝါရီ မကုန်ခင်',p4:'TOCFL A1 အောင်',p4n:'လျှောက်ပြီးမှ ဖြေလို့ရ',
+p5w:'မေလကုန်',p5:'ဝင်ခွင့်ရလဒ် ကြေညာ',p5n:'ဝင်ခွင့်စာ ရ၊ ဇွန်လမှာ ဗီဇာလုပ်',
+p6w:'ဇူလိုင် နောက်ဆုံးပတ်',p6:'ထိုင်ဝမ် ရောက်',p6n:'ကျောင်းက လေဆိပ်မှာ ကြို၊ သြဂုတ်မှာ အခြေခံသင်တန်း၊ စက်တင်ဘာမှာ ကျောင်းဖွင့်',
+admit2:'Youth ကျောင်း ၂၀၂၇ ပြည်ပတရုတ်ကျောင်းသား ဝင်ခွင့် ဝက်ဘ်ဆိုက် ↗',
+f_h:'တရုတ်စာ သင်တာ ဘဝကို နေထိုင်တာပဲ',f_lead:'စာအုပ် အလွတ်ကျက်တာ မဟုတ်ဘဲ အဆောင်၊ စက်ရုံ၊ စတိုး၊ ညဈေးနဲ့ ဆေးခန်းမှာ တကယ်ကြုံရမယ့်ကိစ္စတွေကို တရုတ်လို ဖြေရှင်း။',
+f1h:'တကယ့် ပြည်ပကျောင်းသားဘဝ',f1:'ကျောင်းနဲ့ အလုပ်သင် အလှည့်ကျ။ လစာစာရင်းဖတ်၊ ကျောင်းသားကတ်နဲ့ ဘတ်စ်စီး၊ အဆောင်စစ်ဆေး၊ ရက် ၁၈၀ ပြည့်ရင် ကျန်းမာရေးအာမခံကတ်လုပ်၊ စာတိုက်ကနေ အိမ်ကို ငွေပို့။',
+f2h:'နားထောင်၊ ဖတ်၊ ရွေး — တစ်ဆင့်ချင်း',f2:'စာကြောင်းတိုင်း နှိပ်ပြီး နားထောင်နိုင်။ ပင်ယင်းနဲ့ ဘာသာပြန်ကို ဖွင့်/ပိတ် လုပ်နိုင်၊ ကျွမ်းလာလေ အကူအညီ နည်းလေ။',
+f3h:'မှားရင်လည်း သင်ယူနိုင်',f3:'လိုင်စင်မရှိဘဲ ဆိုင်ကယ်စီး၊ မီးနီဖြတ်၊ ငွေစုစာအုပ် ချေး… မှားရင် အကျိုးဆက် မြင်ရမယ်၊ ဆရာက မှန်တဲ့နည်း သင်ပေးပြီး ရက်အနည်းငယ်အကြာ ထပ်ကြုံရမယ်။',
+f4h:'စုဆောင်းကတ်နဲ့ အဆုံးသတ် အမျိုးမျိုး',f4:'ပွဲတော်၊ ပြိုင်ပွဲ၊ စာမေးပွဲတွေမှာ အမှတ်တရကတ် ရမယ်။ ကျောင်းပြီးချိန်မှာ ကိုယ့်ရွေးချယ်မှုအလိုက် အဆုံးသတ် ကွဲမယ်၊ အားလုံး ကောင်းတဲ့ အဆုံးသတ်ပါ။',
+g_h:'ဂိမ်း ပုံရိပ်များ',g1:'ပိုစတာဖတ်၊ မေးခွန်း နားထောင်',g1n:'စပီကာနှိပ်ပြီး တရုတ်စကား နားထောင်၊ အဖြေရွေး',g2:'နေ့စဉ် အစီအစဉ်ချ',g2n:'ခွန်အား၊ စိတ်ခံစားမှုနဲ့ စုငွေကို ဂရုစိုက်',g3:'လစာစာရင်း နားလည်',g3n:'အာမခံကြေး ဘာကြောင့် နုတ်လဲ?',
+j_h:'သုံးနှစ် ခရီး',j_lead:'ပူးပေါင်းအတန်းရဲ့ ပြက္ခဒိန်အတိုင်း — ပထမနှစ် ဒုတိယစာသင်နှစ်ဝက်မှာ A2၊ ကျောင်းမပြီးခင် B1 မဖြစ်မနေ အောင်မှ ပူးပေါင်းတက္ကသိုလ် တိုက်ရိုက်တက်ရမယ် (၃+၄ စနစ်၊ တက္ကသိုလ်က ၄ ရက် အလုပ်သင်၊ ၂ ရက် စာသင် အလှည့်ကျ အတန်း)။',
+y1:'ပထမနှစ်',y1a:'ထိုင်ဝမ်ရောက်၊ အခြေခံသင်တန်း၊ ကုမ္ပဏီ အင်တာဗျူး',y1b:'ပထမဆုံး အလုပ်သင်၊ လပြည့်ပွဲ၊ နှစ်ကူး၊ တရုတ်နှစ်သစ်',y1c:'ရက် ၁၈၀ ပြည့်၊ ကျန်းမာရေးအာမခံကတ် လုပ်',y1d:'TOCFL A2',y1e:'အခန်း ၁–၄',
+y2:'ဒုတိယနှစ်',y2a:'အစ်ကို/အစ်မ ဖြစ်လာ၊ ညီငယ်တွေကို လမ်းပြ',y2b:'အားကစားပွဲ၊ ကျွမ်းကျင်မှု လက်မှတ်စာမေးပွဲ',y2c:'ကုမ္ပဏီ နှစ်ကုန်ပွဲ၊ မီးအိမ် ပဟေဠိ',y2d:'TOCFL B1၊ ကျောင်းသားခေါ်ယူရေး ကူညီ',y2e:'အခန်း ၅–၈',
+y3:'တတိယနှစ်',y3p:'B1 · ကျောင်းပြီး',y3a:'ကျောင်းသားသစ် မိတ်ဆက်ပွဲမှာ အတွေ့အကြုံ မျှဝေ၊ ဘွဲ့ဓာတ်ပုံ ရိုက်',y3b:'အလုပ်သင်မှာ အဖွဲ့ခေါင်းဆောင်၊ တရုတ်လို ကိုယ်ရေးအကျဉ်း ရေး၊ ပထမဆုံး အခွန်ဆောင်',y3c:'အင်တာဗျူး အစမ်း၊ တက္ကသိုလ်ဆရာတွေ ကျောင်းလာပြီး မိတ်ဆက်ပွဲနဲ့ အင်တာဗျူး',y3d:'ဘွဲ့နှင်းသဘင်၊ B1 အောင်ရင် တက္ကသိုလ် တိုက်ရိုက်တက်ပြီး လေးနှစ်နောက် ကိုယ့်ကိုယ်ကို မြင်ရမယ်',y3e:'အခန်း ၉–၁၂',
+c_h:'ထိုင်ဝမ် အမှတ်တရတွေ စုဆောင်း',c_lead:'ကတ်တိုင်းမှာ တရုတ်အမည်နဲ့ အသံထွက် ပါပြီး သုံးနှစ်ခရီး မြေပုံထဲ သိမ်းထားမယ်။',
+t_h:'ဆရာ/ဆရာမများအတွက်',t5:'ဆရာ/ဆရာမ အကြံပြုချက် ပေးရန်',t1:'ဖြစ်ရပ်အချိန်တွေက ကျောင်းပြက္ခဒိန်နဲ့ ကိုက်ညီလို့ လှုပ်ရှားမှု၊ အလုပ်သင်၊ စာမေးပွဲ မတိုင်ခင် ကြိုတင်လေ့ကျင့်ဖို့ သုံးနိုင်။',t2:'အခန်းတိုင်းရဲ့ စကားလုံးတွေကို TOCFL စာရင်းနဲ့ တိုက်ဆိုင်ထား၊ A1 ကနေ B1 အထိ တဖြည်းဖြည်း။',t3:'သိမ်းဆည်းကုဒ်နဲ့ ဖုန်း/ကွန်ပျူတာ ပြောင်းပြီး ဆက်ကစားနိုင်၊ အကောင့် မလို။',t4:'မှားတဲ့ မေးခွန်းတွေ ပြန်လေ့ကျင့်စာရင်းထဲ ဝင်ပြီး ညမှာ “ကိုယ်တိုင် ပြန်လေ့ကျင့်” တဲ့အခါ ထပ်လေ့ကျင့်မယ်။',
+e_h:'ဒီနေ့ ဇာတိကနေ စထွက်ကြစို့',e1:'QR Code ကို ဖုန်းနဲ့ စကင်ဖတ်ပါ၊ ဒါမှမဟုတ် အောက်က ခလုတ်ကို နှိပ်ပြီး ချက်ချင်း ကစားပါ။ နားကြပ်တပ် သို့မဟုတ် အသံဖွင့်ထားဖို့ အကြံပြုပါတယ်။',
+ft1:'Taiwan Life Diary · Youth ကျောင်း ပြည်ပတရုတ်ကျောင်းသား ပူးပေါင်းအတန်း တရုတ်စာ သင်ယူရေးဂိမ်း',ft2:'ဇာတ်ကောင်နဲ့ နောက်ခံ အားလုံး မူရင်း ပုံဆွဲများ'},
+km:{nav1:'ពីការចុះឈ្មោះដល់ការចេញដំណើរ',nav2:'លក្ខណៈពិសេស',nav3:'ដំណើរបីឆ្នាំ',nav4:'សម្រាប់គ្រូ',play:'លេង',
+badge:'វិទ្យាល័យយូវ · កម្មវិធីសិក្សាសហការសម្រាប់សិស្សបរទេស · ហ្គេមរៀនភាសាចិន',tagline:'បីឆ្នាំនៅតៃវ៉ាន់ រៀនភាសាចិនម្តងមួយថ្ងៃៗ',
+intro:'ចាប់ពីការចុះឈ្មោះនៅស្រុកកំណើត ប្រឡង TOCFL រហូតដល់ការរៀន ហាត់ការ ធ្វើការក្រៅម៉ោង ប្រារព្ធបុណ្យ និងធ្វើប័ណ្ណធានារ៉ាប់រងសុខភាពនៅតៃវ៉ាន់ — គ្រប់រឿងក្នុងជីវិតប្រចាំថ្ងៃគឺជាមេរៀនភាសាចិន។ ជ្រើសត្រូវ ជីវិតកាន់តែងាយស្រួល ជ្រើសខុស លោកគ្រូឆេននឹងបង្ហាញផ្លូវត្រឹមត្រូវ។',
+play2:'លេងឥឡូវនេះ',admit:'គេហទំព័រព័ត៌មានចូលរៀន ↗',free:'មិនចាំបាច់ទាញយក · លេងលើទូរស័ព្ទ · រក្សាទុកដោយស្វ័យប្រវត្តិ · លេងបន្តលើឧបករណ៍ផ្សេង',
+s1b:'រឿងមុន + 12 ជំពូក',s1:'ពីការចុះឈ្មោះនៅស្រុកកំណើតដល់ការបញ្ចប់ការសិក្សា បើកទាំងអស់ហើយ',s2:'វាក្យសព្ទកើនឡើងតាមជំពូក តាមបញ្ជីពាក្យ TOCFL',s3b:'6 ភាសា',s3:'ការបកប្រែជំនួយ៖ វៀតណាម ឥណ្ឌូនេស៊ី ថៃ មីយ៉ាន់ម៉ា ខ្មែរ អង់គ្លេស',s4b:'15–20 នាទី',s4:'មួយជំពូកលេងចប់ក្នុងម៉ោងសម្រាក',
+p_h:'ពីការចុះឈ្មោះដល់ការចេញដំណើរ',p_lead:'រឿងមុន «មុនចេញដំណើរ» ធ្វើតាមកាលវិភាគជ្រើសរើសសិស្សពិតប្រាកដ។ កាលបរិច្ឆេទផ្លូវការ សូមមើលគេហទំព័រព័ត៌មានចូលរៀន។',
+p1w:'ខែវិច្ឆិកា ឆ្នាំមុន',p1:'សាលាចាប់ផ្តើមផ្សព្វផ្សាយការជ្រើសរើសសិស្ស',p1n:'មើលគេហទំព័រព័ត៌មានចូលរៀន ហើយជ្រើសរើសផ្នែក',
+p2w:'ខែធ្នូ',p2:'ចុះឈ្មោះនៅស្ថាប័នធានាក្នុងស្រុក',p2n:'ចុះឈ្មោះឆាប់ ដើម្បីចូលរួមថ្នាក់ជំនួយភាសាចិនរបស់សាលា',
+p3w:'មុនចុងខែមករា',p3:'សម្ភាសន៍ ឬពិនិត្យឯកសារដោយស្ថាប័នធានា',p3n:'រៀនថ្នាក់ជំនួយភាសាចិនរៀងរាល់សប្តាហ៍',
+p4w:'មុនចុងខែកុម្ភៈ',p4:'ប្រឡងជាប់ TOCFL A1',p4n:'អាចចុះឈ្មោះរួចសិន ចាំប្រឡងក្រោយ',
+p5w:'ចុងខែឧសភា',p5:'ប្រកាសលទ្ធផលជ្រើសរើស',p5n:'ទទួលលិខិតទទួលចូលរៀន ធ្វើទិដ្ឋាការខែមិថុនា',
+p6w:'សប្តាហ៍ចុងក្រោយនៃខែកក្កដា',p6:'មកដល់តៃវ៉ាន់',p6n:'សាលាទៅទទួលនៅអាកាសយានដ្ឋាន វគ្គមូលដ្ឋានខែសីហា ចូលរៀនខែកញ្ញា',
+admit2:'គេហទំព័រព័ត៌មានចូលរៀនសិស្សបរទេសឆ្នាំ 2027 របស់វិទ្យាល័យយូវ ↗',
+f_h:'រៀនភាសាចិន គឺការរស់នៅ',f_lead:'មិនចាំបាច់ទន្ទេញសៀវភៅ — ប្រើភាសាចិនដោះស្រាយស្ថានភាពពិតនៅអន្តេវាសិកដ្ឋាន រោងចក្រ ហាងលក់ទំនិញងាយស្រួល ផ្សាររាត្រី និងគ្លីនិក។',
+f1h:'ជីវិតពិតរបស់សិស្សបរទេស',f1:'រៀននៅសាលា និងហាត់ការឆ្លាស់គ្នា។ អានតារាងប្រាក់ខែ ជិះឡានក្រុងដោយកាតសិស្ស ឆ្លងការត្រួតពិនិត្យបន្ទប់ ធ្វើប័ណ្ណធានារ៉ាប់រងសុខភាពក្រោយ 180 ថ្ងៃ ផ្ញើលុយទៅផ្ទះតាមប្រៃសណីយ៍។',
+f2h:'ស្តាប់ អាន ជ្រើសរើស ម្តងមួយជំហាន',f2:'គ្រប់ប្រយោគអាចចុចស្តាប់បាន។ អាចបើក ឬបិទភីនអ៊ីន និងការបកប្រែ ពូកែកាន់តែច្រើន ជំនួយកាន់តែតិច។',
+f3h:'រៀនពីការជ្រើសខុស',f3:'ជិះម៉ូតូគ្មានប័ណ្ណបើកបរ បើកភ្លើងក្រហម ឲ្យគេខ្ចីសៀវភៅធនាគារ… ជ្រើសខុសមានផលវិបាក គ្រូនឹងបង្ហាញវិធីត្រឹមត្រូវ ហើយប៉ុន្មានថ្ងៃក្រោយនឹងជួបស្ថានភាពនោះម្តងទៀត។',
+f4h:'កាតប្រមូល និងចុងបញ្ចប់ច្រើនបែប',f4:'បុណ្យ ការប្រកួត និងការប្រឡង ទទួលបានកាតអនុស្សាវរីយ៍។ ពេលបញ្ចប់ការសិក្សា ជម្រើសរបស់អ្នកនាំទៅចុងបញ្ចប់ផ្សេងៗគ្នា។',
+g_h:'រូបភាពក្នុងហ្គេម',g1:'អានផ្ទាំងរូបភាព ឆ្លើយសំណួរ',g1n:'ចុចឧបករណ៍បំពងសំឡេង ស្តាប់ភាសាចិន ជ្រើសចម្លើយ',g2:'រៀបចំថ្ងៃនីមួយៗ',g2n:'ថែរក្សាកម្លាំង អារម្មណ៍ និងប្រាក់សន្សំ',g3:'យល់ពីតារាងប្រាក់ខែ',g3n:'ហេតុអ្វីត្រូវកាត់ធានារ៉ាប់រង?',
+j_h:'ដំណើរបីឆ្នាំ',j_lead:'ធ្វើតាមប្រតិទិនកម្មវិធី៖ ឆមាសទីពីរឆ្នាំទីមួយប្រឡងជាប់ A2 មុនបញ្ចប់ការសិក្សាត្រូវតែជាប់ B1 ទើបអាចបន្តទៅសាកលវិទ្យាល័យបច្ចេកវិទ្យាដៃគូ (កម្មវិធី 3+4 សាកលវិទ្យាល័យជាថ្នាក់ប្តូរវេន ហាត់ការ 4 ថ្ងៃ រៀន 2 ថ្ងៃ)។',
+y1:'ឆ្នាំទីមួយ',y1a:'មកដល់តៃវ៉ាន់ វគ្គមូលដ្ឋាន សម្ភាសន៍ជាមួយក្រុមហ៊ុន',y1b:'ហាត់ការលើកដំបូង បុណ្យពាក់កណ្តាលរដូវស្លឹកឈើជ្រុះ ចូលឆ្នាំសកល ចូលឆ្នាំចិន',y1c:'រស់នៅគ្រប់ 180 ថ្ងៃ ធ្វើប័ណ្ណធានារ៉ាប់រងសុខភាព',y1d:'TOCFL A2',y1e:'ជំពូក 1–4',
+y2:'ឆ្នាំទីពីរ',y2a:'ក្លាយជាបង ណែនាំប្អូនៗ',y2b:'ទិវាកីឡា ការប្រឡងជំនាញ',y2c:'ពិធីជប់លៀងចុងឆ្នាំរបស់ក្រុមហ៊ុន ទាយប្រស្នាលើគោម',y2d:'TOCFL B1 ជួយសាលាជ្រើសរើសសិស្ស',y2e:'ជំពូក 5–8',
+y3:'ឆ្នាំទីបី',y3p:'B1 · បញ្ចប់ការសិក្សា',y3a:'កិច្ចប្រជុំសិស្សថ្មី ដល់វេនអ្នកចែករំលែក ថតរូបបញ្ចប់ការសិក្សា',y3b:'ប្រធានក្រុមពេលហាត់ការ ប្រវត្តិរូបជាភាសាចិន ប្រកាសពន្ធលើកដំបូង',y3c:'ការសម្ភាសន៍សាកល្បង សាស្ត្រាចារ្យសាកលវិទ្យាល័យមកណែនាំ និងសម្ភាសន៍នៅសាលា',y3d:'ពិធីបញ្ចប់ការសិក្សា ប្រឡងជាប់ B1 ដើម្បីបន្តទៅសាកលវិទ្យាល័យ ហើយជួបខ្លួនឯងបួនឆ្នាំក្រោយ',y3e:'ជំពូក 9–12',
+c_h:'ប្រមូលអនុស្សាវរីយ៍នៅតៃវ៉ាន់',c_lead:'កាតនីមួយៗមានឈ្មោះជាភាសាចិន និងការបញ្ចេញសំឡេង រក្សាទុកក្នុងផែនទីដំណើរបីឆ្នាំ។',
+t_h:'សម្រាប់គ្រូ',t5:'ទម្រង់មតិយោបល់សម្រាប់គ្រូ',t1:'ព្រឹត្តិការណ៍ធ្វើតាមប្រតិទិនសាលា អាចប្រើជាការត្រៀមមុនសកម្មភាព ការហាត់ការ និងការប្រឡង។',t2:'វាក្យសព្ទនៃជំពូកនីមួយៗផ្ទៀងផ្ទាត់តាមបញ្ជី TOCFL ពី A1 ដល់ B1។',t3:'លេខកូដរក្សាទុកអនុញ្ញាតឲ្យលេងបន្តលើទូរស័ព្ទ ឬកុំព្យូទ័រផ្សេង មិនចាំបាច់មានគណនី។',t4:'សំណួរដែលឆ្លើយខុសនឹងចូលទៅផ្នែករំលឹក ហើយមកវិញពេលរៀនដោយខ្លួនឯងពេលល្ងាច។',
+e_h:'ថ្ងៃនេះ ចាប់ផ្តើមដំណើរពីស្រុកកំណើត',e1:'ស្កេន QR Code ដោយទូរស័ព្ទ ឬចុចប៊ូតុងខាងក្រោមដើម្បីលេង។ ណែនាំឲ្យពាក់កាស ឬបើកសំឡេង។',
+ft1:'ទិនានុប្បវត្តិជីវិតនៅតៃវ៉ាន់ · ហ្គេមរៀនភាសាចិនសម្រាប់កម្មវិធីសហការសិស្សបរទេសរបស់វិទ្យាល័យយូវ',ft2:'តួអង្គ និងទិដ្ឋភាពទាំងអស់ជាគំនូរដើម'},
+en:{nav1:'Apply to arrival',nav2:'Features',nav3:'Three-year journey',nav4:'For teachers',play:'Play',
+badge:'Youth High School · Overseas-student cooperative program · Chinese-learning game',tagline:'Three years in Taiwan, learning Chinese one day at a time',
+intro:'From applying at home and taking the TOCFL to studying, interning, working part-time, celebrating festivals and getting your health-insurance card in Taiwan — everything in daily life is a Chinese lesson. Choose well and life gets easier; choose wrong and Mr. Chen will show you the right way.',
+play2:'Play now',admit:'Admissions website ↗',free:'No download · play on your phone · auto-save · continue on another device',
+s1b:'Prologue + 12 chapters',s1:'From applying at home to graduation — all chapters open',s2:'Vocabulary grows chapter by chapter, following the TOCFL word list',s3b:'6 languages',s3:'Support translations: Vietnamese, Indonesian, Thai, Burmese, Khmer, English',s4b:'15–20 minutes',s4:'One chapter fits in a break',
+p_h:'From applying to arrival',p_lead:'The prologue “Before Departure” follows the real admissions timeline. Check the admissions website for official dates.',
+p1w:'November of the previous year',p1:'The school starts admissions outreach',p1n:'Read the admissions website and choose a department',
+p2w:'December',p2:'Apply at your local sponsoring agency',p2n:'Apply early to join the school’s Chinese tutoring',
+p3w:'By the end of January',p3:'Agency interview or document review',p3n:'Chinese tutoring every week',
+p4w:'By the end of February',p4:'Pass TOCFL A1',p4n:'You can take the test after applying',
+p5w:'End of May',p5:'Admission results announced',p5n:'Receive your acceptance letter; apply for a visa in June',
+p6w:'Last week of July',p6:'Arrive in Taiwan',p6n:'Airport pick-up by the school; orientation in August, classes start in September',
+admit2:'Youth High School 2027 overseas-student admissions website ↗',
+f_h:'Learning Chinese is living life',f_lead:'No memorizing textbooks — use Chinese to handle real situations in the dorm, the factory, the convenience store, the night market and the clinic.',
+f1h:'Real overseas-student life',f1:'Rotate between school and internships. Read payslips, ride the bus with your student card, pass dorm inspections, get your health-insurance card after 180 days, send money home from the post office.',
+f2h:'Listen, read, choose — step by step',f2:'Every line can be played aloud. Pinyin and translations can be turned on or off; the better you get, the fewer hints you need.',
+f3h:'Learn from wrong choices',f3:'Riding a scooter without a license, running a red light, lending your passbook… wrong choices have consequences, a teacher shows you the right way, and you’ll face the situation again a few days later.',
+f4h:'Collectible cards and multiple endings',f4:'Festivals, contests and exams earn keepsake cards. At graduation, your choices lead to different endings — every one of them a good one.',
+g_h:'Screenshots',g1:'Read posters, answer questions',g1n:'Tap the speaker, listen to Chinese, pick the answer',g2:'Plan each day',g2n:'Balance energy, mood and savings',g3:'Understand your payslip',g3n:'Why is insurance deducted?',
+j_h:'The three-year journey',j_lead:'Follows the program calendar: pass A2 in Year 1’s second semester, you must pass B1 before graduating to go straight on to the partner university (3+4 program; the university runs a rotation of 4 days at work, 2 days in class).',
+y1:'Year 1',y1a:'Arrival, orientation, company interviews',y1b:'First internship, Mid-Autumn, New Year’s Eve, Lunar New Year',y1c:'180 days in Taiwan: get your health-insurance card',y1d:'TOCFL A2',y1e:'Chapters 1–4',
+y2:'Year 2',y2a:'Become a senior and mentor new students',y2b:'Sports day, skills certification exam',y2c:'Company year-end party, lantern riddles',y2d:'TOCFL B1, help the school recruit',y2e:'Chapters 5–8',
+y3:'Year 3',y3p:'B1 · Graduation',y3a:'New-student orientation, your turn to share; graduation photos',y3b:'Team leader at your internship, a Chinese autobiography, your first tax filing',y3c:'Mock interview; university teachers visit for an information session and interviews',y3d:'Graduation; pass B1 to go on to university and meet yourself four years later',y3e:'Chapters 9–12',
+c_h:'Collect your Taiwan memories',c_lead:'Every card shows its Chinese name and pronunciation, stored in your three-year journey map.',
+t_h:'For teachers',t5:'Teacher feedback form',t1:'Events follow the school calendar, so they work as preparation before activities, internships and exams.',t2:'Each chapter’s vocabulary is checked against the TOCFL list, rising from A1 to B1.',t3:'Save codes let students continue on another phone or computer — no account needed.',t4:'Missed questions go into review and come back during evening self-study.',
+e_h:'Start your journey from home today',e1:'Scan the QR code with your phone or tap the button below to play. Headphones or sound on recommended.',
+ft1:'Taiwan Life Diary · A Chinese-learning game for Youth High School’s overseas-student cooperative program',ft2:'All characters and scenes are original illustrations'}
+};
+const ZH={};
+document.querySelectorAll('[data-i18n]').forEach(e=>{ZH[e.dataset.i18n]=e.innerHTML;});
+const HTMLLANG={zh:'zh-Hant-TW',vi:'vi',id:'id',th:'th',my:'my',km:'km',en:'en'};
+function setLang(l){
+  if(!HTMLLANG[l]) l='zh';
+  document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.dataset.i18n; e.innerHTML=(l==='zh'?ZH[k]:(T[l]&&T[l][k]))||ZH[k];});
+  document.documentElement.lang=HTMLLANG[l]; document.body.dataset.lang=l;
+  document.querySelectorAll('.langs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.l===l)));
+  try{localStorage.setItem('twdiary_about_lang',l);}catch(e){}
+  try{const u=new URL(location.href); u.searchParams.set('lang',l); history.replaceState(null,'',u);}catch(e){}
+}
+document.querySelectorAll('.langs button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.l)));
+(function(){
+  let l=null;
+  try{l=new URLSearchParams(location.search).get('lang');}catch(e){}
+  if(!l){try{l=localStorage.getItem('twdiary_about_lang');}catch(e){}}
+  if(!l){const n=(navigator.language||'').toLowerCase(); l=n.startsWith('zh')?'zh':n.startsWith('vi')?'vi':(n.startsWith('id')||n.startsWith('ms'))?'id':n.startsWith('th')?'th':n.startsWith('my')?'my':n.startsWith('km')?'km':n.startsWith('en')?'en':'zh';}
+  setLang(l);
+})();
+</script>
+</body>
+</html>
