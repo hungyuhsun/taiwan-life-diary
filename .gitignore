@@ -4,4 +4,4 @@ node_modules/
 
 # TTS 產生物
 tools/tts/tts_jobs.json
-tools/tts/語音產生器.html
+tools/tts/tts_generator.html

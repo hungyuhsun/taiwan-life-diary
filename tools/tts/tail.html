@@ -33,7 +33,7 @@ for(const [v,c] of Object.entries(VOICES)){
   b.onclick=async()=>{ b.disabled=true; try{ saveKey(); const bl=await tts(v,SAMPLE[v]); new Audio(URL.createObjectURL(bl)).play(); }catch(e){ alertMsg(e); } b.disabled=false; };
   tr.lastChild.append(b); $('voices').append(tr);
 }
-function alertMsg(e){ const m=e.message==='Failed to fetch'?'連不上 Azure（網路被擋，或瀏覽器不允許）。請改用 PowerShell 版：產生語音.ps1':e.message; log('錯誤：'+m); $('stat').textContent='錯誤：'+m; }
+function alertMsg(e){ const m=e.message==='Failed to fetch'?'連不上 Azure（網路被擋，或瀏覽器不允許）。請改用 PowerShell 版：make_audio.ps1':e.message; log('錯誤：'+m); $('stat').textContent='錯誤：'+m; }
 // IndexedDB
 let dbp=null; function db(){ return dbp||(dbp=new Promise((ok,no)=>{ const q=indexedDB.open('twdiary_tts',1); q.onupgradeneeded=()=>q.result.createObjectStore('a'); q.onsuccess=()=>ok(q.result); q.onerror=()=>no(q.error); })); }
 async function idb(mode,fn){ const d=await db(); return new Promise((ok,no)=>{ const t=d.transaction('a',mode); const r=fn(t.objectStore('a')); t.oncomplete=()=>ok(r&&r.result); t.onerror=()=>no(t.error); }); }

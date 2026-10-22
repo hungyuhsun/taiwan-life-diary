@@ -1,6 +1,6 @@
 ﻿# 台灣生活日記 語音產生器（PowerShell 版）
 # 用法：在這個資料夾按右鍵「在終端機開啟」，輸入
-#   powershell -ExecutionPolicy Bypass -File .\產生語音.ps1
+#   powershell -ExecutionPolicy Bypass -File .\make_audio.ps1
 # 需要同一個資料夾裡的 tts_jobs.json。已做好的檔案會跳過，中斷後可以再執行一次接著做。
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8
