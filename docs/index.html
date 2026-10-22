@@ -42,6 +42,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .small{font-size:.85rem;color:var(--ink-2)}
 .linkbtn{display:block;text-align:center;text-decoration:none;color:var(--ink);margin:10px 0 4px}
 .title-screen .info-link{display:block;text-align:center;font-weight:700;color:#B4520C;padding:10px 0}
+.title-screen .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.title-screen .tile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 6px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;font-weight:700;font-size:.95rem;cursor:pointer;box-shadow:0 2px 0 var(--line)}
+.title-screen .tile i{font-style:normal;font-size:1.4rem;line-height:1.2}
+.title-screen .tile:active{transform:translateY(1px);box-shadow:none}
+.title-screen .foot{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px;font-size:.88rem}
+.title-screen .foot a,.title-screen .foot button{color:#B4520C;font-weight:700;padding:6px 0;background:none;border:0;font:inherit;font-weight:700;cursor:pointer;text-decoration:underline}
+.title-screen .foot button.restart{color:var(--ink-2)}
 
 /* ---------- setup ---------- */
 .setup{display:flex;flex-direction:column;gap:16px}
@@ -2766,6 +2773,7 @@ async function downloadAudio(){ const onp=(...a)=>DLSHOW&&DLSHOW(...a);
   const work=async()=>{ while(dlOn && i<todo.length){ const h=todo[i++]; const u=new URL(AUDIO_BASE+h+'.mp3',location.href).href;
     try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok){ await c.put(u,r); done++; } else fail++; }catch(e){ fail++; } onp(done,all.length,fail); } };
   await Promise.all([0,1,2,3,4,5].map(work)); return {done,total:all.length,fail}; }
+function restartBtn(){ let armed=false; const b=el('button',{class:'restart',onclick:()=>{ if(!armed){ armed=true; b.textContent='再按一次：清除進度、重新開始'; setTimeout(()=>{ armed=false; b.textContent='重新開始'; },4000); return; } S=fresh(); S.screen='setup'; render(); }},'重新開始'); return b; }
 function openOffline(){ const dlg=el('dialog',{}); dlg.append(offlineBox(true), el('div',{style:'display:flex;justify-content:flex-end;margin-top:12px'}, el('button',{class:'btn',onclick:()=>dlg.close()},'關閉')));
   dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal(); }
 function offlineBox(top){
@@ -2832,14 +2840,17 @@ function renderTitle(){
     cast,
     el('div',{class:'chapter-tag'}, saved&&saved.ch===12 ? '三年級・第十二章　4–6 月：錄取通知・報稅・面試・畢業典禮' : saved&&saved.ch===11 ? '三年級・第十一章　1–3 月：扣繳憑單・志願表・春節・大學到校面試' : saved&&saved.ch===10 ? '三年級・第十章　10–12 月：報告・自傳・模擬面試・冬至' : saved&&saved.ch===9 ? '三年級・第九章　7–9 月：帶新生・小組長・志願調查' : saved&&saved.ch===8 ? '二年級・第八章　4–6 月：清明・B1 考試・端午・結業' : saved&&saved.ch===7 ? '二年級・第七章　1–3 月：專題・尾牙・除夕・元宵・輪調' : saved&&saved.ch===6 ? '二年級・第六章　10–12 月：國慶・運動會・技能檢定・聖誕節' : saved&&saved.ch===5 ? '二年級・第五章　7–9 月：迎新・探索教育・居留證延期' : saved&&saved.ch===4 ? '第四章　4–6 月：潑水節・文化週・大學參訪・畢業典禮' : saved&&saved.ch===3 ? '第三章　1–3 月：文化之旅・春節・園遊會' : saved&&saved.ch===2 ? '第二章　10–12 月：中秋・打工・跨年' : '第一章　7–9 月：抵達・面試・實習'),
     saved ? el('button',{class:'btn',onclick:()=>{S=saved; if(S.ch===0){ runCh0(); return; } S.screen='game';render();runDay();}},'繼續遊戲　'+(UI.cont[saved.lang]||'Continue')) : null,
-    el('button',{class:saved?'btn ghost':'btn',onclick:()=>{S=fresh();S.screen='setup';render();}}, saved?'重新開始':'開始遊戲'),
-    el('button',{class:'btn ghost',onclick:()=>openSaveCode('')}, '用存檔代碼繼續'),
-    el('button',{class:'btn ghost',onclick:()=>startPrologue(saved)}, '前傳：出發前'),
-    el('button',{class:'btn ghost',onclick:()=>openMap(saved||{})}, '三年旅程地圖'),
-    el('button',{class:'btn ghost',onclick:openOffline}, '離線玩・下載語音'),
-    el('a',{class:'info-link',href:fbUrl(saved||{}),target:'_blank',rel:'noopener'},'學生試玩回饋 ✎'),
-    el('a',{class:'info-link',href:'feedback/teacher/',target:'_blank',rel:'noopener'},'教師試玩回饋 ✎'),
-    el('a',{class:'info-link',href:'https://overseas.youth.tc.edu.tw',target:'_blank',rel:'noopener'},'青年高中 2027 年僑生新生入學資訊網 ↗'),
+    saved ? null : el('button',{class:'btn',onclick:()=>{S=fresh();S.screen='setup';render();}}, '開始遊戲'),
+    el('div',{class:'tiles'},
+      el('button',{class:'tile',onclick:()=>startPrologue(saved)}, el('i',{},'🧳'), '前傳：出發前'),
+      el('button',{class:'tile',onclick:()=>openMap(saved||{})}, el('i',{},'🗺️'), '三年旅程地圖'),
+      el('button',{class:'tile',onclick:()=>openSaveCode('')}, el('i',{},'🔑'), '存檔代碼'),
+      el('button',{class:'tile',onclick:openOffline}, el('i',{},'📶'), '離線・下載語音')),
+    el('div',{class:'foot'},
+      el('a',{href:fbUrl(saved||{}),target:'_blank',rel:'noopener'},'學生回饋 ✎'),
+      el('a',{href:'feedback/teacher/',target:'_blank',rel:'noopener'},'教師回饋 ✎'),
+      el('a',{href:'https://overseas.youth.tc.edu.tw',target:'_blank',rel:'noopener'},'入學資訊網 ↗'),
+      saved ? restartBtn() : null),
     el('p',{class:'small'},'試作版：前傳＋第一到第十二章（一年級到三年級畢業），每章約 15–20 分鐘。進度會自動存在這台裝置的瀏覽器裡。建議戴耳機或打開聲音。')));
 }
 
