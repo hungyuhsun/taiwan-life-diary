@@ -13,14 +13,14 @@ docs/sw.js、manifest.json、icon-*.png、apple-touch-icon.png  離線使用
 docs/audio/            語音檔（自行產生，見 tools/tts/README.md）
 ```
 
-## 離線使用
-
-網站必須是 https。學生有網路時打開一次，遊戲和字型就會存在手機裡；「加到主畫面」後，沒有網路也能從圖示打開。語音在遊戲「設定 → 下載語音」下載（約 30 MB）。
-
-`sw.js`、`manifest.json` 和圖示要和 `index.html` 放在同一層。更新遊戲時只要換掉 `index.html`，學生下次有網路打開就會拿到新版。
-
 - **GitHub Pages**：Settings → Pages → Source 選 `Deploy from a branch`，Branch 選 `main`、資料夾 `/docs`。
 - **學校伺服器**：把 `docs/` 裡的檔案放到網站目錄（例如 `/var/www/html/twdiary/`）。不需要資料庫或後端。
+
+## 離線使用
+
+網站必須是 https。學生有網路時打開一次，遊戲和字型就會存在手機裡；「加到主畫面」後，沒有網路也能從圖示打開。語音在首頁「離線・下載語音」或遊戲「設定」下載（約 30 MB）。
+
+`sw.js`、`manifest.json` 和圖示要和 `index.html` 放在同一層。更新遊戲時只要換掉 `index.html`，學生下次有網路打開就會拿到新版。
 
 ## 回饋問卷（Google 試算表）
 
