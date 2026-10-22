@@ -72,6 +72,6 @@ const DATA = { events: EVENTS, P, N, py, bank };
 let html = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
 html = html.replace('/*__QRLIB__*/', () => fs.readFileSync(require.resolve('qrcode-generator/qrcode.js'),'utf8'));
 html = html.replace('__DATA__', () => JSON.stringify(DATA)).replace('__IMG__', () => JSON.stringify(IMG)).replace('__BG__', () => JSON.stringify(BG)).replace('__KM__', () => fs.readFileSync(path.join(ROOT, 'i18n', 'km.json'),'utf8'));
-const PRE = '<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>[hidden]{display:none!important}body{margin:0}</style></head><body>\n';
+const PRE = '<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#26324A"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="台灣生活日記"><style>[hidden]{display:none!important}body{margin:0}</style></head><body>\n';
 fs.writeFileSync(path.join(ROOT, 'docs', 'index.html'), PRE + html + '\n</body></html>');
 console.log('ok', Math.round(html.length / 1024) + 'KB', 'bank', bank.length, 'py', Object.keys(py).length);

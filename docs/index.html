@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>[hidden]{display:none!important}body{margin:0}</style></head><body>
+<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#26324A"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="台灣生活日記"><style>[hidden]{display:none!important}body{margin:0}</style></head><body>
 <title>台灣生活日記</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2754,6 +2754,43 @@ try{ speechSynthesis.onvoiceschanged = pickVoice; pickVoice(); }catch(e){}
 // 錄製語音（Azure 產生，放在 audio/）：有檔案就播放，沒有就用手機內建語音。對應規則與 tts_jobs.js 相同。
 const AUDIO_BASE='audio/'; let AUDIO=null, curAudio=null;
 try{ fetch(AUDIO_BASE+'index.json').then(r=>r.ok?r.json():[]).then(a=>{ AUDIO=new Set(a); }).catch(()=>{}); }catch(e){}
+// 離線：註冊 service worker（sw.js），遊戲與字型會存在手機裡；語音要在設定按「下載語音」
+const CAN_OFFLINE = 'serviceWorker' in navigator && 'caches' in window && /^https:|^http:\/\/localhost/.test(location.href) && !window.claude;
+if(CAN_OFFLINE) try{ navigator.serviceWorker.register('sw.js').catch(()=>{}); }catch(e){}
+const AUD_CACHE='twdiary-audio'; let dlOn=false, DLSHOW=null;
+async function audioHave(){ const c=await caches.open(AUD_CACHE); const ks=await c.keys(); return new Set(ks.map(r=>(r.url.match(/([0-9a-f]{16})\.mp3$/)||[])[1]).filter(Boolean)); }
+async function downloadAudio(){ const onp=(...a)=>DLSHOW&&DLSHOW(...a);
+  const c=await caches.open(AUD_CACHE); const have=await audioHave(); const all=[...AUDIO]; const todo=all.filter(h=>!have.has(h));
+  let done=all.length-todo.length, fail=0, i=0; onp(done,all.length,fail);
+  try{ navigator.storage && navigator.storage.persist && navigator.storage.persist(); }catch(e){}
+  const work=async()=>{ while(dlOn && i<todo.length){ const h=todo[i++]; const u=new URL(AUDIO_BASE+h+'.mp3',location.href).href;
+    try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok){ await c.put(u,r); done++; } else fail++; }catch(e){ fail++; } onp(done,all.length,fail); } };
+  await Promise.all([0,1,2,3,4,5].map(work)); return {done,total:all.length,fail}; }
+function offlineBox(){
+  if(!CAN_OFFLINE) return null;
+  const st=el('p',{class:'small',style:'margin:4px 0 0'},'');
+  const bt=el('button',{class:'btn ghost',style:'width:100%'},'下載語音（約 30 MB，請用 Wi-Fi）');
+  const show=(d,t,f)=>{ st.textContent= d>=t ? '✓ 語音已全部下載，沒有網路也能聽。' : `已下載 ${d} / ${t}`+(f?`（${f} 個失敗，可再按一次）`:'');
+    bt.textContent= dlOn ? '暫停下載' : d>=t ? '重新檢查語音' : d>0 ? '繼續下載語音' : '下載語音（約 30 MB，請用 Wi-Fi）'; };
+  DLSHOW=show;
+  const refresh=async()=>{ if(!AUDIO){ bt.disabled=true; st.textContent='目前沒有連上網路，或伺服器還沒有語音檔。'; return; }
+    const h=await audioHave(); const d=[...AUDIO].filter(x=>h.has(x)).length; show(d,AUDIO.size,0); };
+  bt.onclick=async()=>{ if(dlOn){ dlOn=false; bt.textContent='繼續下載語音'; return; }
+    if(!navigator.onLine){ st.textContent='沒有網路，請連上 Wi-Fi 再下載。'; return; }
+    dlOn=true; bt.textContent='暫停下載'; const r=await downloadAudio(); dlOn=false; DLSHOW&&DLSHOW(r.done,r.total,r.fail); };
+  refresh();
+  return el('div',{style:'margin-top:12px;padding-top:10px;border-top:1px solid var(--line)'},
+    el('h4',{style:'margin:0 0 4px'},'沒有網路也能玩'),
+    el('p',{class:'small',style:'margin:0 0 8px'},'用瀏覽器選單的「加到主畫面」，之後從主畫面的圖示打開。遊戲會存在手機裡，回家沒有網路也能玩。語音要先下載，沒下載時會用手機內建的聲音。'),
+    el('p',{class:'tr',style:'font-size:.85rem;margin:0 0 8px'},OFFLINE_TR[S.lang]||OFFLINE_TR.en),
+    bt, st); }
+const OFFLINE_TR={
+  vi:'Chọn “Thêm vào màn hình chính” trong menu trình duyệt, sau đó mở bằng biểu tượng. Trò chơi được lưu trong điện thoại nên ở nhà không có mạng vẫn chơi được. Hãy tải giọng đọc trước; nếu chưa tải sẽ dùng giọng có sẵn của điện thoại.',
+  id:'Pilih “Tambahkan ke Layar Utama” di menu browser, lalu buka dari ikonnya. Game tersimpan di ponsel, jadi bisa dimainkan di rumah tanpa internet. Unduh suara terlebih dahulu; jika belum, suara bawaan ponsel yang dipakai.',
+  en:'Choose “Add to Home Screen” in the browser menu, then open the game from the icon. It is saved on your phone, so you can play at home without internet. Download the voices first; otherwise your phone’s built-in voice is used.',
+  th:'เลือก “เพิ่มไปยังหน้าจอหลัก” ในเมนูเบราว์เซอร์ แล้วเปิดจากไอคอน เกมจะถูกเก็บไว้ในโทรศัพท์ จึงเล่นที่บ้านได้แม้ไม่มีอินเทอร์เน็ต ดาวน์โหลดเสียงไว้ก่อน ถ้ายังไม่ได้ดาวน์โหลดจะใช้เสียงในเครื่องแทน',
+  my:'ဘရောက်ဇာ မီနူးမှ “Add to Home Screen” ကို ရွေးပြီး အိုင်ကွန်မှ ဖွင့်ပါ။ ဂိမ်းကို ဖုန်းထဲတွင် သိမ်းထားသဖြင့် အိမ်တွင် အင်တာနက်မရှိလည်း ကစားနိုင်သည်။ အသံများကို ကြိုတင်ဒေါင်းလုဒ်လုပ်ပါ။ မလုပ်ရသေးပါက ဖုန်း၏ မူလအသံကို သုံးပါမည်။',
+  km:'ជ្រើស “បន្ថែមទៅអេក្រង់ដើម” ក្នុងម៉ឺនុយកម្មវិធីរុករក រួចបើកពីរូបតំណាង។ ហ្គេមត្រូវបានរក្សាទុកក្នុងទូរសព្ទ ដូច្នេះអាចលេងនៅផ្ទះបានទោះគ្មានអ៊ីនធឺណិត។ សូមទាញយកសំឡេងជាមុន បើមិនទាន់ទាញយកទេ នឹងប្រើសំឡេងរបស់ទូរសព្ទ។'};
 const VOICE_OF={rina:'f_young',amei:'f_young',alian:'f_young',newbie:'f_young',newbie2:'f_young',
   tongxue:'m_young',xiaoyang:'m_young',xuezhang:'m_young',ajie:'m_young',xinsheng:'m_young',xinsheng2:'m_young',cousin:'m_young',
   lin:'f_adult',li:'f_adult',customer:'f_adult',nurse:'f_adult',host:'f_adult',teacher:'f_adult',prof:'f_adult',officer:'f_adult',photog:'f_adult',mama:'f_adult',
@@ -3553,6 +3590,7 @@ function openSettings(){
       el('button',{class:'btn',onclick:()=>{ save(); toast('已儲存：'+saveWhere(S)); }},'儲存進度'),
       el('button',{class:'btn ghost',onclick:()=>{ save(); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} location.reload(); }},'回到主畫面')) : null,
     (S.hero && S.screen==='game') ? el('p',{class:'small',style:'margin:6px 0 0'},'遊戲會自動存檔。回到主畫面後按「繼續遊戲」，會從這個時段重新開始。') : null,
+    offlineBox(),
     el('div',{style:'margin-top:12px;display:flex;flex-direction:column;gap:8px'}, el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openMap(); }},'三年旅程地圖'), el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openSaveCode(); }},'存檔代碼（換裝置接著玩）')),
     el('div',{style:'display:flex;gap:8px;justify-content:space-between;margin-top:14px'}, rs, el('button',{class:'btn',onclick:()=>dlg.close()},'關閉'))].filter(Boolean));
   dlg.addEventListener('close',()=>dlg.remove());
