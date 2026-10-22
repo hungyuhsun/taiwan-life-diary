@@ -2766,8 +2766,9 @@ async function downloadAudio(){ const onp=(...a)=>DLSHOW&&DLSHOW(...a);
   const work=async()=>{ while(dlOn && i<todo.length){ const h=todo[i++]; const u=new URL(AUDIO_BASE+h+'.mp3',location.href).href;
     try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok){ await c.put(u,r); done++; } else fail++; }catch(e){ fail++; } onp(done,all.length,fail); } };
   await Promise.all([0,1,2,3,4,5].map(work)); return {done,total:all.length,fail}; }
-function offlineBox(){
-  if(!CAN_OFFLINE) return null;
+function openOffline(){ const dlg=el('dialog',{}); dlg.append(offlineBox(true), el('div',{style:'display:flex;justify-content:flex-end;margin-top:12px'}, el('button',{class:'btn',onclick:()=>dlg.close()},'關閉')));
+  dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal(); }
+function offlineBox(top){
   const st=el('p',{class:'small',style:'margin:4px 0 0'},'');
   const bt=el('button',{class:'btn ghost',style:'width:100%'},'下載語音（約 30 MB，請用 Wi-Fi）');
   const show=(d,t,f)=>{ st.textContent= d>=t ? '✓ 語音已全部下載，沒有網路也能聽。' : `已下載 ${d} / ${t}`+(f?`（${f} 個失敗，可再按一次）`:'');
@@ -2778,8 +2779,8 @@ function offlineBox(){
   bt.onclick=async()=>{ if(dlOn){ dlOn=false; bt.textContent='繼續下載語音'; return; }
     if(!navigator.onLine){ st.textContent='沒有網路，請連上 Wi-Fi 再下載。'; return; }
     dlOn=true; bt.textContent='暫停下載'; const r=await downloadAudio(); dlOn=false; DLSHOW&&DLSHOW(r.done,r.total,r.fail); };
-  refresh();
-  return el('div',{style:'margin-top:12px;padding-top:10px;border-top:1px solid var(--line)'},
+  if(!CAN_OFFLINE){ bt.disabled=true; st.textContent = location.protocol==='file:' ? '這是下載到裝置上的檔案，不能離線存檔。請用學校網址打開遊戲。' : location.protocol==='http:' ? '網址要是 https:// 開頭才能離線使用。' : '這個瀏覽器不支援離線使用，請改用 Chrome 或 Safari。'; } else refresh();
+  return el('div',{style:top?'':'margin-top:12px;padding-top:10px;border-top:1px solid var(--line)'},
     el('h4',{style:'margin:0 0 4px'},'沒有網路也能玩'),
     el('p',{class:'small',style:'margin:0 0 8px'},'用瀏覽器選單的「加到主畫面」，之後從主畫面的圖示打開。遊戲會存在手機裡，回家沒有網路也能玩。語音要先下載，沒下載時會用手機內建的聲音。'),
     el('p',{class:'tr',style:'font-size:.85rem;margin:0 0 8px'},OFFLINE_TR[S.lang]||OFFLINE_TR.en),
@@ -2835,6 +2836,7 @@ function renderTitle(){
     el('button',{class:'btn ghost',onclick:()=>openSaveCode('')}, '用存檔代碼繼續'),
     el('button',{class:'btn ghost',onclick:()=>startPrologue(saved)}, '前傳：出發前'),
     el('button',{class:'btn ghost',onclick:()=>openMap(saved||{})}, '三年旅程地圖'),
+    el('button',{class:'btn ghost',onclick:openOffline}, '離線玩・下載語音'),
     el('a',{class:'info-link',href:fbUrl(saved||{}),target:'_blank',rel:'noopener'},'學生試玩回饋 ✎'),
     el('a',{class:'info-link',href:'feedback/teacher/',target:'_blank',rel:'noopener'},'教師試玩回饋 ✎'),
     el('a',{class:'info-link',href:'https://overseas.youth.tc.edu.tw',target:'_blank',rel:'noopener'},'青年高中 2027 年僑生新生入學資訊網 ↗'),
