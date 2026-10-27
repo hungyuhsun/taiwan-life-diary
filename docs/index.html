@@ -101,6 +101,9 @@ input[type=text],select{font:inherit;padding:12px 14px;border-radius:12px;border
 .py{font-size:.85rem;color:var(--ink-2);margin:-4px 0 0;letter-spacing:.01em}
 .tr{font-family:var(--f-tr);font-size:1rem;line-height:1.6;margin:0;color:var(--ink)}
 .tr-sub{font-family:var(--f-display);font-size:.95rem;color:var(--ink-2);margin:0}
+.trbtn{border:1px dashed var(--line);background:none;border-radius:999px;padding:4px 12px;font-size:.85rem;color:var(--ink-2);margin:2px 0 6px}
+.mode-tag{display:inline-block;font-size:.8rem;padding:2px 10px;border-radius:999px;background:var(--orange-soft);border:1px solid var(--orange);margin-left:6px;vertical-align:middle}
+.stars{display:block;color:var(--orange)!important;letter-spacing:2px;font-size:.95rem!important}
 .hidden-text{font-family:var(--f-display);font-size:1.45rem;letter-spacing:.3em;color:var(--grey)}
 .speak{flex:none;border:0;width:40px;height:40px;border-radius:50%;background:var(--plaid);color:#fff;font-size:1rem}
 .speak.sm{width:34px;height:34px;font-size:.85rem;background:#E2E8F3;color:var(--plaid)}
@@ -2717,10 +2720,10 @@ const TITLES = {tutor:'華語小老師',brave:'勇氣之星',world:'世界好朋
 /* ---------- state ---------- */
 const KEY='twdiary_ch1_v1';
 const fresh = () => ({ch:1,missed:[],wish:null,parcel:0,screen:'title',hero:null,name:'',dept:null,lang:null,day:0,slot:0,
-  st:{hp:80,mood:60,money:3000,pop:10,skill:10,zh:0,tidy:100},trash:0,warn:0,minTidy:100,aff:{},seen:{},cards:[],titles:[],qTot:0,qOk:0,usedBank:[],pinyin:true,auto:true});
+  st:{hp:80,mood:60,money:3000,pop:10,skill:10,zh:0,tidy:100},trash:0,warn:0,minTidy:100,aff:{},seen:{},cards:[],titles:[],qTot:0,qOk:0,usedBank:[],pinyin:true,auto:true,hard:false,trMode:'show'});
 let S = fresh();
 const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
-const load = () => { try{ const v = JSON.parse(localStorage.getItem(KEY)||'null'); if(v){ v.ch=v.ch||1; v.missed=v.missed||[]; } if(v&&v.st&&v.st.tidy==null){ v.st.tidy=100; v.trash=0; v.warn=0; v.minTidy=100; } return v && v.hero ? v : null; }catch(e){ return null; } };
+const load = () => { try{ const v = JSON.parse(localStorage.getItem(KEY)||'null'); if(v){ v.ch=v.ch||1; v.missed=v.missed||[]; v.trMode=v.trMode||'show'; } if(v&&v.st&&v.st.tidy==null){ v.st.tidy=100; v.trash=0; v.warn=0; v.minTidy=100; } return v && v.hero ? v : null; }catch(e){ return null; } };
 window.claude?.hot?.snapshot?.(() => S);
 
 /* ---------- helpers ---------- */
@@ -2737,6 +2740,12 @@ const swapTr = (s) => { if(!s || !boyRoom()) return s||'';
   if(/A-Mi\b/.test(s)) s = s.replace(/\bher\b/g,'his').replace(/\bshe\b/g,'he').replace(/\bShe\b/g,'He');
   return s.replace(/A Mật/g,'A Kiệt').replace(/A-Mi\b/g,'A-Jie').replace(/A Mi\b/g,'A Jie').replace(/อาหมี่/g,'อาเจี๋ย').replace(/အာမိ/g,'အာကျဲ').replace(/អាមី/g,'អាជៀ'); };
 const L = (o) => swapTr((o && (o[S.lang] || o.en)) || '');
+// 母語翻譯顯示方式：show 一直顯示（翻譯在中文上面）／tap 點一下才顯示（中文在上）／off 不顯示
+const HT = k => HARD_TXT[k][S.lang] || HARD_TXT[k].en;
+function trBlock(text, style){ const m=S.trMode||'show'; if(m==='off' || !text) return null;
+  if(m==='show') return el('p',{class:'tr',style:style||''},text);
+  const b=el('button',{class:'trbtn',onclick:()=>b.replaceWith(el('p',{class:'tr',style:style||''},text))},'🌐 '+HT('showTr')); return b; }
+function trZh(text, zhEl){ return ((S.trMode||'show')==='show' ? [trBlock(text), zhEl] : [zhEl, trBlock(text)]).filter(Boolean); }
 const gear2 = () => dept().gear==='口罩' ? '安全帽' : '口罩';
 const fill = (s) => s.replace(/\{name\}/g,S.name||'我').replace(/\{home\}/g,hero().home.zh).replace(/\{dept\}/g,dept().zh)
   .replace(/\{gear\}/g,dept().gear).replace(/\{gear2\}/g,gear2()).replace(/\{sib\}/g,hero().girl?'妹妹':'弟弟')
@@ -2861,6 +2870,7 @@ function renderSetup(){
   const nameIn = el('input',{type:'text',id:'nm',maxlength:'12',placeholder:'例：阿明 / Minh',value:S.name||'',oninput:e=>{S.name=e.target.value.trim(); goBtn.disabled=!ready();}});
   const dc = el('div',{class:'chips'}, DEPTS.map((d,i)=>el('button',{class:'chip','aria-pressed':String(S.dept===i),onclick:()=>{S.dept=i;renderAgain();}},d.zh)));
   const lc = el('select',{id:'lg',onchange:e=>{S.lang=e.target.value;S.langSet=true;renderAgain();}}, Object.entries(LANGS).map(([k,v])=>{const o=el('option',{value:k},v); if((S.lang||'en')===k) o.selected=true; return o;}));
+  const hc = el('div',{class:'chips'}, [[false,'一般'],[true,'挑戰 ★']].map(([v,t])=>el('button',{class:'chip','aria-pressed':String(!!S.hard===v),onclick:()=>{ setHard(v); renderAgain(); }},t)));
   const ready = () => S.hero && S.name && S.dept!==null && S.dept!==undefined;
   const goBtn = el('button',{class:'btn',onclick:()=>{ if(!ready()) return; S.lang=S.lang||hero().home.lang; S.group=S.group||(Math.random()<.5?'A':'B'); S.screen='game'; S.day=0; S.slot=0; if(S.prologue || START_PRE){ S.ch=0; save(); runCh0(); return; } save(); render(); chooseStart(); }}, '出發！　'+UI.go[S.lang||'en']);
   goBtn.disabled = !ready();
@@ -2869,6 +2879,9 @@ function renderSetup(){
     el('div',{class:'field'}, el('label',{for:'nm'},'你的名字　',el('span',{class:'small'},UI.name[lang])), nameIn),
     el('div',{class:'field'}, el('span',{class:'lab'},'科別　',el('span',{class:'small'},UI.dept[lang])), dc),
     el('div',{class:'field'}, el('label',{for:'lg'},'翻譯語言　',el('span',{class:'small'},UI.lang[lang])), lc),
+    el('div',{class:'field'}, el('span',{class:'lab'},'難度　',el('span',{class:'small'},HT('level'))), hc,
+      el('p',{class:'small',style:'margin:6px 0 0'}, S.hard?'挑戰：答錯不能重選、心情 −3，不顯示翻譯，聽力只能重播 2 次。':'一般：答錯可以重選，一直顯示翻譯。'),
+      el('p',{class:'tr',style:'font-size:.85rem;margin:2px 0 0;color:var(--ink-2)'}, HT(S.hard?'hard':'normal'))),
     goBtn));
 }
 function renderAgain(){ const y=window.scrollY; render(); window.scrollTo(0,y); }
@@ -2940,7 +2953,10 @@ function showSay(st){
   const sp = el('button',{class:'speak','aria-label':'播放',onclick:()=>speak(zh,vv)},'🔊');
   if(st.listen){
     const box = el('div',{}, el('p',{class:'hidden-text'},'？？？'));
-    const big = el('button',{class:'speak big',onclick:()=>speak(zh,vv)},'🔊 '+UI.listen[S.lang]);
+    // 挑戰模式：聽力只能重播 2 次
+    let left = 2;
+    const lab = () => '🔊 '+UI.listen[S.lang]+(S.hard?`（${left}）`:'');
+    const big = el('button',{class:'speak big',onclick:()=>{ if(S.hard){ if(left<=0) return; left--; big.textContent=lab(); if(!left) big.disabled=true; } speak(zh,vv); }}, lab());
     panel.append(el('div',{class:'line'}, box), big);
     lastHidden = {box,zh};
   } else {
@@ -2954,7 +2970,7 @@ function revealHidden(){ if(!lastHidden) return; const {box,zh}=lastHidden; box.
 async function runSteps(steps, ctx){
   for(const st of steps){
     if(st.scene){ setScene(st.scene, st.npc); continue; }
-    if(st.n){ panel.innerHTML=''; panel.append(el('p',{class:'tr'},fillTr(L(st.n))), zhLine(st.n.zh)); await waitTap(); continue; }
+    if(st.n){ panel.innerHTML=''; panel.append(...trZh(fillTr(L(st.n)), zhLine(st.n.zh))); await waitTap(); continue; }
     if(st.say){ showSay(st); if(st.listen) continue; await waitTap(); continue; }
     if(st.poster){ panel.innerHTML=''; panel.append(el('div',{class:'poster'}, el('h3',{},st.title||'徵　才'), el('button',{class:'speak big',style:'margin:0 auto 8px;display:block',onclick:()=>speak(st.poster.map(([a,b])=>(a?a+'，':'')+fill(b)).join('。'))},'🔊 唸給我聽'), el('dl',{}, st.poster.flatMap(([a,b])=>[el('dt',{},a),el('dd',{},fill(b))])))); continue; }
     if(st.q){ await runQ(st.q, ctx); continue; }
@@ -2966,7 +2982,7 @@ async function runSteps(steps, ctx){
     if(st.redo){ S.redo=S.redo||{}; if(!S.redo[st.redo]) S.redo[st.redo]={ch:S.ch,day:S.day}; save(); continue; }
     if(st.violation){ S.viol=(S.viol||0)+st.violation; save(); continue; }
     if(st.ifv){ await runSteps(S[st.ifv]?st.then:st.else, ctx); continue; }
-    if(st.link){ panel.innerHTML=''; panel.append(el('p',{class:'tr'},L(st.link.tr)), zhLine(st.link.zh), el('a',{class:'btn ghost linkbtn',href:st.link.href,target:'_blank',rel:'noopener'},st.link.label+' ↗')); await waitTap(); continue; }
+    if(st.link){ panel.innerHTML=''; panel.append(...trZh(L(st.link.tr), zhLine(st.link.zh)), el('a',{class:'btn ghost linkbtn',href:st.link.href,target:'_blank',rel:'noopener'},st.link.label+' ↗')); await waitTap(); continue; }
     if(st.ifMoney){ await runSteps(S.st.money>=st.ifMoney?st.then:st.else, ctx); continue; }
     if(st.ifDept){ await runSteps(dept().zh===st.ifDept?st.then:st.else, ctx); continue; }
     if(st.setv){ Object.assign(S, st.setv); save(); continue; }
@@ -2988,7 +3004,7 @@ async function thanksCard(ctx){
   S.thanksTo=best; save();
   const nm=PEOPLE[role(best)].zh, tw=UI.thanks[S.lang]||UI.thanks.en;
   setScene('stage',best); panel.innerHTML='';
-  panel.append(el('p',{class:'tr'},tw[0]+nm+tw[1]), zhLine('你把感謝卡送給'+PEOPLE[best].zh+'。')); await waitTap();
+  panel.append(...trZh(tw[0]+nm+tw[1], zhLine('你把感謝卡送給'+PEOPLE[best].zh+'。'))); await waitTap();
   await runSteps([{say:'me',zh:'謝謝你這一年的照顧！'},{say:best,zh:THANKS[best]},{fx:{mood:10,aff:{[best]:2}}}], ctx);
 }
 function applyFx(fx){
@@ -3001,9 +3017,9 @@ function applyFx(fx){
   S.minTidy=Math.min(S.minTidy??100, S.st.tidy??100);
   drawHud();
 }
-function feedback(ok){
+function feedback(ok, ans){
   const fb=el('div',{class:'fb '+(ok?'good':'oops'),role:'status'}, el('span',{class:'fb-i','aria-hidden':'true'},ok?'✓':'✗'),
-    el('b',{},ok?'答對了！':'再想想……'), el('span',{class:'fb-tr'},(ok?UI.good:UI.oops)[S.lang]||''));
+    ans ? el('b',{},'答案是：'+ans) : el('b',{},ok?'答對了！':S.hard?'答錯了':'再想想……'), el('span',{class:'fb-tr'},ans ? HT('answer') : (ok?UI.good:UI.oops)[S.lang]||''));
   requestAnimationFrame(()=>fb.scrollIntoView({block:'nearest',behavior:'smooth'})); return fb; }
 function optEmoji(o){ const z=fill(o.zh); if(ITEM_IMG[z]&&IMG[ITEM_IMG[z]]) return el('img',{src:IMG[ITEM_IMG[z]],alt:'',class:'ei'}); if(o.e) return o.e; return GEAR_E[z]||null; }
 function runQ(q, ctx){
@@ -3011,7 +3027,7 @@ function runQ(q, ctx){
     // panel keeps the listen line on top; question goes below
     const keep = Array.from(panel.children);
     panel.innerHTML=''; keep.forEach(k=>{ if(!k.classList.contains('next')) panel.append(k); });
-    panel.append(zhLine(q.p.zh,'prompt'), el('p',{class:'tr',style:'font-size:.9rem;color:var(--ink-2);margin-top:-6px'},L(q.p)));
+    panel.append(zhLine(q.p.zh,'prompt'), ...[trBlock(L(q.p),'font-size:.9rem;color:var(--ink-2);margin-top:-6px')].filter(Boolean));
     if(q.stem) panel.append(zhLine(q.stem,'stem'));
     let first=true; if(!q.free) S.qTot++; app.classList.add('q');
     const opts = q.opts.map(o=>({...o})).sort(()=>Math.random()-.5);
@@ -3028,8 +3044,17 @@ function runQ(q, ctx){
           await waitTap(); fb.remove(); panel.querySelectorAll('.next').forEach(x=>x.remove());
           app.classList.remove('q'); await runSteps(o.then||q.ok||[], ctx); save(); resolve(); }
         else { if(first && q.bankNo && !S.missed.includes(q.bankNo)) S.missed.push(q.bankNo); first=false; b.classList.add('no');
-          const wrongSteps = o.r || q.wrong || [];
           const snapshot = Array.from(panel.children);
+          // 挑戰模式：答錯不能重選、心情 −3；演完這個選項的後果後，公布答案、照正確的劇情走下去
+          if(S.hard){ applyFx({mood:-3});
+            if(o.r){ const fb=feedback(false); box.after(fb); await waitTap(); fb.remove(); panel.querySelectorAll('.next').forEach(x=>x.remove()); await runSteps(o.r, ctx); }
+            if(o.end){ app.classList.remove('q'); save(); resolve(); return; }
+            if(o.r){ panel.innerHTML=''; snapshot.forEach(k=>panel.append(k)); }
+            const ri=opts.findIndex(x=>x.ok), right=opts[ri], rz=fill(right.zh);
+            btns[ri].classList.add('ok'); revealHidden(); speak(rz.replace(/〔|〕/g,''),meVoice());
+            const fb=feedback(false, rz); box.after(fb); await waitTap(); fb.remove(); panel.querySelectorAll('.next').forEach(x=>x.remove());
+            app.classList.remove('q'); await runSteps(right.then||q.ok||[], ctx); save(); resolve(); return; }
+          const wrongSteps = o.r || q.wrong || [];
           if(wrongSteps.length){ const fb=feedback(false); box.after(fb); await waitTap(); fb.remove(); panel.querySelectorAll('.next').forEach(x=>x.remove()); await runSteps(wrongSteps, ctx); }
           if(o.end){ app.classList.remove('q'); save(); resolve(); return; } // 這個選擇的後果演完就結束，不再重選
           panel.innerHTML=''; snapshot.forEach(k=>panel.append(k));
@@ -3075,7 +3100,7 @@ async function runExam(n){
 async function runEvent(id){ const prev=curEv; curEv=id; const ctx={ok:0}; try{ await runSteps(DATA.events[id], ctx); } finally { curEv=prev; } S.seen[id]=true; save(); }
 async function bankQuestion(intro, npc){
   setScene(npc==='lin'?'classroom':'room', npc==='lin'?'lin':null);
-  panel.innerHTML=''; panel.append(el('p',{class:'tr'},L(intro)), zhLine(intro.zh)); await waitTap();
+  panel.innerHTML=''; panel.append(...trZh(L(intro), zhLine(intro.zh))); await waitTap();
   const pool = DATA.bank.filter(b=>!S.usedBank.includes(b.no)); const b = (pool.length?pool:DATA.bank)[Math.floor(Math.random()*(pool.length||DATA.bank.length))];
   S.usedBank.push(b.no);
   panel.innerHTML='';
@@ -3148,13 +3173,13 @@ async function doAction(k){
   else if(k==='call'){ setScene('room',null); await say1(D.call); applyFx({mood:20}); }
   else if(k==='rest'){ setScene('room',null); await say1(D.rest); applyFx({hp:40,mood:5}); }
 }
-async function say1(n){ panel.innerHTML=''; panel.append(el('p',{class:'tr'},fillTr(L(n))), zhLine(n.zh)); await waitTap(); }
+async function say1(n){ panel.innerHTML=''; panel.append(...trZh(fillTr(L(n)), zhLine(n.zh))); await waitTap(); }
 function chooseAction(){
   return new Promise(res=>{
     const day=days()[S.day]||{};
     setScene(S.ch>=2 ? (day.typhoon?'room':'dorm') : (S.day>6?'work':'dorm'), null);
     panel.innerHTML='';
-    panel.append(zhLine('今天'+SLOT[S.slot]+'要做什麼？','prompt'), el('p',{class:'tr',style:'font-size:.9rem;color:var(--ink-2);margin-top:-6px'},UI.what[S.lang]));
+    panel.append(zhLine('今天'+SLOT[S.slot]+'要做什麼？','prompt'), ...[trBlock(UI.what[S.lang],'font-size:.9rem;color:var(--ink-2);margin-top:-6px')].filter(Boolean));
     { const stt=statusOf(day); if(stt!=='common') panel.append(el('p',{class:'small'}, stt==='school' ? '本輪：在校上課（可以打工，每週不超過 20 小時）' : '本輪：在職實習')); }
     if(S.ch>=2 && day.typhoon) panel.append(el('p',{class:'small'},fillTr(L(DATA.N.typhoon))));
     if(S.st.hp<20) panel.append(el('p',{class:'small'},fillTr(L(DATA.N.tired))));
@@ -3211,7 +3236,7 @@ async function endDay(){
   if(S.ch>=2 && S.st.mood<30){ await runEvent('W3'); }
   if((S.viol||0)>=2 && !S.seen.W4){ await runEvent('W4'); }
   panel.innerHTML=''; setScene('room',null);
-  panel.append(el('p',{class:'tr'},UI.night[S.lang]), zhLine('晚上了，該睡覺了。'));
+  panel.append(...trZh(UI.night[S.lang], zhLine('晚上了，該睡覺了。')));
   await waitTap();
   S.st.hp = clamp(S.st.hp+20,0,100); S.day++; S.slot=0; save(); drawHud();
 }
@@ -3246,6 +3271,23 @@ const START_TXT = {
   q:{vi:'Bạn muốn bắt đầu từ đâu?',id:'Mau mulai dari mana?',en:'Where do you want to start?',th:'อยากเริ่มจากตรงไหน',my:'ဘယ်ကနေ စချင်လဲ။'},
   pre:{vi:'Xuất phát từ quê nhà (tiền truyện, khoảng 10 phút): đăng ký, thi TOCFL A1, lên đường sang Đài Loan',id:'Berangkat dari kampung halaman (prekuel, sekitar 10 menit): mendaftar, ujian TOCFL A1, berangkat ke Taiwan',en:'Start from home (prologue, about 10 min): apply, take TOCFL A1, leave for Taiwan',th:'เริ่มจากบ้านเกิด (ภาคก่อน ประมาณ 10 นาที): สมัคร สอบ TOCFL A1 ออกเดินทางไปไต้หวัน',my:'ဇာတိကနေ စမယ် (အစပိုင်း ၁၀ မိနစ်ခန့်) — လျှောက်ထား၊ TOCFL A1 ဖြေ၊ ထိုင်ဝမ်ကို ထွက်ခွာ'},
   tw:{vi:'Tôi đã ở Đài Loan rồi, bắt đầu ngay',id:'Saya sudah di Taiwan, langsung mulai',en:'I’m already in Taiwan — start now',th:'ฉันอยู่ไต้หวันแล้ว เริ่มเลย',my:'ထိုင်ဝမ် ရောက်နေပြီ၊ တန်းစမယ်'}};
+// 難度（一般／挑戰）與翻譯顯示方式的說明文字。高棉文為 AI 翻譯，尚未經母語者校對。
+const HARD_TXT = {
+  level:{vi:'Độ khó',id:'Tingkat kesulitan',en:'Difficulty',th:'ระดับความยาก',my:'ခက်ခဲမှုအဆင့်',km:'កម្រិតលំបាក'},
+  normal:{vi:'Bình thường: sai thì được chọn lại, luôn có bản dịch.',id:'Biasa: kalau salah boleh pilih lagi, terjemahan selalu tampil.',en:'Normal: you can retry wrong answers; translation is always shown.',th:'ปกติ: ตอบผิดเลือกใหม่ได้ มีคำแปลตลอด',my:'ပုံမှန်: မှားရင် ပြန်ရွေးလို့ရတယ်၊ ဘာသာပြန် အမြဲပြတယ်။',km:'ធម្មតា៖ ឆ្លើយខុសអាចជ្រើសម្ដងទៀត មានការបកប្រែជានិច្ច។'},
+  hard:{vi:'Thử thách: sai thì không được chọn lại và tâm trạng giảm, không có bản dịch, phần nghe chỉ nghe lại 2 lần.',id:'Tantangan: kalau salah tidak bisa pilih lagi dan suasana hati turun, tanpa terjemahan, menyimak hanya bisa diulang 2 kali.',en:'Challenge: no retries, wrong answers lower your mood, no translation, listening can be replayed only twice.',th:'ท้าทาย: ตอบผิดเลือกใหม่ไม่ได้และอารมณ์ลดลง ไม่มีคำแปล ฟังซ้ำได้แค่ 2 ครั้ง',my:'စိန်ခေါ်မှု: မှားရင် ပြန်ရွေးလို့မရ၊ စိတ်ခံစားမှု ကျတယ်၊ ဘာသာပြန် မပြ၊ နားထောင်ခန်း ၂ ကြိမ်သာ ပြန်ဖွင့်ရတယ်။',km:'ប្រកួតប្រជែង៖ ឆ្លើយខុសមិនអាចជ្រើសម្ដងទៀត អារម្មណ៍ធ្លាក់ចុះ គ្មានការបកប្រែ ស្ដាប់ឡើងវិញបានតែ ២ ដង។'},
+  answer:{vi:'Đáp án đúng',id:'Jawaban yang benar',en:'Correct answer',th:'คำตอบที่ถูก',my:'အဖြေမှန်',km:'ចម្លើយត្រឹមត្រូវ'},
+  showTr:{vi:'Xem bản dịch',id:'Lihat terjemahan',en:'Show translation',th:'ดูคำแปล',my:'ဘာသာပြန် ကြည့်',km:'មើលការបកប្រែ'}};
+const TR_MODES = [['show','一直顯示'],['tap','點一下才顯示'],['off','不顯示']];
+// 挑戰模式預設不顯示翻譯（設定裡可以改）
+function setHard(on){ S.hard=!!on; if(!S.trSet) S.trMode = on ? 'off' : 'show'; save(); }
+// 一次答對率 → 星等：90% 以上 3 顆、75% 以上 2 顆、50% 以上 1 顆
+const starsOf = r => !r||!r.qTot ? 0 : (p=>p>=.9?3:p>=.75?2:p>=.5?1:0)(r.qOk/r.qTot);
+const starTxt = n => '★'.repeat(n)+'☆'.repeat(3-n);
+// 各章最佳紀錄另外存，重新開始也不會消失
+const BEST_KEY='twdiary_best';
+function saveBest(ch, r, hard){ if(!r||!r.qTot) return null; let b={}; try{ b=JSON.parse(localStorage.getItem(BEST_KEY)||'{}')||{}; }catch(e){}
+  const pct=Math.round(100*r.qOk/r.qTot), k=(hard?'h':'n')+ch; if(!b[k]||pct>b[k]) b[k]=pct; try{ localStorage.setItem(BEST_KEY,JSON.stringify(b)); }catch(e){} return b[k]; }
 // 試玩回饋問卷（放在 /twdiary/feedback/），自動帶入章節、語言、國家、科別
 function fbUrl(o){ o=o||{}; const q=new URLSearchParams({src:'game'}); if(o.ch!=null) q.set('ch',o.ch); if(o.lang) q.set('lang',o.lang);
   const h=o.hero&&HEROES.find(x=>x.id===o.hero); if(h) q.set('home',h.home.zh); if(o.dept!=null&&DEPTS[o.dept]) q.set('dept',DEPTS[o.dept].zh); return 'feedback/?'+q.toString(); }
@@ -3275,7 +3317,7 @@ async function playOpening(){
     setScene(sc, null);
     $('.sprite.me',stage) && ($('.sprite.me',stage).src = IMG[S.hero+'_casual']||IMG[S.hero]);
     panel.innerHTML='';
-    panel.append(el('p',{class:'tr'},L(N[k])), zhLine(N[k].zh));
+    panel.append(...trZh(L(N[k]), zhLine(N[k].zh)));
     if(k==='op1') panel.append(el('a',{class:'btn ghost linkbtn',href:'https://overseas.youth.tc.edu.tw',target:'_blank',rel:'noopener'},'青年高中 2027 年僑生新生入學資訊網 ↗'));
     const sk = el('button',{class:'btn ghost',style:'margin-top:8px',onclick:()=>{ skip=true; sk.closest('.panel').querySelector('.next')?.click(); }},'跳過開場');
     panel.append(sk);
@@ -3374,17 +3416,18 @@ function renderEnd(){
   const yr = ch===4 ? [['第一章',S.ch1],['第二章',S.ch2],['第三章',S.ch3],['第四章',{qOk:S.qOk,qTot:S.qTot}]]
            : ch===8 ? [['第五章',S.ch5],['第六章',S.ch6],['第七章',S.ch7],['第八章',{qOk:S.qOk,qTot:S.qTot}]]
            : ch===12 ? [['第九章',S.ch9],['第十章',S.ch10],['第十一章',S.ch11],['第十二章',{qOk:S.qOk,qTot:S.qTot}]] : null;
+  const cur={qOk:S.qOk,qTot:S.qTot}, best=saveBest(ch,cur,S.hard);
   app.append(el('section',{class:'end'},
-    el('h2',{},title), el('p',{class:'tr'},done),
+    el('h2',{},title, S.hard?el('span',{class:'mode-tag'},'挑戰模式'):null), el('p',{class:'tr'},done),
     el('a',{class:'btn ghost',href:fbUrl(S),target:'_blank',rel:'noopener',style:'display:block;text-align:center;text-decoration:none;margin:8px 0'},'填寫試玩回饋　'+(FB_TXT[S.lang]||FB_TXT.en)),
     el('div',{class:'statgrid'},
-      el('div',{class:'stat'},el('b',{},S.qOk+' / '+S.qTot),el('span',{},'一次就答對')),
+      el('div',{class:'stat'},el('b',{},S.qOk+' / '+S.qTot),el('span',{class:'stars','aria-label':starsOf(cur)+' 顆星'},starTxt(starsOf(cur))),el('span',{},'一次就答對'+(best!=null?'（本章最佳 '+best+'%）':''))),
       el('div',{class:'stat'},el('b',{},'$'+S.st.money.toLocaleString()),el('span',{},'存款')),
       el('div',{class:'stat'},el('b',{},String(S.st.tidy??100)),el('span',{},'宿舍整潔')),
       el('div',{class:'stat'},el('b',{},S.st.skill),el('span',{},'專業技能'))),
     ch2 && S.wish ? el('p',{class:'wish'},'新年願望：新的一年，我希望'+S.wish+'。') : null,
     yr ? el('h3',{},ch===12?'三年級成績單':ch===8?'二年級成績單':'一年級成績單') : null,
-    yr ? el('div',{class:'statgrid'}, ...yr.map(([nm,r])=>el('div',{class:'stat'},el('b',{},r&&r.qTot?Math.round(100*r.qOk/r.qTot)+'%':'—'),el('span',{},nm+'一次答對')))) : null,
+    yr ? el('div',{class:'statgrid'}, ...yr.map(([nm,r])=>el('div',{class:'stat'},el('b',{},r&&r.qTot?Math.round(100*r.qOk/r.qTot)+'%':'—'),r&&r.qTot?el('span',{class:'stars'},starTxt(starsOf(r))):null,el('span',{},nm+'一次答對')))) : null,
     ch===8 ? el('p',{class:'wish'},'華語文能力測驗進階級（B1）：'+(S.tocflB1?'通過':'這次沒通過，三年級再挑戰')) : null,
     ch===12 ? el('h3',{},'畢業以後') : null,
     ch===12 ? el('div',{class:'ending'}, ...endingKeys().flatMap(k=>[el('p',{class:'wish'},fill(DATA.N[k].zh)), el('p',{class:'tr'},fillTr(L(DATA.N[k])))])) : null,
@@ -3590,6 +3633,8 @@ function openSettings(){
   const row=(lab,ctrl)=>{ if(ctrl.tagName==='SELECT') ctrl.style.maxWidth='62%'; return el('div',{class:'set-row'},el('span',{style:'white-space:nowrap'},lab),ctrl); };
   const py = el('input',{type:'checkbox',id:'s-py'}); py.checked=S.pinyin; py.onchange=()=>{S.pinyin=py.checked;save();};
   const au = el('input',{type:'checkbox',id:'s-au'}); au.checked=S.auto; au.onchange=()=>{S.auto=au.checked;save();};
+  const tm = el('select',{id:'s-tm'}, TR_MODES.map(([v,t])=>{const o=el('option',{value:v},t); if((S.trMode||'show')===v)o.selected=true; return o;})); tm.onchange=()=>{S.trMode=tm.value; S.trSet=true; save();};
+  const hd = el('input',{type:'checkbox',id:'s-hd'}); hd.checked=!!S.hard; hd.onchange=()=>{ setHard(hd.checked); tm.value=S.trMode; };
   const lg = el('select',{id:'s-lg'}, Object.entries(LANGS).map(([k,v])=>{const o=el('option',{value:k},v); if(S.lang===k)o.selected=true; return o;})); lg.onchange=()=>{S.lang=lg.value;save();};
   const vs=zhVoices().sort((a,b)=>vScore(b)-vScore(a));
   const vc = el('select',{id:'s-vc'}, vs.length? vs.map(v=>{const o=el('option',{value:v.name},v.name.replace(/^Microsoft /,'').replace(/ - Chinese.*$/,'')+(vScore(v)>=100?' ★':'')); if(voice&&voice.name===v.name)o.selected=true; return o;}) : [el('option',{},'（此裝置沒有中文語音）')]);
@@ -3598,7 +3643,7 @@ function openSettings(){
   rt.onchange=()=>{S.rate=+rt.value; save(); speak('你好，歡迎來到台灣。');};
   let armed=false;
   const rs = el('button',{class:'btn ghost',onclick:()=>{ if(!armed){armed=true; rs.textContent='再按一次確認重新開始'; return;} try{localStorage.removeItem(KEY);}catch(e){} location.reload(); }},'重新開始');
-  dlg.append(...[el('h3',{style:'margin:0 0 8px',onclick:()=>{ devTaps++; if(devTaps>=5){ devTaps=0; dlg.close(); askDevPin(); } }},'設定'), isDev()?devPanel(dlg):null, row('顯示拼音',py), row('自動朗讀',au), row('朗讀聲音',vc), row('朗讀速度',rt), el('p',{style:'margin:2px 0 6px;font-size:.8rem;color:var(--ink-2)'},'★ 是較自然的聲音。電腦建議用 Edge 瀏覽器開啟，會有「HsiaoChen Online (Natural)」。'), row('翻譯語言',lg),
+  dlg.append(...[el('h3',{style:'margin:0 0 8px',onclick:()=>{ devTaps++; if(devTaps>=5){ devTaps=0; dlg.close(); askDevPin(); } }},'設定'), isDev()?devPanel(dlg):null, row('顯示拼音',py), row('自動朗讀',au), row('朗讀聲音',vc), row('朗讀速度',rt), el('p',{style:'margin:2px 0 6px;font-size:.8rem;color:var(--ink-2)'},'★ 是較自然的聲音。電腦建議用 Edge 瀏覽器開啟，會有「HsiaoChen Online (Natural)」。'), row('翻譯語言',lg), row('母語翻譯',tm), row('挑戰模式',hd), el('p',{style:'margin:2px 0 6px;font-size:.8rem;color:var(--ink-2)'},'挑戰模式：答錯不能重選、心情 −3，聽力只能重播 2 次。'),
     (S.hero && (S.screen==='game'||S.screen==='end')) ? el('div',{style:'margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px'},
       el('button',{class:'btn',onclick:()=>{ save(); toast('已儲存：'+saveWhere(S)); }},'儲存進度'),
       el('button',{class:'btn ghost',onclick:()=>{ save(); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} location.reload(); }},'回到主畫面')) : null,
