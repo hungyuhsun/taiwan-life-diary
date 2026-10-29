@@ -18,6 +18,7 @@ const SP = require('./story_pre.js');
 const S10 = require('./story10.js');
 const S11 = require('./story11.js');
 const S12 = require('./story12.js');
+const { MINI } = require('./story_mini.js');
 const N = { ...N1, ...S2.N, ...S3.N, ...S4.N, ...S5.N, ...S6.N, ...S7.N, ...S8.N, ...SL.N, ...S9.N, ...SQ.N, ...SP.N, ...S10.N, ...S11.N, ...S12.N }, EVENTS = { ...E1, ...S2.EVENTS, ...S3.EVENTS, ...S4.EVENTS, ...S5.EVENTS, ...S6.EVENTS, ...S7.EVENTS, ...S8.EVENTS, ...SL.EVENTS, ...S9.EVENTS, ...SQ.EVENTS, ...SP.EVENTS, ...S10.EVENTS, ...S11.EVENTS, ...S12.EVENTS };
 
 const OV = { '嗎': 'ma', '呢': 'ne', '吧': 'ba', '個': 'ge', '們': 'men', '麼': 'me', '還': 'hái', '喔': 'o', '啦': 'la', '垃': 'lè', '圾': 'sè' };
@@ -52,7 +53,10 @@ function walk(steps) {
 Object.values(EVENTS).forEach(walk);
 Object.values(N).forEach(t => add(t.zh)); Object.values(P).forEach(t => add(t.zh));
 (function stems(steps){ for (const st of steps) { if (st.q) { add(st.q.p.zh); if (st.q.stem) add(st.q.stem); } } })([].concat(...Object.values(EVENTS)));
-for (const s of ['你想從哪裡開始？','晚上了，該睡覺了。','今天上午要做什麼？','今天下午要做什麼？','今天晚上要做什麼？']) add(s);
+for (const s of ['你想從哪裡開始？','這個星期要做什麼？']) add(s);
+// 小遊戲：句子、垃圾和食物名稱、點餐詞組（詞組用 # 開頭，遊戲中再接起來）
+Object.values(MINI.lines).forEach(add); MINI.trash.forEach(t => add(t[0])); MINI.food.forEach(f => add(f[0]));
+for (const w of MINI.phrases) py['#' + w] = py1(w);
 for (const w of ['越南', '印尼', '泰國', '緬甸', '菲律賓', '馬來西亞', '柬埔寨', '資訊科', '烘焙食品科', '餐飲管理科', '汽車科', '商用資訊科', '工作證', '口罩', '安全帽', '電腦公司', '麵包工廠', '餐廳廚房', '修車廠', '貿易公司'])
   py['#' + w] = py1(w);
 
@@ -68,7 +72,7 @@ for (const f of fs.readdirSync(path.join(__dirname, 'img'))) {
 const BG = {};
 for (const f of fs.readdirSync(path.join(__dirname, 'bg'))) if (f.endsWith('.webp'))
   BG[f.replace('.webp', '')] = 'data:image/webp;base64,' + fs.readFileSync(path.join(__dirname, 'bg', f)).toString('base64');
-const DATA = { events: EVENTS, P, N, py, bank };
+const DATA = { events: EVENTS, P, N, py, bank, mini: MINI };
 let html = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
 html = html.replace('/*__QRLIB__*/', () => fs.readFileSync(require.resolve('qrcode-generator/qrcode.js'),'utf8'));
 html = html.replace('__DATA__', () => JSON.stringify(DATA)).replace('__IMG__', () => JSON.stringify(IMG)).replace('__BG__', () => JSON.stringify(BG)).replace('__KM__', () => fs.readFileSync(path.join(ROOT, 'i18n', 'km.json'),'utf8'));

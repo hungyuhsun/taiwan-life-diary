@@ -167,6 +167,50 @@ input[type=text],select{font:inherit;padding:12px 14px;border-radius:12px;border
 .cardchip img{width:22px;height:22px;object-fit:contain;vertical-align:middle;margin-right:4px;background:#fff;border-radius:6px}
 .cardchip{background:var(--plaid);color:#fff;border-radius:10px;padding:6px 10px;font-size:.85rem}
 dialog{border:0;border-radius:18px;padding:18px;max-width:min(420px,calc(100vw - 32px));color:var(--ink);background:var(--card)}
+.mini-item{display:flex;align-items:center;gap:12px;border:2px solid var(--line);background:var(--card);border-radius:14px;padding:12px}
+.mini-item .mini-e{font-size:2.6rem;line-height:1;flex:none}
+.mini-item div{flex:1;min-width:0}
+.mini-item b{font-family:var(--f-display);font-size:1.4rem;display:block}
+.mini-item i{font-style:normal;font-size:.8rem;color:var(--ink-2);display:block}
+.mini-bins{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mini-bin,.mini-food,.mini-coin{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;min-width:0}
+.mini-bin span{font-size:1.8rem;line-height:1}
+.mini-bin b,.mini-food b{font-family:var(--f-display);font-size:1.05rem}
+.mini-bin.ok{border-color:var(--ok);background:var(--ok-soft)}
+.mini-bin.no{border-color:var(--no);background:var(--no-soft);opacity:.65;animation:shake .35s}
+.mini-foods{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini-food span{font-size:1.8rem;line-height:1}
+.mini-food em{font-style:normal;font-size:.8rem;color:var(--orange);font-weight:700}
+.mini-food .tr{font-size:.72rem;margin:0;text-align:center}
+.mini-food.on{border-color:var(--orange);background:var(--orange-soft)}
+.mini-menu{display:grid;grid-template-columns:1fr;gap:4px 10px;background:#3A2A1E;color:#FCE7D4;border-radius:12px;padding:10px 12px;font-size:.9rem}
+.mini-menu div{display:flex;align-items:center;gap:6px;min-width:0}
+.mini-menu b{font-family:var(--f-display)}
+.mini-menu em{font-style:normal;margin-left:auto;white-space:nowrap}
+.mini-coins{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.mini-coin{border-radius:50%;aspect-ratio:1;justify-content:center;font-weight:700;background:#F3E3B0;border-color:#C9A64A;padding:0}
+.mini-coin.bill{border-radius:10px;aspect-ratio:auto;background:#CDE3F2;border-color:#5C8DB5}
+.mini-payrow{display:flex;align-items:center;gap:8px}
+.mini-payrow .btn{padding:10px 14px}
+.mini-paid{font-family:var(--f-display);font-size:1.4rem;margin-right:auto}
+.btn.sm{padding:8px 12px;font-size:.9rem}
+dialog.chdlg,dialog.albumdlg{width:min(420px,calc(100vw - 16px));max-height:calc(100vh - 24px);overflow:auto}
+.chlist{display:flex;flex-direction:column;gap:8px}
+.chrow{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.chinfo{flex:1;min-width:0;display:flex;flex-direction:column}
+.chinfo small{font-weight:400;color:var(--ink-2)}
+.chinfo span{font-size:.8rem;color:var(--ink-2)}
+.chbtns{display:flex;flex-direction:column;gap:6px;flex:none}
+.album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.al-card{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font-size:.78rem;border:1px solid var(--line);border-radius:12px;padding:8px 4px;background:#fff}
+.al-card img{width:48px;height:48px;object-fit:contain}
+.al-card.miss{background:var(--paper);color:var(--ink-2)}
+.al-q{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:var(--line);font-weight:700;font-size:1.3rem}
+.cardchip.miss{background:var(--line);color:var(--ink-2)}
+.al-aff{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.al-aff div{display:flex;flex-direction:column;align-items:center;font-size:.85rem}
+.al-aff img{width:48px;height:48px;object-fit:cover;object-position:top;border-radius:50%;background:#fff}
+.al-aff .heart{color:var(--orange);letter-spacing:1px}
 dialog::backdrop{background:rgba(27,42,54,.4)}
 dialog.mapdlg{padding:0;width:min(420px,calc(100vw - 16px));max-height:calc(100vh - 24px);overflow:auto;background:#F3EFE4}
 .jm{padding:16px 14px 24px;display:flex;flex-direction:column;gap:16px}
@@ -230,7 +274,7 @@ const UI = {
   good:{vi:'Đúng rồi!',id:'Benar!',en:'Correct!',th:'ถูกต้อง!',my:'မှန်တယ်!'},
   oops:{vi:'Chưa đúng…',id:'Belum tepat…',en:'Not quite…',th:'ยังไม่ใช่…',my:'မမှန်သေးဘူး…'},
   retry:{vi:'Chọn lại nhé!',id:'Coba pilih lagi!',en:'Try again!',th:'ลองเลือกใหม่นะ',my:'ထပ်ရွေးကြည့်ပါ။'},
-  what:{vi:'Hôm nay làm gì?',id:'Mau ngapain?',en:'What will you do?',th:'จะทำอะไรดี',my:'ဘာလုပ်မလဲ။'},
+  what:{vi:'Tuần này làm gì?',id:'Minggu ini mau ngapain?',en:'What will you do this week?',th:'สัปดาห์นี้จะทำอะไรดี',my:'ဒီအပတ် ဘာလုပ်မလဲ။'},
   night:{vi:'Đến tối rồi, đi ngủ thôi.',id:'Sudah malam, saatnya tidur.',en:"It's night. Time for bed.",th:'ค่ำแล้ว ได้เวลานอน',my:'ညရောက်ပြီ၊ အိပ်ချိန်ရောက်ပြီ။'},
   done:{vi:'Hoàn thành chương 1!',id:'Bab 1 selesai!',en:'Chapter 1 complete!',th:'จบบทที่ 1 แล้ว!',my:'အခန်း ၁ ပြီးပါပြီ!'},
   next:{vi:'Chương 2 (tháng 10–12): Trung thu, làm thêm, giao thừa.',id:'Bab 2 (Okt–Des): Festival bulan, kerja paruh waktu, tahun baru.',en:'Chapter 2 (Oct–Dec): Mid-Autumn, a part-time job, New Year’s Eve.',th:'บทที่ 2 (ต.ค.–ธ.ค.): ไหว้พระจันทร์ งานพาร์ตไทม์ เคานต์ดาวน์',my:'အခန်း ၂ (အောက်တိုဘာ–ဒီဇင်ဘာ): လသာပွဲ၊ အချိန်ပိုင်းအလုပ်၊ နှစ်သစ်ကူး'},
@@ -334,52 +378,53 @@ const DAYS2 = [
   {m:10,w:1,main:'M04',mainAt:2},{m:10,w:2,main:'M05',mainSlots:1},{m:10,w:3,main:'D10',mainSlots:0,typhoon:1},{m:10,w:4},
   {m:11,w:1,main:'D13',mainSlots:1},{m:11,w:2,main:'M06',mainAt:1},{m:11,w:3,main:'D18',mainSlots:0},{m:11,w:4,main:'M07',mainSlots:1},
   {m:12,w:1,main:'B02',mainAt:1},{m:12,w:2},{m:12,w:3},{m:12,w:5,label:'12 月 31 日',main:'M08',mainAt:2}];
+// 宿舍內務檢查：每章只留第一次（原本每月一次，共 29 次）
 const DAYS3 = [
   {m:1,w:1,main:'I01',mainAt:0},{m:1,w:2,main:'H01',mainAt:1},{m:1,w:3,main:'J01'},{m:1,w:4},
-  {m:2,w:1,main:'F01',mainAt:0},{m:2,w:2,main:'I02',mainAt:0},{m:2,w:3},{m:2,w:4},
-  {m:3,w:1,main:'I03',mainAt:0},{m:3,w:2,main:'G01',mainAt:1},{m:3,w:3,main:'Q01',mainAt:1},{m:3,w:4}];
+  {m:2,w:1,main:'F01',mainAt:0},{m:2,w:2},{m:2,w:3},{m:2,w:4},
+  {m:3,w:1},{m:3,w:2,main:'G01',mainAt:1},{m:3,w:3,main:'Q01',mainAt:1},{m:3,w:4}];
 const REDO = {R10:'R10b', R11:'R11b', R12:'R12b', R14:'R14b', R17:'R17b', R21:'R21b'}; // 選錯的事件之後再出現一次（複習）
 const RND3 = ['R01','R02','R03','R04','R05','R10','R11'];
 const DAYS4 = [
   {m:4,w:1,main:'I04',mainAt:0},{m:4,w:2,main:'P01',mainAt:1},{m:4,w:3},{m:4,w:4,main:'K01',mainAt:1},
-  {m:5,w:1,main:'I05',mainAt:0},{m:5,w:2,label:'5 月 17 日',main:'Q02',mainAt:0},{m:5,w:3,main:'K02'},{m:5,w:4},
-  {m:6,w:1,main:'I06',mainAt:0},{m:6,w:2,main:'K03',mainAt:0},{m:6,w:3,main:'Q03',mainAt:1},{m:6,w:4,main:'K04'}];
+  {m:5,w:1},{m:5,w:2,label:'5 月 17 日',main:'Q02',mainAt:0},{m:5,w:3,main:'K02'},{m:5,w:4},
+  {m:6,w:1},{m:6,w:2,main:'K03',mainAt:0},{m:6,w:3,main:'Q03',mainAt:1},{m:6,w:4,main:'K04'}];
 const RND4 = ['R06','R07','R10','R11','R01','R02','R03','R04','R05'];
 const DAYS5 = [
   {m:7,w:1,main:'N01',mainAt:1},{m:7,w:2,main:'X01',onlyIf:'school'},{m:7,w:3,main:'I07',mainAt:0},{m:7,w:4,main:'X02',onlyIf:'school'},
-  {m:8,w:1,main:'I08',mainAt:0},{m:8,w:2,main:'X03',onlyIf:'school'},{m:8,w:3,main:'N02',mainAt:1},{m:8,w:4,main:'Q04',mainAt:1},
+  {m:8,w:1},{m:8,w:2,main:'X03',onlyIf:'school'},{m:8,w:3,main:'N02',mainAt:1},{m:8,w:4,main:'Q04',mainAt:1},
   {m:9,w:1,main:'N03',mainAt:0},{m:9,w:2,main:'X01',onlyIf:'school'},{m:9,w:3,main:'X02',onlyIf:'school'},{m:9,w:4,main:'X03',onlyIf:'school'}];
 const RND5 = ['R08','R09','R10','R11','R06','R07','R01','R02','R03','R04','R05'];
 const DAYS6 = [
   {m:10,w:1,main:'I09',mainAt:0},{m:10,w:2,main:'Y01',mainAt:2},{m:10,w:3,main:'Y02',onlyIf:'work',mainAt:0},{m:10,w:4},
-  {m:11,w:1,main:'I10',mainAt:0},{m:11,w:2,main:'Y03'},{m:11,w:3,main:'Y04',mainAt:0},{m:11,w:4,main:'S01',mainAt:2},
-  {m:12,w:1,main:'I11',mainAt:0},{m:12,w:2,main:'Y02',onlyIf:'work',mainAt:0},{m:12,w:3},{m:12,w:4,label:'12 月 24 日',main:'Y05',mainAt:2}];
+  {m:11,w:1},{m:11,w:2,main:'Y03'},{m:11,w:3,main:'Y04',mainAt:0},{m:11,w:4,main:'S01',mainAt:2},
+  {m:12,w:1},{m:12,w:2,main:'Y02',onlyIf:'work',mainAt:0},{m:12,w:3},{m:12,w:4,label:'12 月 24 日',main:'Y05',mainAt:2}];
 const RND6 = ['R12','R13','R10','R11','R08','R09','R06','R07','R01','R02','R03','R04','R05'];
 const DAYS7 = [
   {m:1,w:1,main:'I12',mainAt:0},{m:1,w:2},{m:1,w:3,main:'Z01',onlyIf:'school',mainAt:0},{m:1,w:4,main:'Z02',onlyIf:'work',mainAt:2},
-  {m:2,w:1,main:'I13',mainAt:0},{m:2,w:2,label:'除夕',main:'Z03',mainAt:2},{m:2,w:3},{m:2,w:4,label:'元宵節',main:'Z04',mainAt:2},
-  {m:3,w:1,label:'3 月 1 日',main:'Z05',mainAt:0},{m:3,w:2,main:'I14',mainAt:0},{m:3,w:3,main:'Z06',mainAt:1},{m:3,w:4}];
+  {m:2,w:1},{m:2,w:2,label:'除夕',main:'Z03',mainAt:2},{m:2,w:3},{m:2,w:4,label:'元宵節',main:'Z04',mainAt:2},
+  {m:3,w:1,label:'3 月 1 日',main:'Z05',mainAt:0},{m:3,w:2},{m:3,w:3,main:'Z06',mainAt:1},{m:3,w:4}];
 const RND7 = ['R14','R15','R12','R13','R10','R11','R06','R07','R01','R02','R03','R04','R05'];
 const DAYS8 = [
   {m:4,w:1,main:'I15',mainAt:0},{m:4,w:2,label:'清明節',main:'E01',mainAt:1},{m:4,w:3,main:'E03',mainAt:0},{m:4,w:4},
-  {m:5,w:1,main:'I16',mainAt:0},{m:5,w:2,label:'5 月 10 日',main:'E02',mainAt:0},{m:5,w:3,label:'母親節',main:'E05',mainAt:2},{m:5,w:4},
-  {m:6,w:1,main:'I17',mainAt:0},{m:6,w:2,label:'端午節',main:'E06',mainAt:1},{m:6,w:3,main:'E04',mainAt:0},{m:6,w:4,label:'結業式',main:'E07',mainAt:2}];
+  {m:5,w:1},{m:5,w:2,label:'5 月 10 日',main:'E02',mainAt:0},{m:5,w:3,label:'母親節',main:'E05',mainAt:2},{m:5,w:4},
+  {m:6,w:1},{m:6,w:2,label:'端午節',main:'E06',mainAt:1},{m:6,w:3,main:'E04',mainAt:0},{m:6,w:4,label:'結業式',main:'E07',mainAt:2}];
 const DAYS9 = [
   {m:7,w:1,main:'I18',mainAt:0},{m:7,w:2,main:'T01',mainAt:1},{m:7,w:3,main:'T02',mainAt:1},{m:7,w:4},
-  {m:8,w:1,main:'I19',mainAt:0},{m:8,w:2,main:'T03',onlyIf:'work',mainAt:0},{m:8,w:3,main:'T04',onlyIf:'school',mainAt:1},{m:8,w:4,label:'中元節',main:'T05',mainAt:2},
-  {m:9,w:1,main:'I20',mainAt:0},{m:9,w:2,label:'開學',main:'T06',mainAt:0},{m:9,w:3,main:'T03',onlyIf:'work',mainAt:0},{m:9,w:4,main:'T04',onlyIf:'school',mainAt:1}];
+  {m:8,w:1},{m:8,w:2,main:'T03',onlyIf:'work',mainAt:0},{m:8,w:3,main:'T04',onlyIf:'school',mainAt:1},{m:8,w:4,label:'中元節',main:'T05',mainAt:2},
+  {m:9,w:1},{m:9,w:2,label:'開學',main:'T06',mainAt:0},{m:9,w:3,main:'T03',onlyIf:'work',mainAt:0},{m:9,w:4,main:'T04',onlyIf:'school',mainAt:1}];
 const DAYS10 = [
   {m:10,w:1,main:'I21',mainAt:0},{m:10,w:2,main:'V01',mainAt:0},{m:10,w:3,main:'V03',mainAt:2},{m:10,w:4,main:'V07',mainAt:2},
   {m:11,w:1,label:'畢業照',main:'V10',mainAt:1},{m:11,w:2,main:'V04',mainAt:1},{m:11,w:3,label:'11 月 15 日',main:'V05',mainAt:0},{m:11,w:4,main:'V06',mainAt:1},
-  {m:12,w:1,label:'輪調',main:'I23',mainAt:0},{m:12,w:2,main:'V02',mainAt:0},{m:12,w:3,label:'冬至',main:'V08',mainAt:2},{m:12,w:4,label:'學期末',main:'V09',mainAt:1}];
+  {m:12,w:1,label:'輪調'},{m:12,w:2,main:'V02',mainAt:0},{m:12,w:3,label:'冬至',main:'V08',mainAt:2},{m:12,w:4,label:'學期末',main:'V09',mainAt:1}];
 const DAYS11 = [
   {m:1,w:1,main:'I24',mainAt:0},{m:1,w:2,main:'U01',mainAt:2},{m:1,w:3,main:'U02',mainAt:1},{m:1,w:4,main:'U03',mainAt:2},
-  {m:2,w:1,main:'I25',mainAt:0},{m:2,w:2,label:'春節',main:'U04',mainAt:2},{m:2,w:3,main:'U05',mainAt:1},{m:2,w:4,main:'U06',mainAt:0},
-  {m:3,w:1,label:'輪調',main:'I26',mainAt:0},{m:3,w:2,main:'U09',mainAt:2},{m:3,w:3,label:'大學到校',main:'U07',mainAt:0},{m:3,w:4,label:'3 月考試',main:'U08',mainAt:0}];
+  {m:2,w:1},{m:2,w:2,label:'春節',main:'U04',mainAt:2},{m:2,w:3,main:'U05',mainAt:1},{m:2,w:4,main:'U06',mainAt:0},
+  {m:3,w:1,label:'輪調'},{m:3,w:2,main:'U09',mainAt:2},{m:3,w:3,label:'大學到校',main:'U07',mainAt:0},{m:3,w:4,label:'3 月考試',main:'U08',mainAt:0}];
 const DAYS12 = [
   {m:4,w:1,label:'4 月初',main:'W02',mainAt:1},{m:4,w:2,main:'I27',mainAt:0},{m:4,w:3,main:'W01',mainAt:2},{m:4,w:4,main:'W03',mainAt:1},
-  {m:5,w:1,main:'I28',mainAt:0},{m:5,w:2,main:'W04',mainAt:1},{m:5,w:3,label:'大學到校',main:'W05',mainAt:0},{m:5,w:4,label:'5 月考試',main:'W06',mainAt:0},
-  {m:6,w:1,label:'畢業典禮',main:'W07',mainAt:1},{m:6,w:2,main:'I29',mainAt:0},{m:6,w:3,main:'W08',mainAt:1},{m:6,w:4,label:'最後一天',main:'W09',mainAt:2}];
+  {m:5,w:1},{m:5,w:2,main:'W04',mainAt:1},{m:5,w:3,label:'大學到校',main:'W05',mainAt:0},{m:5,w:4,label:'5 月考試',main:'W06',mainAt:0},
+  {m:6,w:1,label:'畢業典禮',main:'W07',mainAt:1},{m:6,w:2},{m:6,w:3,main:'W08',mainAt:1},{m:6,w:4,label:'最後一天',main:'W09',mainAt:2}];
 const RND12 = ['R27','R28','R25','R26','R22','R24','R16','R12','R13','R15','R20','R10'];
 const RND11 = ['R25','R26','R21','R22','R23','R24','R14','R15','R12','R13','R19','R20','R10','R11'];
 const RND10 = ['R21','R22','R23','R24','R19','R20','R16','R18','R15','R12','R13','R10','R11','R08','R09','R06','R07'];
@@ -401,7 +446,6 @@ function statusOf(day, chArg, grpArg){
   const aSchool = block%2===0;                       // 甲組 9–11 實習、12–2 在校（招生網站）
   return ((GRP||'A')==='A' ? aSchool : !aSchool) ? 'school' : 'work';
 }
-const SLOT = ['上午','下午','晚上'];
 const ACTIONS = [
   {k:'class',zh:'上課',tr:{vi:'Lên lớp',id:'Masuk kelas',en:'Go to class',th:'เข้าเรียน',my:'အတန်းတက်'},fx:'體力−10 中文↑'},
   {k:'pro',zh:'上專業課',tr:{vi:'Học chuyên ngành',id:'Pelajaran kejuruan',en:'Major class',th:'เรียนวิชาเฉพาะ',my:'အထူးပြုဘာသာ'},fx:'體力−10 專業技能+3'},
@@ -409,8 +453,8 @@ const ACTIONS = [
   {k:'shop',zh:'去便利商店',tr:{vi:'Đi cửa hàng tiện lợi',id:'Ke minimarket',en:'Convenience store',th:'ไปร้านสะดวกซื้อ',my:'စတိုးဆိုင်သွား'},fx:'存款−35 心情+3'},
   {k:'out',zh:'跟阿蜜出去玩',tr:{vi:'Đi chơi với A Mật',id:'Main dengan A Mi',en:'Hang out with A-Mi',th:'ไปเที่ยวกับอาหมี่',my:'အာမိနဲ့ အပြင်ထွက်'},fx:'心情+20 存款−200'},
   {k:'study',zh:'自己複習',tr:{vi:'Tự ôn bài',id:'Belajar sendiri',en:'Self-study',th:'ทบทวนเอง',my:'ကိုယ်တိုင်လေ့လာ'},fx:'中文↑'},
-  {k:'clean',zh:'整理房間、倒垃圾',tr:{vi:'Dọn phòng, đổ rác',id:'Bersihkan kamar, buang sampah',en:'Tidy room & take out trash',th:'จัดห้อง ทิ้งขยะ',my:'အခန်းရှင်း၊ အမှိုက်ပစ်'},fx:'整潔+20 體力−5'},
-  {k:'market',zh:'逛夜市',tr:{vi:'Đi chợ đêm',id:'Ke pasar malam',en:'Night market',th:'เดินตลาดกลางคืน',my:'ညဈေးလျှောက်'},fx:'心情+15 存款−150'},
+  {k:'clean',zh:'整理房間、倒垃圾',tr:{vi:'Dọn phòng, đổ rác',id:'Bersihkan kamar, buang sampah',en:'Tidy room & take out trash',th:'จัดห้อง ทิ้งขยะ',my:'အခန်းရှင်း၊ အမှိုက်ပစ်'},fx:'整潔+20 垃圾分類小遊戲'},
+  {k:'market',zh:'逛夜市',tr:{vi:'Đi chợ đêm',id:'Ke pasar malam',en:'Night market',th:'เดินตลาดกลางคืน',my:'ညဈေးလျှောက်'},fx:'心情+15 點餐小遊戲'},
   {k:'job',zh:'打工',tr:{vi:'Làm thêm',id:'Kerja paruh waktu',en:'Part-time job',th:'ทำงานพาร์ตไทม์',my:'အချိန်ပိုင်းအလုပ်'},fx:'體力−15 本週打工 20 小時'},
   {k:'post',zh:'去郵局寄包裹',tr:{vi:'Gửi bưu kiện',id:'Kirim paket',en:'Send a parcel home',th:'ส่งพัสดุกลับบ้าน',my:'ပါဆယ်ပို့'},fx:'存款−500 心情+10'},
   {k:'call',zh:'打電話回家',tr:{vi:'Gọi về nhà',id:'Telepon keluarga',en:'Call home',th:'โทรกลับบ้าน',my:'အိမ်ကိုဖုန်းဆက်'},fx:'心情+20'},
@@ -550,11 +594,14 @@ function renderTitle(){
     el('div',{class:'brand'}, el('div',{class:'seal','aria-hidden':'true',onclick:()=>{ devTaps++; if(devTaps>=5){ devTaps=0; askDevPin(); } }},el('span')), el('div',{}, el('h1',{},'台灣生活日記'), el('p',{},'青年高中僑生建教專班・華語養成遊戲'))),
     cast,
     el('div',{class:'chapter-tag'}, saved&&saved.ch===12 ? '三年級・第十二章　4–6 月：錄取通知・報稅・面試・畢業典禮' : saved&&saved.ch===11 ? '三年級・第十一章　1–3 月：扣繳憑單・志願表・春節・大學到校面試' : saved&&saved.ch===10 ? '三年級・第十章　10–12 月：報告・自傳・模擬面試・冬至' : saved&&saved.ch===9 ? '三年級・第九章　7–9 月：帶新生・小組長・志願調查' : saved&&saved.ch===8 ? '二年級・第八章　4–6 月：清明・B1 考試・端午・結業' : saved&&saved.ch===7 ? '二年級・第七章　1–3 月：專題・尾牙・除夕・元宵・輪調' : saved&&saved.ch===6 ? '二年級・第六章　10–12 月：國慶・運動會・技能檢定・聖誕節' : saved&&saved.ch===5 ? '二年級・第五章　7–9 月：迎新・探索教育・居留證延期' : saved&&saved.ch===4 ? '第四章　4–6 月：潑水節・文化週・大學參訪・畢業典禮' : saved&&saved.ch===3 ? '第三章　1–3 月：文化之旅・春節・園遊會' : saved&&saved.ch===2 ? '第二章　10–12 月：中秋・打工・跨年' : '第一章　7–9 月：抵達・面試・實習'),
-    saved ? el('button',{class:'btn',onclick:()=>{S=saved; if(S.ch===0){ runCh0(); return; } S.screen='game';render();runDay();}},'繼續遊戲　'+(UI.cont[saved.lang]||'Continue')) : null,
-    saved ? null : el('button',{class:'btn',onclick:()=>{S=fresh();S.screen='setup';render();}}, '開始遊戲'),
+    START_CH!=null ? el('button',{class:'btn',onclick:()=>startAt(START_CH)}, '老師指定：'+chName(START_CH)+'　開始', el('small',{style:'display:block;font-weight:400;margin-top:2px'},chTheme(START_CH))) : null,
+    saved ? el('button',{class:START_CH!=null?'btn ghost':'btn',onclick:()=>{S=saved; if(S.ch===0){ runCh0(); return; } S.screen='game';render();runDay();}},'繼續遊戲　'+(UI.cont[saved.lang]||'Continue')) : null,
+    saved ? null : el('button',{class:START_CH!=null?'btn ghost':'btn',onclick:()=>{S=fresh();S.screen='setup';render();}}, '開始遊戲'),
     el('div',{class:'tiles'},
       el('button',{class:'tile',onclick:()=>startPrologue(saved)}, el('i',{},'🧳'), '前傳：出發前'),
       el('button',{class:'tile',onclick:()=>openMap(saved||{})}, el('i',{},'🗺️'), '三年旅程地圖'),
+      el('button',{class:'tile',onclick:openChapters}, el('i',{},'🏫'), '選章節（上課用）'),
+      el('button',{class:'tile',onclick:()=>openAlbum(saved||{})}, el('i',{},'📒'), '收集冊'),
       el('button',{class:'tile',onclick:()=>openSaveCode('')}, el('i',{},'🔑'), '存檔代碼'),
       el('button',{class:'tile',onclick:openOffline}, el('i',{},'📶'), '離線・下載語音')),
     el('div',{class:'foot'},
@@ -562,7 +609,7 @@ function renderTitle(){
       el('a',{href:'feedback/teacher/',target:'_blank',rel:'noopener'},'教師回饋 ✎'),
       el('a',{href:'https://overseas.youth.tc.edu.tw',target:'_blank',rel:'noopener'},'入學資訊網 ↗'),
       saved ? restartBtn() : null),
-    el('p',{class:'small'},'試作版：前傳＋第一到第十二章（一年級到三年級畢業），每章約 15–20 分鐘。進度會自動存在這台裝置的瀏覽器裡。建議戴耳機或打開聲音。')));
+    el('p',{class:'small'},'試作版：前傳＋第一到第十二章（一年級到三年級畢業），每章約 10–15 分鐘。進度會自動存在這台裝置的瀏覽器裡。建議戴耳機或打開聲音。')));
 }
 
 function renderSetup(){
@@ -574,7 +621,7 @@ function renderSetup(){
   const lc = el('select',{id:'lg',onchange:e=>{S.lang=e.target.value;S.langSet=true;renderAgain();}}, Object.entries(LANGS).map(([k,v])=>{const o=el('option',{value:k},v); if((S.lang||'en')===k) o.selected=true; return o;}));
   const hc = el('div',{class:'chips'}, [[false,'一般'],[true,'挑戰 ★']].map(([v,t])=>el('button',{class:'chip','aria-pressed':String(!!S.hard===v),onclick:()=>{ setHard(v); renderAgain(); }},t)));
   const ready = () => S.hero && S.name && S.dept!==null && S.dept!==undefined;
-  const goBtn = el('button',{class:'btn',onclick:()=>{ if(!ready()) return; S.lang=S.lang||hero().home.lang; S.group=S.group||(Math.random()<.5?'A':'B'); S.screen='game'; S.day=0; S.slot=0; if(S.prologue || START_PRE){ S.ch=0; save(); runCh0(); return; } save(); render(); chooseStart(); }}, '出發！　'+UI.go[S.lang||'en']);
+  const goBtn = el('button',{class:'btn',onclick:()=>{ if(!ready()) return; S.lang=S.lang||hero().home.lang; S.group=S.group||(Math.random()<.5?'A':'B'); S.screen='game'; S.day=0; S.slot=0; if(S.startCh!=null){ const n=S.startCh; delete S.startCh; jumpTo(n); return; } if(S.prologue || START_PRE){ S.ch=0; save(); runCh0(); return; } save(); render(); chooseStart(); }}, '出發！　'+UI.go[S.lang||'en']);
   goBtn.disabled = !ready();
   app.append(el('section',{class:'setup'},
     el('h2',{},'選擇你的主角　',el('span',{class:'small'},UI.pick[lang])), hs,
@@ -602,7 +649,7 @@ function drawHud(){
   hud.innerHTML='';
   if(S.ch===0){ hud.append(el('div',{class:'when'}, el('b',{},d.label||''), el('span',{class:'slot'},'前傳')), el('button',{class:'gear','aria-label':'設定',onclick:openSettings},'⚙︎')); return; }
   const bar=(cls,lab,v)=>el('div',{class:'meter '+cls},el('span',{},lab),el('div',{class:'bar'},el('i',{style:`width:${v}%`})));
-  hud.append(el('div',{class:'when'}, el('b',{},d.label||`${d.m} 月 第 ${d.w} 週`), el('span',{class:'slot'},SLOT[S.slot]||'晚上')),
+  hud.append(el('div',{class:'when'}, el('b',{},d.label||`${d.m} 月 第 ${d.w} 週`), el('span',{class:'slot'},'本週')),
     el('button',{class:'gear','aria-label':'設定',onclick:openSettings},'⚙︎'),
     el('div',{class:'meters'}, bar('hp','體力',S.st.hp), bar('mood','心情',S.st.mood), bar('skill','專業技能',S.st.skill), (()=>{const m=bar('tidy','宿舍整潔 '+(S.st.tidy??100),S.st.tidy??100); if((S.st.tidy??100)<60) m.classList.add('low'); return m;})(), el('div',{class:'money'},'$ '+S.st.money.toLocaleString())));
 }
@@ -639,9 +686,11 @@ function fxPop(txt){ $('.fxpop',stage).append(el('span',{},txt)); setTimeout(()=
 function waitTap(btnText){ return new Promise(res=>{ const b=el('button',{class:'next',onclick:()=>{res();}}, (btnText||UI.tap[S.lang]||'Tap')+' ▸'); panel.append(b); b.focus({preventScroll:true}); }); }
 
 /* Chinese line with its own speaker button (and pinyin when on) */
-function zhLine(raw, cls){
-  const zh = fill(raw);
-  const box = el('div',{class:'line'}, el('div',{style:'flex:1;min-width:0'}, el('p',{class:cls||'tr-sub'},zh), S.pinyin && pyOf(raw) ? el('p',{class:'py'},pyOf(raw)) : null),
+// v：句子裡的 {n}、{order} 等代換，值是字串，或 [中文, 拼音]
+function zhLine(raw, cls, v){
+  const sub = (t, i) => v ? t.replace(/\{(\w+)\}/g, (m,k) => k in v ? (Array.isArray(v[k]) ? v[k][i] : v[k]) : m) : t;
+  const zh = sub(fill(raw), 0), py = S.pinyin && pyOf(raw) ? sub(pyOf(raw), 1) : '';
+  const box = el('div',{class:'line'}, el('div',{style:'flex:1;min-width:0'}, el('p',{class:cls||'tr-sub'},zh), py ? el('p',{class:'py'},py) : null),
     el('button',{class:'speak sm','aria-label':'播放',onclick:()=>speak(zh.replace(/＿＿/g,'嗯'))},'🔊'));
   return box;
 }
@@ -677,6 +726,7 @@ async function runSteps(steps, ctx){
     if(st.poster){ panel.innerHTML=''; panel.append(el('div',{class:'poster'}, el('h3',{},st.title||'徵　才'), el('button',{class:'speak big',style:'margin:0 auto 8px;display:block',onclick:()=>speak(st.poster.map(([a,b])=>(a?a+'，':'')+fill(b)).join('。'))},'🔊 唸給我聽'), el('dl',{}, st.poster.flatMap(([a,b])=>[el('dt',{},a),el('dd',{},fill(b))])))); continue; }
     if(st.q){ await runQ(st.q, ctx); continue; }
     if(st.fx){ applyFx(st.fx); continue; }
+    if(st.mini){ await (st.mini==='trash' ? miniTrash : miniMarket)(); continue; }
     if(st.card){ if(!S.cards.includes(st.card)) S.cards.push(st.card); save(); await showCard(st.card); continue; }
     if(st.title){ if(!S.titles.includes(st.title)) S.titles.push(st.title); toast('獲得稱號：'+TITLES[st.title]); continue; }
     if(st.ifHomeZh){ await runSteps(st.ifHomeZh.includes(hero().home.zh)?st.then:st.else, ctx); continue; }
@@ -835,20 +885,19 @@ async function payDay(){
     slipRow(T2.gross, gW+gP), slipRow(T2.labor, -lab), ...(hea||!gW?[slipRow(T2.health, -hea)]:[el('div',{class:'slip-row'},el('span',{},T2.health),el('b',{},T2.noNHI||'—'))]), slipRow(T2.net, net, true)));
   await waitTap();
 }
+// 一週只選一次（節奏瘦身）：不再分上午、下午、晚上，所以不看時段，只看在校／實習和章節
 function available(a){
-  const d=S.day, s=S.slot, tired=S.st.hp<20, ch2=S.ch>=2, day=days()[d]||{};
+  const d=S.day, tired=S.st.hp<20, ch2=S.ch>=2, day=days()[d]||{};
   if(tired && !['rest','call'].includes(a.k)) return false;
-  if(ch2 && day.typhoon) return ['rest','call','clean','study'].includes(a.k) && (a.k!=='study'||s===2) && (a.k!=='clean'||s>0);
+  if(ch2 && day.typhoon) return ['rest','call','clean','study'].includes(a.k);
   const st=statusOf(day);
-  if(a.k==='class') return s===0 && (st==='school' || st==='common');
-  if(a.k==='pro') return s===1 && st==='school';
-  if(a.k==='work') return st==='work' && s<2;
-  if(a.k==='out') return !ch2 && s>0;
-  if(a.k==='market') return ch2 && s===2;
-  if(a.k==='job') return ch2 && s===2 && !!S.seen.M05 && st==='school' && (S.jobHrs?.[wk()]||0) < 20;
-  if(a.k==='post') return ch2 && s===1 && d>=9 && !S.seen.D15;
-  if(a.k==='study') return s===2;
-  if(a.k==='clean') return s>0;
+  if(a.k==='class') return st==='school' || st==='common';
+  if(a.k==='pro') return st==='school';
+  if(a.k==='work') return st==='work';
+  if(a.k==='out') return !ch2;
+  if(a.k==='market') return ch2;
+  if(a.k==='job') return ch2 && !!S.seen.M05 && st==='school' && (S.jobHrs?.[wk()]||0) < 20;
+  if(a.k==='post') return ch2 && d>=9 && !S.seen.D15;
   return true;
 }
 async function doAction(k){
@@ -868,10 +917,10 @@ async function doAction(k){
     else { setScene('store','xiaoyang'); await say1(D.shop); applyFx({money:-35,mood:3}); }
   }
   else if(k==='out'){ if(S.day>=3 && !S.seen.D03) await runEvent('D03'); else { setScene('street','amei'); await say1(D.out); } applyFx({hp:-10,mood:20,money:-200,pop:3,aff:{amei:1}}); }
-  else if(k==='market'){ if(!S.seen.D11) await runEvent('D11'); else { setScene('nightmarket','huang'); await say1(D.market); } applyFx({hp:-10,mood:15,money:-150,pop:2,aff:{huang:1}}); }
+  else if(k==='market'){ if(!S.seen.D11){ await runEvent('D11'); applyFx({hp:-10,mood:15,money:-150,pop:2,aff:{huang:1}}); } else await miniMarket(); }
   else if(k==='job'){ if(!S.seen.D12) await runEvent('D12'); else { setScene('store','xiaoyang'); await say1(D.job); } applyFx({hp:-15,aff:{xiaoyang:1}}); accrue('part',205*20); S.jobHrs=S.jobHrs||{}; S.jobHrs[wk()]=(S.jobHrs[wk()]||0)+20; }
   else if(k==='post'){ await runEvent('D15'); }
-  else if(k==='clean'){ setScene('room',null); await say1(D.clean); S.trash=0; applyFx({tidy:20,hp:-5}); }
+  else if(k==='clean'){ if(S.seen.D07) await miniTrash(); else { setScene('room',null); await say1(D.clean); S.trash=0; applyFx({tidy:20,hp:-5}); } }
   else if(k==='call'){ setScene('room',null); await say1(D.call); applyFx({mood:20}); }
   else if(k==='rest'){ setScene('room',null); await say1(D.rest); applyFx({hp:40,mood:5}); }
 }
@@ -881,7 +930,7 @@ function chooseAction(){
     const day=days()[S.day]||{};
     setScene(S.ch>=2 ? (day.typhoon?'room':'dorm') : (S.day>6?'work':'dorm'), null);
     panel.innerHTML='';
-    panel.append(zhLine('今天'+SLOT[S.slot]+'要做什麼？','prompt'), ...[trBlock(UI.what[S.lang],'font-size:.9rem;color:var(--ink-2);margin-top:-6px')].filter(Boolean));
+    panel.append(zhLine('這個星期要做什麼？','prompt'), ...[trBlock(UI.what[S.lang],'font-size:.9rem;color:var(--ink-2);margin-top:-6px')].filter(Boolean));
     { const stt=statusOf(day); if(stt!=='common') panel.append(el('p',{class:'small'}, stt==='school' ? '本輪：在校上課（可以打工，每週不超過 20 小時）' : '本輪：在職實習')); }
     if(S.ch>=2 && day.typhoon) panel.append(el('p',{class:'small'},fillTr(L(DATA.N.typhoon))));
     if(S.st.hp<20) panel.append(el('p',{class:'small'},fillTr(L(DATA.N.tired))));
@@ -889,6 +938,8 @@ function chooseAction(){
     panel.append(g);
   });
 }
+// 一週一格：先跑這週的主線事件，再看有沒有隨機事件，最後選一件事做。
+// S.slot：0 還沒開始、2 事件跑完等選擇、3 這週選完（舊存檔的 1 也當成還沒選）
 async function runDay(){
   if(S.screen!=='game') return;
   if(!S.group) S.group=(Math.random()<.5?'A':'B'); save();
@@ -897,33 +948,31 @@ async function runDay(){
     const d = days()[S.day];
     // 實習是規定：在職月份一定有薪水（最低 30,900），每天都檢查一次
     { S.owed=S.owed||{work:{},part:{}}; if(statusOf(d)==='work' && S.owed.work[d.m]===undefined){ S.owed.work[d.m]=0; save(); } }
-    let fullDay=false;
-    while(S.slot<3){
-      drawHud();
-      const at = d.mainAt ?? 0;
-      if(d.main && !S.seen[d.main] && S.slot===at && (!d.onlyIf || statusOf(d)===d.onlyIf)){
-        await runEvent(d.main);
-        if(d.mainAt!=null){ S.slot=at+1; save(); continue; }
-        if('mainSlots' in d){ S.slot=d.mainSlots; save(); }
-        else { fullDay=true; break; }
-      }
-      if(S.ch>=3){ // 隨機事件：每天 30%，下午觸發
+    const mainOk = d.main && (!d.onlyIf || statusOf(d)===d.onlyIf);
+    if(mainOk && !S.seen[d.main]){ await runEvent(d.main); drawHud(); }
+    if(S.slot<2){
+      if(S.ch>=3){ // 隨機事件：每週 30%
         if(S.rndDay!==S.day){ S.rndDay=S.day; const pool=(S.ch===3?RND3:S.ch===4?RND4:S.ch===5?RND5:S.ch===6?RND6:S.ch===7?RND7:S.ch===8?RND8:S.ch===9?RND9:S.ch===10?RND10:S.ch===11?RND11:RND12).filter(id=>!S.seen[id]);
           const ready=Object.entries(S.redo||{}).filter(([b,i])=>REDO[b] && !S.seen[REDO[b]] && (S.ch>i.ch || S.day>=i.day+2)).map(([b])=>REDO[b]);
           S.rnd = (ready.length && Math.random()<.6) ? ready[0] : (pool.length && Math.random()<.3) ? pool[Math.floor(Math.random()*pool.length)] : null; save(); }
-        if(S.rnd && S.slot===1){ const id=S.rnd; S.rnd=null; save(); await runEvent(id); }
+        if(S.rnd){ const id=S.rnd; S.rnd=null; save(); await runEvent(id); }
       }
       if(S.ch<2){
-        if(S.slot===1 && S.day>=1 && !S.seen.D07){ await runEvent('D07'); }
-        if(S.slot===2 && S.day>=1 && !S.seen.D04){ await runEvent('D04'); }
-        else if(S.slot===2 && S.day>=2 && !S.seen.D08){ await runEvent('D08'); }
-        else if(S.slot===2 && S.day>=4 && !S.seen.D09){ await runEvent('D09'); }
+        if(S.day>=1 && !S.seen.D07){ await runEvent('D07'); }
+        if(S.day>=1 && !S.seen.D04){ await runEvent('D04'); }
+        else if(S.day>=2 && !S.seen.D08){ await runEvent('D08'); }
+        else if(S.day>=4 && !S.seen.D09){ await runEvent('D09'); }
       }
-      if(S.ch>=2 && S.slot===2 && S.day>=8 && !S.seen.D19){ await runEvent('D19'); }
+      if(S.ch>=2 && S.day>=8 && !S.seen.D19){ await runEvent('D19'); }
+      S.slot=2; save(); drawHud();
+    }
+    // 整天的主線活動（沒有 mainAt／mainSlots）那週就不再選
+    const fullDay = mainOk && d.mainAt==null && !('mainSlots' in d);
+    if(S.slot<3 && !fullDay){
       const k = await chooseAction();
       await doAction(k);
-      S.slot++; save();
     }
+    S.slot=3; save();
     await endDay();
   }
   if((S.minTidy??100)>=80 && !S.titles.includes('tidy')) S.titles.push('tidy');
@@ -931,16 +980,104 @@ async function runDay(){
 }
 async function endDay(){
   S.trash=(S.trash||0)+1;
-  S.st.tidy=clamp((S.st.tidy??100)-5,0,100); S.minTidy=Math.min(S.minTidy??100,S.st.tidy); // 住久了自然會亂
-  if(S.trash>=2 && S.seen.D07){ setScene('room',null); panel.innerHTML=''; await say1(DATA.N.trash); applyFx({tidy:-10}); }
+  S.st.tidy=clamp((S.st.tidy??100)-3,0,100); S.minTidy=Math.min(S.minTidy??100,S.st.tidy); // 住久了自然會亂
+  if(S.trash>=3 && S.seen.D07){ toast('🗑️ '+DATA.N.trash.zh); applyFx({tidy:-5}); }
   if((S.st.tidy??100)<60){ if(!S.warn){ S.warn=1; await runEvent('W1'); } else { await runEvent('W2'); } }
   if((days()[S.day]||{}).w===2) await payDay();
   if(S.ch>=2 && S.st.mood<30){ await runEvent('W3'); }
   if((S.viol||0)>=2 && !S.seen.W4){ await runEvent('W4'); }
-  panel.innerHTML=''; setScene('room',null);
-  panel.append(...trZh(UI.night[S.lang], zhLine('晚上了，該睡覺了。')));
-  await waitTap();
   S.st.hp = clamp(S.st.hp+20,0,100); S.day++; S.slot=0; save(); drawHud();
+}
+/* ---------- 小遊戲：垃圾分類（打掃房間時）、夜市點餐（逛夜市時） ---------- */
+// 成績記在 S.mini，不算進章末的「一次就答對」星等
+const MINI = DATA.mini, MINI_TR = MINI.tr, BINS = MINI.bins, TRASH = MINI.trash, FOOD = MINI.food, ML = MINI.lines;
+const pickN = (arr,n) => arr.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).slice(0,n).map(x=>x[1]);
+const miniRec = (k) => { S.mini=S.mini||{}; return S.mini[k]=S.mini[k]||{plays:0,best:0,perfect:0}; };
+function miniHead(raw, k, v){ panel.innerHTML=''; panel.append(zhLine(raw,'prompt',v), ...[trBlock(L(MINI_TR[k]),'font-size:.9rem;color:var(--ink-2);margin-top:-6px')].filter(Boolean)); }
+const tapOnce = (btns) => new Promise(res=>btns.forEach(b=>b.addEventListener('click',()=>res(b),{once:true})));
+
+async function miniTrash(){
+  setScene('recycle','ayi');
+  const items = pickN(TRASH, 5); let ok = 0;
+  for(let i=0;i<items.length;i++){
+    const [zh, e, bin, tr] = items[i];
+    miniHead(ML.trashHead,'trash');
+    const card = el('div',{class:'mini-item'}, el('span',{class:'mini-e','aria-hidden':'true'},e),
+      el('div',{}, el('b',{},zh), S.pinyin&&pyOf(zh)?el('i',{},pyOf(zh)):null, trBlock(L(tr),'margin:0')),
+      el('button',{class:'speak sm','aria-label':'播放',onclick:()=>speak(zh)},'🔊'));
+    const btns = BINS.map(([k,bz,be])=>el('button',{class:'mini-bin','data-mini':k}, el('span',{'aria-hidden':'true'},be), el('b',{},bz)));
+    panel.append(el('p',{class:'small',style:'margin:0;text-align:right'},`${i+1} / ${items.length}　答對 ${ok}`), card, el('div',{class:'mini-bins'}, btns));
+    if(S.auto) speak(zh);
+    let first = true;
+    for(;;){
+      const b = await tapOnce(btns.filter(x=>!x.disabled));
+      if(b.dataset.mini===bin){ b.classList.add('ok'); if(first) ok++; break; }
+      b.classList.add('no'); b.disabled=true; first=false;
+      if(S.hard){ btns.find(x=>x.dataset.mini===bin).classList.add('ok'); break; } // 挑戰模式：不能重選
+    }
+    btns.forEach(x=>x.disabled=true);
+    await new Promise(r=>setTimeout(r,700));
+  }
+  const all = ok===items.length, rec = miniRec('trash'); rec.plays++; rec.best=Math.max(rec.best,ok); if(all) rec.perfect++;
+  panel.innerHTML=''; panel.append(zhLine(all?ML.trashAll:ML.trashSome, null, {n:String(ok)}));
+  applyFx(all ? {tidy:20,hp:-5,mood:3} : {tidy:20,hp:-5}); S.trash=0; save();
+  await waitTap();
+}
+
+async function miniMarket(){
+  setScene('nightmarket','huang');
+  const menu = pickN(FOOD, 4);
+  const want = pickN(menu, Math.random()<.5?1:2).map(f=>[f, f[2]<=30 && Math.random()<.6 ? 2 : 1]);
+  const total = want.reduce((a,[f,n])=>a+f[2]*n,0);
+  const ph = want.map(([f,n])=>(n===2?'兩':'一')+f[3]+f[0]);
+  const order = {order:[ph.join('和'), ph.map(w=>DATA.py['#'+w]||'').join(' hé ')]};
+  const askSay = fill(ML.ask).replace(/^.*「|」$/g,'').replace('{order}',order.order[0]);
+  const vv = voiceOf('amei');
+  // 1. 聽點餐、選食物（一般模式錯兩次就直接告訴你）
+  let tray = {}, okOrder = true, tries = 0;
+  for(;;){
+    miniHead(ML.marketHead,'market');
+    if(S.hard && !tries) panel.append(el('div',{class:'line'}, el('p',{class:'hidden-text'},'？？？'), el('button',{class:'speak','aria-label':'播放',onclick:()=>speak(askSay,vv)},'🔊')));
+    else panel.append(zhLine(ML.ask,'zh',order));
+    if(S.auto) speak(askSay,vv);
+    tray = {};
+    const sum = el('p',{class:'small',style:'margin:0'},'還沒點');
+    const show = () => { const t=Object.entries(tray).filter(([,n])=>n); sum.textContent = t.length ? '你點了：'+t.map(([k,n])=>k+' ×'+n).join('、') : '還沒點'; picks.forEach(p=>p.classList.toggle('on', !!tray[p.dataset.mini])); };
+    const picks = menu.map(f=>el('button',{class:'mini-food','data-mini':f[0],onclick:()=>{ tray[f[0]]=((tray[f[0]]||0)+1)%3; show(); }},
+      el('span',{'aria-hidden':'true'},f[1]), el('b',{},f[0]), el('em',{},f[2]+' 元'), (S.trMode||'show')==='show' ? el('span',{class:'tr'},L(f[4])) : null));
+    const done = el('button',{class:'btn','data-mini':'done',style:'width:100%'},'點好了');
+    panel.append(el('p',{class:'small',style:'margin:0'},'點一下加一份，點三下取消。'), el('div',{class:'mini-foods'}, picks), sum, done);
+    await tapOnce([done]);
+    const got = Object.entries(tray).filter(([,n])=>n);
+    if(got.length===want.length && want.every(([f,n])=>tray[f[0]]===n)) break;
+    tries++; okOrder = false;
+    panel.innerHTML=''; panel.append(zhLine(ML.wrongOrder, null, order));
+    if(S.hard || tries>=2){ await waitTap(); break; }
+    await waitTap('再聽一次');
+  }
+  // 2. 付剛好的錢（一般模式錯三次就由老闆幫忙算）
+  let okPay = true, payTries = 0;
+  for(;;){
+    miniHead(ML.payHead,'pay');
+    panel.append(el('div',{class:'mini-menu'}, menu.map(f=>el('div',{}, el('span',{'aria-hidden':'true'},f[1]), el('b',{},f[0]), el('em',{},f[2]+' 元／'+f[3])))),
+      el('p',{class:'small',style:'margin:0'},'你點了：'+want.map(([f,n])=>f[0]+' ×'+n).join('、')));
+    let paid = 0;
+    const shown = el('b',{class:'mini-paid'},'0 元');
+    const coins = [100,50,10,5,1].map(v=>el('button',{class:'mini-coin'+(v>=100?' bill':''),'data-mini':'c'+v,'aria-label':v+' 元',onclick:()=>{ paid+=v; shown.textContent=paid+' 元'; }}, String(v)));
+    const clr = el('button',{class:'btn ghost','data-mini':'clear',onclick:()=>{ paid=0; shown.textContent='0 元'; }},'重來');
+    const go = el('button',{class:'btn','data-mini':'pay'},'付錢');
+    panel.append(el('div',{class:'mini-coins'}, coins), el('div',{class:'mini-payrow'}, el('span',{},'付了'), shown, clr, go));
+    await tapOnce([go]);
+    if(paid===total) break;
+    okPay = false;
+    panel.innerHTML=''; panel.append(zhLine(paid>total?ML.tooMuch:ML.tooLittle, null, {n:String(total)}));
+    if(S.hard || ++payTries>=3){ await waitTap(); break; }
+    await waitTap('再算一次');
+  }
+  const perfect = okOrder && okPay, rec = miniRec('market'); rec.plays++; if(perfect){ rec.best=1; rec.perfect++; }
+  panel.innerHTML=''; panel.append(zhLine(perfect?ML.perfect:ML.thanks));
+  applyFx({money:-total, mood:perfect?15:10, hp:-10, pop:2, aff:{huang:1}}); save();
+  await waitTap();
 }
 /* ---------- 前傳：第 0 章「出發前」與開場動畫 ---------- */
 const PRE_EV = ['O01','O02','O03','O04','O05','O06','O07'];
@@ -998,7 +1135,7 @@ const FB_TXT={vi:'Góp ý',id:'Beri masukan',en:'Give feedback',th:'ให้ค
 function addKm(o){ if(Array.isArray(o)){ o.forEach(addKm); return; } if(!o||typeof o!=='object') return;
   if(typeof o.en==='string' && 'vi' in o && o.km==null && KM[o.en]) o.km=KM[o.en];
   for(const k in o){ const v=o[k]; if(v&&typeof v==='object') addKm(v); } }
-addKm([UI, DEPTS, ACTIONS, START_TXT, FB_TXT, DATA.N, DATA.events, DATA.P, DATA.bank]);
+addKm([UI, DEPTS, ACTIONS, START_TXT, FB_TXT, DATA.mini.tr, DATA.N, DATA.events, DATA.P, DATA.bank]);
 UI.thanks.km=['អ្នកឲ្យកាតអរគុណទៅ ','។'];
 function chooseStart(){
   hud.innerHTML=''; hud.append(el('div',{class:'when'}, el('b',{},'出發！'), el('span',{class:'slot'},'前傳')));
@@ -1145,6 +1282,7 @@ function renderEnd(){
     el('p',{class:'tr'},nextTxt),
     nextBtn,
     el('button',{class:'btn ghost',onclick:()=>openMap()},'看三年旅程地圖'),
+    el('button',{class:'btn ghost',onclick:()=>openAlbum()},'看收集冊'),
     el('button',{class:nextBtn?'btn ghost':'btn',onclick:()=>{ try{localStorage.removeItem(KEY);}catch(e){} S=fresh(); render(); }}, UI.again[S.lang])));
 }
 
@@ -1271,6 +1409,70 @@ function openMap(src){
   dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal();
   const c = dlg.querySelector('.jm-card.cur'); if(c) setTimeout(()=>c.scrollIntoView({block:'center'}),50);
 }
+/* ---------- 老師選章：一堂課玩一章。首頁「選章節」或上課連結 ?ch=7 ---------- */
+const START_CH = (()=>{ try{ const v=new URLSearchParams(location.search).get('ch'); if(v===null||v==='') return null; const n=+v; return Number.isInteger(n)&&n>=0&&n<=12 ? n : null; }catch(e){ return null; } })();
+const chName = n => n===0 ? '前傳' : '第'+CH_ZH[n-1]+'章';
+const chTheme = n => n===0 ? '招生・報名・面試・簽證・出發' : JOURNEY[n].theme;
+const chMonths = n => n===0 ? '出發前' : ({1:'7–9',2:'10–12',3:'1–3',4:'4–6'})[((n-1)%4)+1]+' 月';
+function chLink(n){ const u=new URL(location.href); u.search=''; u.hash=''; u.searchParams.set('ch',n); return u.href; }
+// 從第 n 章開頭開始。前面章節的主線事件當成已經看過，沒玩過的數值給這個時間點合理的預設值。
+function jumpTo(n){
+  app.classList.remove('q');
+  if(n===0){ S.ch=0; S.day=0; S.slot=0; S.screen='game'; save(); runCh0(); return; }
+  for(const [id,[c]] of Object.entries(EVDAY)){ if(c<n) S.seen[id]=true; else delete S.seen[id]; }
+  CH1_ALL.forEach(id=>{ if(n>=2) S.seen[id]=true; else delete S.seen[id]; });
+  if(n>=5 && S.tocflA2==null) S.tocflA2=1;          // 一年級的 A2 預設已通過
+  if(n>=10 && !S.route) S.route='undecided';         // 第九章的生涯調查還沒做
+  S.st.money=Math.max(S.st.money, n>=2 ? 20000 : 3000);
+  S.st.hp=Math.max(S.st.hp,80); S.st.mood=Math.max(S.st.mood,60);
+  S.ch=n; S.day=0; S.slot=0; S.qOk=0; S.qTot=0; S.warn=0; S.trash=0; S.rnd=null; S.rndDay=null; S.minTidy=S.st.tidy??100;
+  S.from=n; S.screen='game'; save(); render();
+  if(n===1) playOpening().then(runDay); else runDay();
+}
+function startAt(n){
+  const saved = load();
+  if(saved && saved.hero){
+    if(saved.screen!=='end' && !confirm(`要從${chName(n)}開始嗎？\n目前的進度（${saveWhere(saved)}）會換成${chName(n)}的開頭。\n收集卡、稱號和好感度會留著。`)) return;
+    S = saved; jumpTo(n); return;
+  }
+  S = fresh(); S.startCh = n; S.screen = 'setup'; render();
+}
+function openChapters(){
+  const dlg = el('dialog',{class:'chdlg','aria-label':'選章節'});
+  const copy = async (n, b) => { const u=chLink(n); try{ await navigator.clipboard.writeText(u); b.textContent='已複製 ✓'; }catch(e){ prompt('上課連結（複製給學生）', u); } };
+  dlg.append(el('div',{style:'display:flex;justify-content:space-between;align-items:center;gap:8px'}, el('h2',{style:'margin:0'},'選章節'), el('button',{class:'btn ghost',style:'min-height:44px;padding:0 14px',onclick:()=>dlg.close()},'關閉')),
+    el('p',{class:'small'},'一堂課玩一章，每章約 10–15 分鐘。老師可以複製上課連結給學生，學生打開就會從那一章開始。'),
+    el('div',{class:'chlist'}, [0,1,2,3,4,5,6,7,8,9,10,11,12].map(n=>{ const c=el('button',{class:'btn ghost sm'},'複製連結'); c.onclick=()=>copy(n,c);
+      return el('div',{class:'chrow'}, el('div',{class:'chinfo'}, el('b',{},chName(n)+'　',el('small',{},chMonths(n))), el('span',{},chTheme(n))),
+        el('div',{class:'chbtns'}, el('button',{class:'btn sm',onclick:()=>{ dlg.close(); startAt(n); }},'開始'), c)); })));
+  dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal();
+}
+
+/* ---------- 收集冊：收集卡、稱號、小遊戲紀錄、好感度 ---------- */
+function openAlbum(src){
+  const d = src || (S.hero ? S : load()) || {};
+  const cards = d.cards||[], titles = d.titles||[], aff = d.aff||{}, mini = d.mini||{};
+  const allC = Object.keys(CARDS), allT = Object.keys(TITLES);
+  const dlg = el('dialog',{class:'albumdlg','aria-label':'收集冊'});
+  const ppl = ['amei','chen','zhang','ajiao','xiaoyang','rina','alian','lin','huang','li','guo','ayi'].filter(p=>PEOPLE[p]);
+  const heart = n => '♥'.repeat(Math.min(5,n)) + '♡'.repeat(Math.max(0,5-Math.min(5,n)));
+  const who = p => { const q = d.hero ? PEOPLE[(p==='amei' && !(HEROES.find(h=>h.id===d.hero)||{}).girl) ? 'ajie' : p] : PEOPLE[p]; return q; };
+  const tr = mini.trash||{}, mk = mini.market||{};
+  dlg.append(el('div',{style:'display:flex;justify-content:space-between;align-items:center;gap:8px'}, el('h2',{style:'margin:0'},'收集冊'), el('button',{class:'btn ghost',style:'min-height:44px;padding:0 14px',onclick:()=>dlg.close()},'關閉')),
+    el('h3',{},`收集卡 ${allC.filter(k=>cards.includes(k)).length} / ${allC.length}`),
+    el('div',{class:'album'}, [...allC.filter(k=>cards.includes(k)), ...allC.filter(k=>!cards.includes(k))].map(k=> cards.includes(k)
+      ? el('div',{class:'al-card'}, IMG['item_'+k]?el('img',{src:IMG['item_'+k],alt:''}):el('span',{class:'al-q'},'★'), el('span',{},CARDS[k]))
+      : el('div',{class:'al-card miss'}, el('span',{class:'al-q'},'？'), el('span',{},'？？？')))),
+    el('h3',{},`稱號 ${allT.filter(k=>titles.includes(k)).length} / ${allT.length}`),
+    el('div',{class:'cards'}, allT.map(k=> el('span',{class:'cardchip'+(titles.includes(k)?'':' miss')}, titles.includes(k)?TITLES[k]:'？？？'))),
+    el('h3',{},'小遊戲'),
+    el('div',{class:'statgrid'},
+      el('div',{class:'stat'}, el('b',{},tr.plays?tr.best+' / 5':'—'), el('span',{},'垃圾分類最佳'+(tr.plays?`（玩了 ${tr.plays} 次，全對 ${tr.perfect} 次）`:'：打掃房間時玩'))),
+      el('div',{class:'stat'}, el('b',{},mk.plays?mk.perfect+' / '+mk.plays:'—'), el('span',{},'夜市點餐一次就對'+(mk.plays?'':'：逛夜市時玩')))),
+    el('h3',{},'好感度'),
+    el('div',{class:'al-aff'}, ppl.map(p=>{ const q=who(p); return el('div',{}, q.img?el('img',{src:IMG[q.img],alt:''}):el('span',{class:'al-q'},q.ch||q.zh[0]), el('b',{},q.zh), el('span',{class:'heart','aria-label':'好感度 '+(aff[p]||0)},heart(aff[p]||0))); })));
+  dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal();
+}
 /* ---------- 存檔代碼：壓縮存檔 → 代碼／QR Code，換裝置貼上或掃描就能接著玩 ---------- */
 const SAVE_PFX='TW1.';
 async function packSave(){
@@ -1349,9 +1551,9 @@ function openSettings(){
     (S.hero && (S.screen==='game'||S.screen==='end')) ? el('div',{style:'margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px'},
       el('button',{class:'btn',onclick:()=>{ save(); toast('已儲存：'+saveWhere(S)); }},'儲存進度'),
       el('button',{class:'btn ghost',onclick:()=>{ save(); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} location.reload(); }},'回到主畫面')) : null,
-    (S.hero && S.screen==='game') ? el('p',{class:'small',style:'margin:6px 0 0'},'遊戲會自動存檔。回到主畫面後按「繼續遊戲」，會從這個時段重新開始。') : null,
+    (S.hero && S.screen==='game') ? el('p',{class:'small',style:'margin:6px 0 0'},'遊戲會自動存檔。回到主畫面後按「繼續遊戲」，會從這一週重新開始。') : null,
     offlineBox(),
-    el('div',{style:'margin-top:12px;display:flex;flex-direction:column;gap:8px'}, el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openMap(); }},'三年旅程地圖'), el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openSaveCode(); }},'存檔代碼（換裝置接著玩）')),
+    el('div',{style:'margin-top:12px;display:flex;flex-direction:column;gap:8px'}, el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openMap(); }},'三年旅程地圖'), el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openAlbum(); }},'收集冊'), el('button',{class:'btn ghost',style:'width:100%',onclick:()=>{ dlg.close(); openSaveCode(); }},'存檔代碼（換裝置接著玩）')),
     el('div',{style:'display:flex;gap:8px;justify-content:space-between;margin-top:14px'}, rs, el('button',{class:'btn',onclick:()=>dlg.close()},'關閉'))].filter(Boolean));
   dlg.addEventListener('close',()=>dlg.remove());
   document.body.append(dlg); dlg.showModal();
