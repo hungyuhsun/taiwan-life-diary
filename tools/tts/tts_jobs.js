@@ -59,7 +59,11 @@ function walk(steps) {
 Object.values(EVENTS).forEach(walk);
 Object.values(N).forEach(t => t && t.zh && add('nar', t.zh));
 Object.values(P).forEach(t => t && t.zh && add('nar', t.zh));
-for (const s of ['你想從哪裡開始？', '晚上了，該睡覺了。', '今天上午要做什麼？', '今天下午要做什麼？', '今天晚上要做什麼？', '你好，歡迎來到台灣。']) add('nar', s);
+for (const s of ['你想從哪裡開始？', '這個星期要做什麼？', '你好，歡迎來到台灣。']) add('nar', s);
+// 小遊戲：固定句子和名稱（含 {n}、{order} 的句子每次不同，播放時退回手機語音）
+const MINI = fs.existsSync(path.join(SRC, 'story_mini.js')) ? require(path.join(SRC, 'story_mini.js')).MINI : { lines: {}, trash: [], food: [] };
+Object.values(MINI.lines).filter(t => !/\{(n|order)\}/.test(t)).forEach(t => add('nar', t));
+MINI.trash.forEach(t => add('nar', t[0])); MINI.food.forEach(f => add('nar', f[0]));
 // 收集卡名稱
 const tpl = fs.readFileSync(path.join(SRC, 'template.html'), 'utf8');
 const cards = eval('(' + tpl.match(/const CARDS = (\{[^;]*\});/)[1] + ')');

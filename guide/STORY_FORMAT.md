@@ -34,9 +34,12 @@ T('中文', '越南文', '印尼文', '英文', '泰文', '緬甸文')
 | `{ ifMoney: 5300, then, else }` | 存款夠不夠 |
 | `{ violation: 1 }` + `{ redo: 'R21' }` | 違規紀錄、之後再出現一次複習版 |
 | `{ link: { href, label, zh, tr } }` | 外部連結 |
+| `{ mini: 'trash' \| 'market' }` | 小遊戲：垃圾分類／夜市點餐（資料在 `src/story_mini.js`） |
 
 ## 每章日程
 
-`src/template.html` 的 `DAYS0`～`DAYS12`：每週一格，`main` 是主線事件、`mainAt` 是第幾個時段（0 上午、1 下午、2 晚上）、`onlyIf` 只在在校或實習時出現。`RND3`～`RND12` 是隨機事件池。
+`src/template.html` 的 `DAYS0`～`DAYS12`：每週一格，`main` 是主線事件、`onlyIf` 只在在校或實習時出現。`RND3`～`RND12` 是隨機事件池。
+
+每週的順序：主線事件 → 隨機事件（30%）→ 學生選一件事做（上課、打工、逛夜市、打掃…）→ 週末（整潔、發薪日）。`mainAt`／`mainSlots` 是舊的時段設定，現在只用來判斷：兩個都沒寫的週，主線是整天活動，那週就不再選行動。
 
 新增章節時，還要一起改：`days()`、`startChN()`、`renderEnd`（標題、完成語、下一章按鈕）、`EVNAME`、`EVDAY`、`JOURNEY`、`saveWhere`、`UI.chN／doneN／nextN`，以及 `src/build.js` 的 `require`。

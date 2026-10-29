@@ -4,7 +4,8 @@
 
 A Chinese-learning life-simulation game for overseas students in Taiwan's vocational cooperative (建教) programs. From applying at home and taking TOCFL A1, through three years of classes, rotating internships, part-time work, festivals, tax filing, university interviews and graduation — every day is a Chinese lesson.
 
-- 前傳＋第 1–12 章（一年級到三年級畢業），每章約 15–20 分鐘
+- 前傳＋第 1–12 章（一年級到三年級畢業），每章約 10–15 分鐘；老師可以選章，一堂課玩一章
+- 小遊戲：打掃房間玩垃圾分類、逛夜市玩聽力點餐和付錢；收集冊收藏卡片、稱號和好感度
 - 7 個國家、14 位主角；輔助翻譯：越南文、印尼文、泰文、緬甸文、高棉文、英文
 - 對話可以按喇叭聽，拼音和翻譯可以開關
 - 劇情依真實行事曆：輪調實習、勞健保、居留證、TOCFL A2／B1、3+4 升科大
