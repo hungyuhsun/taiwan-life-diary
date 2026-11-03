@@ -34,7 +34,8 @@ T('中文', '越南文', '印尼文', '英文', '泰文', '緬甸文')
 | `{ ifMoney: 5300, then, else }` | 存款夠不夠 |
 | `{ violation: 1 }` + `{ redo: 'R21' }` | 違規紀錄、之後再出現一次複習版 |
 | `{ link: { href, label, zh, tr } }` | 外部連結 |
-| `{ mini: 'trash' \| 'market' \| 'flip' \| 'shop' \| 'bus' }` | 小遊戲：垃圾分類／夜市點餐／詞語翻牌／便利商店結帳／搭公車（資料在 `src/story_mini.js`） |
+| `{ mini: 'trash' \| 'market' \| 'flip' \| 'shop' \| 'bus' \| 'shift' }` | 小遊戲：垃圾分類／夜市點餐／詞語翻牌／便利商店結帳／搭公車／打工排班（資料在 `src/story_mini.js`） |
+| `{ mini: 'order', set: 'bbq' }` | 照順序做：先聽「先……，再……，然後……，最後……。」再照順序按步驟。`set` 是 `src/story_mini.js` 裡 `orders` 的名稱（節日 bbq、newyear、zongzi、tangyuan；實習 work0–work4 依科別） |
 
 ## 每章日程
 

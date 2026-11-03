@@ -277,6 +277,7 @@ const EVENTS = {
       { zh: '冬天是什麼？' },
     ], wrong: [say('ayi', '說說看嘛！')], ok: [say('ayi', '每個地方都有自己的特色，真有意思。')] } },
     { card: 'tangyuan' },
+    { mini: 'order', set: 'tangyuan' }, // 節日小遊戲：照順序做
     { fx: { mood: 15, aff: { ayi: 2 } } },
   ],
 

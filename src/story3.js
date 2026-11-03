@@ -83,6 +83,7 @@ const EVENTS = {
     { scene: 'room' },
     say('me', '新年快樂！我很想你們。'),
     n('f01c'),
+    { mini: 'order', set: 'newyear' }, // 節日小遊戲：照順序做
     { fx: { mood: 25 } },
   ],
 
