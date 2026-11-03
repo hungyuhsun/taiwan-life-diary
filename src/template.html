@@ -220,6 +220,16 @@ dialog.chdlg,dialog.albumdlg{width:min(420px,calc(100vw - 16px));max-height:calc
 .mini-card .mini-e{font-size:1.8rem;line-height:1}
 .mini-card .tr{font-size:.62rem;margin:0;font-weight:400;text-align:center;line-height:1.2}
 .mini-2col{grid-template-columns:1fr 1fr}
+.mini-days{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mini-days .mini-bin{min-height:44px;padding:8px 2px}
+.mini-days .mini-bin b{font-size:.95rem}
+.slip-btn{width:100%;background:none;border:0;border-bottom:1px dashed var(--line);border-radius:0;text-align:left;font:inherit;color:inherit}
+.slip-btn span{display:flex;flex-direction:column;min-width:0}
+.slip-btn b{text-align:right}
+.slip-btn.ok{background:var(--ok-soft)}
+.slip-btn.no{background:var(--no-soft);opacity:.7}
+.mini-steps{margin:0;padding-left:1.6em;font-family:var(--f-display);font-size:1.05rem;min-height:1.4em}
+.mini-steps li{padding:2px 0}
 .mini-route{display:flex;padding:6px 0}
 .mini-route span{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative}
 .mini-route span::before{content:'';position:absolute;top:13px;left:0;right:0;height:4px;background:var(--line)}
@@ -474,7 +484,7 @@ const ACTIONS = [
   {k:'study',zh:'自己複習',tr:{vi:'Tự ôn bài',id:'Belajar sendiri',en:'Self-study',th:'ทบทวนเอง',my:'ကိုယ်တိုင်လေ့လာ'},fx:'中文↑ 翻牌或練習題'},
   {k:'clean',zh:'整理房間、倒垃圾',tr:{vi:'Dọn phòng, đổ rác',id:'Bersihkan kamar, buang sampah',en:'Tidy room & take out trash',th:'จัดห้อง ทิ้งขยะ',my:'အခန်းရှင်း၊ အမှိုက်ပစ်'},fx:'整潔+20 垃圾分類小遊戲'},
   {k:'market',zh:'逛夜市',tr:{vi:'Đi chợ đêm',id:'Ke pasar malam',en:'Night market',th:'เดินตลาดกลางคืน',my:'ညဈေးလျှောက်'},fx:'心情+15 點餐小遊戲'},
-  {k:'job',zh:'打工',tr:{vi:'Làm thêm',id:'Kerja paruh waktu',en:'Part-time job',th:'ทำงานพาร์ตไทม์',my:'အချိန်ပိုင်းအလုပ်'},fx:'體力−15 本週打工 20 小時'},
+  {k:'job',zh:'打工',tr:{vi:'Làm thêm',id:'Kerja paruh waktu',en:'Part-time job',th:'ทำงานพาร์ตไทม์',my:'အချိန်ပိုင်းအလုပ်'},fx:'體力−15 排班小遊戲'},
   {k:'post',zh:'去郵局寄包裹',tr:{vi:'Gửi bưu kiện',id:'Kirim paket',en:'Send a parcel home',th:'ส่งพัสดุกลับบ้าน',my:'ပါဆယ်ပို့'},fx:'存款−500 心情+10'},
   {k:'call',zh:'打電話回家',tr:{vi:'Gọi về nhà',id:'Telepon keluarga',en:'Call home',th:'โทรกลับบ้าน',my:'အိမ်ကိုဖုန်းဆက်'},fx:'心情+20'},
   {k:'rest',zh:'休息睡覺',tr:{vi:'Nghỉ ngơi',id:'Istirahat',en:'Rest',th:'พักผ่อน',my:'အနားယူ'},fx:'體力+40'}];
@@ -745,7 +755,7 @@ async function runSteps(steps, ctx){
     if(st.poster){ panel.innerHTML=''; panel.append(el('div',{class:'poster'}, el('h3',{},st.title||'徵　才'), el('button',{class:'speak big',style:'margin:0 auto 8px;display:block',onclick:()=>speak(st.poster.map(([a,b])=>(a?a+'，':'')+fill(b)).join('。'))},'🔊 唸給我聽'), el('dl',{}, st.poster.flatMap(([a,b])=>[el('dt',{},a),el('dd',{},fill(b))])))); continue; }
     if(st.q){ await runQ(st.q, ctx); continue; }
     if(st.fx){ applyFx(st.fx); continue; }
-    if(st.mini){ await ({trash:miniTrash, market:miniMarket, flip:miniFlip, shop:miniShop, bus:miniBus})[st.mini](); continue; }
+    if(st.mini){ if(st.mini==='order') await miniOrder(st.set); else await ({trash:miniTrash, market:miniMarket, flip:miniFlip, shop:miniShop, bus:miniBus, shift:miniShift})[st.mini](); continue; }
     if(st.card){ if(!S.cards.includes(st.card)) S.cards.push(st.card); save(); await showCard(st.card); continue; }
     if(st.title){ if(!S.titles.includes(st.title)) S.titles.push(st.title); toast('獲得稱號：'+TITLES[st.title]); continue; }
     if(st.ifHomeZh){ await runSteps(st.ifHomeZh.includes(hero().home.zh)?st.then:st.else, ctx); continue; }
@@ -898,6 +908,9 @@ async function payDay(){
   dueW.forEach(m=>delete o.work[m]); dueP.forEach(m=>delete o.part[m]); S.owed = o;
   if(!S.seen.D17 && gW>0) await runEvent('D17'); // 第一次領實習薪水
   applyFx({money:net});
+  // 第一次以後，一半的薪水單變成找錯小遊戲
+  S.slipN=(S.slipN||0)+1;
+  if(S.slipN>1 && Math.random()<.5){ await miniSlip({gW,gP,lab,hea,net}); return; }
   const T2 = UI.slip[S.lang]||UI.slip.en;
   setScene('room',null); panel.innerHTML='';
   panel.append(zhLine('薪水單'), el('p',{class:'tr'},T2.title), el('div',{class:'slip'},
@@ -927,7 +940,7 @@ async function doAction(k){
     applyFx({hp:-10,mood:-5,zh:2}); }
   else if(k==='pro'){ await runEvent('L_PRO'+(S.dept||0)); applyFx({hp:-10,skill:3}); }
   else if(k==='study'){ if(Math.random()<.5) await miniFlip(); else { await bankQuestion(D.study,null); applyFx({hp:-5,mood:-5,zh:2}); } } // 一半玩詞語翻牌，一半做題庫
-  else if(k==='work'){ if(!S.seen.D06) await runEvent('D06'); else { setScene('work','zhang'); await say1(D.work); } applyFx({hp:-20,mood:-5,skill:5,aff:{zhang:1}}); accrue('work',600); }
+  else if(k==='work'){ if(!S.seen.D06) await runEvent('D06'); else if(Math.random()<.5) await miniOrder('work'+(S.dept||0)); else { setScene('work','zhang'); await say1(D.work); } applyFx({hp:-20,mood:-5,skill:5,aff:{zhang:1}}); accrue('work',600); }
   else if(k==='shop'){
     if(!S.seen.D01) await runEvent('D01');
     else if(ch2 && S.day>=4 && !S.seen.D14) await runEvent('D14');
@@ -937,7 +950,7 @@ async function doAction(k){
   }
   else if(k==='out'){ if(S.day>=3 && !S.seen.D03) await runEvent('D03'); else { await miniBus(); setScene('street','amei'); await say1(D.out); } applyFx({hp:-10,mood:20,money:-200,pop:3,aff:{amei:1}}); }
   else if(k==='market'){ if(!S.seen.D11){ await runEvent('D11'); applyFx({hp:-10,mood:15,money:-150,pop:2,aff:{huang:1}}); } else await miniMarket(); }
-  else if(k==='job'){ if(!S.seen.D12) await runEvent('D12'); else { setScene('store','xiaoyang'); await say1(D.job); } applyFx({hp:-15,aff:{xiaoyang:1}}); accrue('part',205*20); S.jobHrs=S.jobHrs||{}; S.jobHrs[wk()]=(S.jobHrs[wk()]||0)+20; }
+  else if(k==='job'){ if(!S.seen.D12){ await runEvent('D12'); applyFx({hp:-15,aff:{xiaoyang:1}}); accrue('part',205*20); S.jobHrs=S.jobHrs||{}; S.jobHrs[wk()]=(S.jobHrs[wk()]||0)+20; } else await miniShift(); } // 之後打工都先排班
   else if(k==='post'){ await runEvent('D15'); }
   else if(k==='clean'){ if(S.seen.D07) await miniTrash(); else { setScene('room',null); await say1(D.clean); S.trash=0; applyFx({tidy:20,hp:-5}); } }
   else if(k==='call'){ setScene('room',null); await say1(D.call); applyFx({mood:20}); }
@@ -1205,6 +1218,131 @@ async function miniBus(){
   panel.append(zhLine(ok?ML.busOk:got<goal?ML.busEarly:ML.busLate, null, stopV(got<goal ? route[got] : target)));
   applyFx(ok ? {mood:5,hp:-5} : {mood:-3,hp:-10}); save();
   await waitTap();
+}
+// 按到對的為止；挑戰模式只能按一次，按錯就公布答案。回傳是不是一次就對
+async function miniPick(btns){
+  let first = true;
+  for(;;){
+    const b = await tapOnce(btns.filter(x=>!x.disabled));
+    if(b.dataset.mini==='ok'){ b.classList.add('ok'); break; }
+    b.classList.add('no'); b.disabled=true; first=false;
+    if(S.hard){ btns.find(x=>x.dataset.mini==='ok').classList.add('ok'); break; }
+  }
+  btns.forEach(x=>x.disabled=true);
+  await new Promise(r=>setTimeout(r,700));
+  return first;
+}
+const hiddenLine = (say, vv) => el('div',{class:'line'}, el('p',{class:'hidden-text'},'？？？'), el('button',{class:'speak','aria-label':'播放',onclick:()=>speak(say,vv)},'🔊'));
+const trSmall = (t) => (S.trMode||'show')==='show' ? el('span',{class:'tr',style:'margin:0;font-size:.75rem'},L(t)) : null;
+
+// 打工排班：聽小陽說三個班（星期幾、幾點到幾點），再決定能不能多加一個班（上課期間每週最多 20 小時）
+async function miniShift(){
+  setScene('store','xiaoyang');
+  const vv = voiceOf('xiaoyang'), WD = MINI.weekdays, SH = MINI.shifts;
+  const ds = pickN([0,1,2,3,4,5,6],4), extraDay = ds[3];
+  const plan = ds.slice(0,3).sort((a,b)=>a-b).map(d=>[d, SH[Math.floor(Math.random()*SH.length)]]);
+  const dv = (d,t) => ({day:[WD[d], DATA.py['#'+WD[d]]||''], time:[t[0], DATA.py['#'+t[0]]||'']});
+  const table = rows => el('div',{class:'slip'}, rows.map(([d,t])=>el('div',{class:'slip-row'}, el('span',{},WD[d]), el('b',{}, t[1]+'　'+t[2]+' 小時'))));
+  let first = true;
+  const done = [];
+  for(const [d,t] of plan){
+    const said = ML.shiftSay.replace('{day}',WD[d]).replace('{time}',t[0]);
+    const head = () => { miniHead(ML.shiftHead,'shift'); panel.append(S.hard ? hiddenLine(said,vv) : zhLine(ML.shiftSay,'zh',dv(d,t))); };
+    // 1. 星期幾
+    head(); if(S.auto) speak(said,vv);
+    const dBtns = WD.map((w,i)=>el('button',{class:'mini-bin','data-mini':i===d?'ok':'no'}, el('b',{},w)));
+    panel.append(el('p',{class:'small',style:'margin:0'},ML.shiftDay), el('div',{class:'mini-days'}, dBtns));
+    first = await miniPick(dBtns) && first;
+    // 2. 幾點到幾點（會放一個上午、下午聽錯的選項）
+    head();
+    const wrong = pickN(SH.filter(x=>x!==t).map(x=>x[1]), 3);
+    const opts = pickN([t[1], ...(t[3]?[t[3]]:[]), ...wrong].slice(0,4), 4);
+    const tBtns = opts.map(c=>el('button',{class:'opt','data-mini':c===t[1]?'ok':'no'}, el('span',{class:'o'}, el('b',{},c))));
+    panel.append(el('p',{class:'small',style:'margin:0'},WD[d]+'：'+ML.shiftTime), el('div',{class:'opts mini-2col'}, tBtns));
+    first = await miniPick(tBtns) && first;
+    done.push([d,t]);
+  }
+  // 3. 再加一個班可以嗎？
+  const h = plan.reduce((a,[,t])=>a+t[2],0), xt = SH[Math.floor(Math.random()*SH.length)], fits = h+xt[2] <= 20;
+  const ask = fill(ML.shiftAsk).replace(/^.*「|」$/g,'').replace('{day}',WD[extraDay]).replace('{time}',xt[0]);
+  miniHead(ML.shiftAsk,'extra',dv(extraDay,xt)); panel.append(table(done));
+  speak(ask,vv);
+  const yes = el('button',{class:'opt','data-mini':fits?'ok':'no'}, el('span',{class:'o'}, el('b',{},ML.shiftYes), S.pinyin&&pyOf(ML.shiftYes)?el('i',{},pyOf(ML.shiftYes)):null));
+  const no = el('button',{class:'opt','data-mini':fits?'no':'ok'}, el('span',{class:'o'}, el('b',{},ML.shiftNo), S.pinyin&&pyOf(ML.shiftNo)?el('i',{},pyOf(ML.shiftNo)):null));
+  panel.append(el('div',{class:'opts'}, yes, no));
+  const b = await tapOnce([yes, no]); const okX = b.dataset.mini==='ok'; b.classList.add(okX?'ok':'no'); yes.disabled=no.disabled=true;
+  speak(b===yes?ML.shiftYes:ML.shiftNo, S.hero&&hero().girl?'me_f':'me_m');
+  await new Promise(r=>setTimeout(r,900));
+  const hours = h + (fits && b===yes ? xt[2] : 0);
+  if(fits && b===yes) done.push([extraDay, xt]);
+  done.sort((a,b)=>a[0]-b[0]);
+  const perfect = first && okX, rec = miniRec('shift'); rec.plays++; if(perfect){ rec.best=1; rec.perfect++; }
+  panel.innerHTML='';
+  if(b===yes && !fits) panel.append(zhLine(ML.shiftOver));
+  if(b===no && fits) panel.append(zhLine(ML.shiftMiss));
+  panel.append(zhLine(ML.shiftOk, null, {n:String(hours)}), table(done));
+  accrue('part',205*hours); S.jobHrs=S.jobHrs||{}; S.jobHrs[wk()]=(S.jobHrs[wk()]||0)+hours;
+  applyFx({hp:-15, mood:perfect?3:0, aff:{xiaoyang:1}}); save();
+  await waitTap();
+}
+
+// 薪水單找錯：有時候薪水單上有一行算錯（加總、扣款合計、實領、時數×時薪），找出來。也可能都對。
+async function miniSlip(p){
+  setScene('room',null);
+  const R = MINI.slipRows, money = v => (v<0?'−':'')+Math.abs(v).toLocaleString()+' 元';
+  const rows = [];
+  if(p.gW) rows.push({k:'intern', v:p.gW});
+  if(p.gP) rows.push({k:'part', v:p.gP, pre:Math.round(p.gP/205)+' 小時 × 205 元 = '});
+  rows.push({k:'gross', v:p.gW+p.gP}, {k:'labor', v:-p.lab}, {k:'health', v:-p.hea}, {k:'ded', v:-(p.lab+p.hea)}, {k:'net', v:p.net, big:1});
+  const cand = rows.filter(r=>['part','gross','ded','net'].includes(r.k));
+  const bad = Math.random()<.7 ? cand[Math.floor(Math.random()*cand.length)] : null;
+  if(bad){ const d = pickN([100,1000,10,-100,-1000],1)[0]; bad.show = Math.abs(bad.v)+d > 0 ? (bad.v<0 ? bad.v-d : bad.v+d) : bad.v+1000; }
+  miniHead(ML.slipHead,'slip');
+  const btns = rows.map(r=>el('button',{class:'slip-row slip-btn'+(r.big?' big':''),'data-mini':r===bad?'ok':'no'},
+    el('span',{}, R[r.k][0], trSmall(R[r.k][1])), el('b',{}, (r.pre||'')+money(r.show??r.v))));
+  const fine = el('button',{class:'btn ghost','data-mini':bad?'no':'ok',style:'width:100%'}, ML.slipAllOk);
+  panel.append(el('div',{class:'slip'}, btns), fine);
+  const all = [...btns, fine];
+  let first = true, msg;
+  for(let tries=0;;tries++){
+    const b = await tapOnce(all.filter(x=>!x.disabled));
+    if(b.dataset.mini==='ok'){ b.classList.add('ok'); msg = bad ? ML.slipFound : ML.slipFine; break; }
+    b.classList.add('no'); b.disabled=true; first=false;
+    if(S.hard || tries>=1){ const r = all.find(x=>x.dataset.mini==='ok'); r.classList.add('ok'); msg = bad ? ML.slipMissed : ML.slipFine; break; }
+    if(b!==fine) toast(ML.slipWrongTap.replace(/^.*「|」$/g,''));
+  }
+  all.forEach(x=>x.disabled=true);
+  const rec = miniRec('slip'); rec.plays++; if(first){ rec.best=1; rec.perfect++; }
+  panel.append(zhLine(msg));
+  if(first) applyFx({mood:3, zh:1});
+  save(); await waitTap();
+}
+
+// 照順序做：聽「先……，再……，然後……，最後……。」再照順序按步驟（節日、實習）
+async function miniOrder(key){
+  const o = MINI.orders[key]; if(!o) return;
+  const work = key.startsWith('work'), vv = voiceOf(o.who);
+  setScene(o.scene, o.who);
+  miniHead(ML.orderHead,'order',{title:[o.title, DATA.py['#'+o.title]||'']});
+  panel.append(el('span',{class:'who'},PEOPLE[role(o.who)].zh), S.hard ? hiddenLine(o.say,vv) : zhLine(o.say,'zh'));
+  if(S.auto) speak(o.say,vv);
+  let order = pickN(o.steps.map((s,i)=>[s,i]), 4); if(order.every(([,i],k)=>i===k)) order = [order[1],order[0],order[3],order[2]];
+  const list = el('ol',{class:'mini-steps'});
+  const btns = order.map(([s,i])=>el('button',{class:'opt','data-mini':'s'+i}, el('span',{class:'o'}, el('b',{},s[0]), S.pinyin&&pyOf(s[0])?el('i',{},pyOf(s[0])):null, trSmall(s[1]))));
+  panel.append(list, el('div',{class:'opts'}, btns));
+  let next = 0, miss = 0;
+  const place = (b) => { b.classList.add('ok'); b.disabled=true; list.append(el('li',{}, o.steps[next][0])); next++; };
+  while(next < o.steps.length){
+    const b = await tapOnce(btns.filter(x=>!x.disabled));
+    if(+b.dataset.mini.slice(1)===next){ place(b); continue; }
+    miss++; b.classList.add('no'); setTimeout(()=>b.classList.remove('no'),450);
+    if(S.hard) place(btns.find(x=>x.dataset.mini==='s'+next));
+  }
+  await new Promise(r=>setTimeout(r,600));
+  const rec = miniRec(work?'intern':'fest'); rec.plays++; if(!miss){ rec.best=1; rec.perfect++; }
+  panel.innerHTML=''; panel.append(zhLine(miss?ML.orderSome:ML.orderDone, null, {n:String(miss)}), list);
+  if(!miss) applyFx(work ? {skill:2} : {mood:3});
+  save(); await waitTap();
 }
 /* ---------- 前傳：第 0 章「出發前」與開場動畫 ---------- */
 const PRE_EV = ['O01','O02','O03','O04','O05','O06','O07'];
@@ -1584,7 +1722,7 @@ function openAlbum(src){
   const ppl = ['amei','chen','zhang','ajiao','xiaoyang','rina','alian','lin','huang','li','guo','ayi'].filter(p=>PEOPLE[p]);
   const heart = n => '♥'.repeat(Math.min(5,n)) + '♡'.repeat(Math.max(0,5-Math.min(5,n)));
   const who = p => { const q = d.hero ? PEOPLE[(p==='amei' && !(HEROES.find(h=>h.id===d.hero)||{}).girl) ? 'ajie' : p] : PEOPLE[p]; return q; };
-  const tr = mini.trash||{}, mk = mini.market||{}, fl = mini.flip||{}, sh = mini.shop||{}, bs = mini.bus||{};
+  const tr = mini.trash||{}, mk = mini.market||{}, fl = mini.flip||{}, sh = mini.shop||{}, bs = mini.bus||{}, sf = mini.shift||{}, sl = mini.slip||{}, fe = mini.fest||{}, it = mini.intern||{};
   dlg.append(el('div',{style:'display:flex;justify-content:space-between;align-items:center;gap:8px'}, el('h2',{style:'margin:0'},'收集冊'), el('button',{class:'btn ghost',style:'min-height:44px;padding:0 14px',onclick:()=>dlg.close()},'關閉')),
     el('h3',{},`收集卡 ${allC.filter(k=>cards.includes(k)).length} / ${allC.length}`),
     el('div',{class:'album'}, [...allC.filter(k=>cards.includes(k)), ...allC.filter(k=>!cards.includes(k))].map(k=> cards.includes(k)
@@ -1598,7 +1736,11 @@ function openAlbum(src){
       el('div',{class:'stat'}, el('b',{},mk.plays?mk.perfect+' / '+mk.plays:'—'), el('span',{},'夜市點餐一次就對'+(mk.plays?'':'：逛夜市時玩'))),
       el('div',{class:'stat'}, el('b',{},fl.plays?fl.best+' 次':'—'), el('span',{},'詞語翻牌最少翻牌'+(fl.plays?`（玩了 ${fl.plays} 次）`:'：自己複習時玩'))),
       el('div',{class:'stat'}, el('b',{},sh.plays?sh.perfect+' / '+sh.plays:'—'), el('span',{},'便利商店結帳全對'+(sh.plays?'':'：去便利商店時玩'))),
-      el('div',{class:'stat'}, el('b',{},bs.plays?bs.perfect+' / '+bs.plays:'—'), el('span',{},'搭公車準時下車'+(bs.plays?'':'：出去玩或路上遇到')))),
+      el('div',{class:'stat'}, el('b',{},bs.plays?bs.perfect+' / '+bs.plays:'—'), el('span',{},'搭公車準時下車'+(bs.plays?'':'：出去玩或路上遇到'))),
+      el('div',{class:'stat'}, el('b',{},sf.plays?sf.perfect+' / '+sf.plays:'—'), el('span',{},'打工排班全對'+(sf.plays?'':'：打工時玩'))),
+      el('div',{class:'stat'}, el('b',{},sl.plays?sl.perfect+' / '+sl.plays:'—'), el('span',{},'薪水單一次就看對'+(sl.plays?'':'：發薪日有時候會玩'))),
+      el('div',{class:'stat'}, el('b',{},fe.plays?fe.perfect+' / '+fe.plays:'—'), el('span',{},'節日照順序做'+(fe.plays?'':'：中秋、過年、端午、冬至'))),
+      el('div',{class:'stat'}, el('b',{},it.plays?it.perfect+' / '+it.plays:'—'), el('span',{},'實習照順序做'+(it.plays?'':'：去實習時玩')))),
     el('h3',{},'好感度'),
     el('div',{class:'al-aff'}, ppl.map(p=>{ const q=who(p); return el('div',{}, q.img?el('img',{src:IMG[q.img],alt:''}):el('span',{class:'al-q'},q.ch||q.zh[0]), el('b',{},q.zh), el('span',{class:'heart','aria-label':'好感度 '+(aff[p]||0)},heart(aff[p]||0))); })));
   dlg.addEventListener('close',()=>dlg.remove()); document.body.append(dlg); dlg.showModal();

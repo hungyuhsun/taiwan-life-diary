@@ -94,6 +94,7 @@ const EVENTS = {
     { q: { p: P.fill, src: '題庫 9-34', stem: '祝你中秋節＿＿！', opts: [
       { zh: '快樂', ok: 1 }, { zh: '好吃', r: [say('ajiao', '中秋節好吃？對啦，月餅很好吃！')] }, { zh: '一起' }, { zh: '放假' },
     ], wrong: [say('ajiao', '嗯？再說一次。')], ok: [say('ajiao', '很好。'), { fx: { aff: { ajiao: 1 } } }] } },
+    { mini: 'order', set: 'bbq' }, // 節日小遊戲：照順序做
     { fx: { mood: 15, pop: 3, aff: { amei: 1 } } },
   ],
 

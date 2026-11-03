@@ -150,6 +150,7 @@ const EVENTS = {
     { q: { p: T('戴香包是什麼意思？', 'Đeo túi thơm có ý nghĩa gì?', 'Apa arti memakai kantong wangi?', 'What does wearing a scented sachet mean?', 'การห้อยถุงหอมมีความหมายว่าอะไร', 'အမွှေးအိတ် ဆွဲထားတာ ဘာကို ဆိုလိုလဲ။'), src: LIFE, opts: [
       { zh: '保平安', ok: 1 }, { zh: '變漂亮' }, { zh: '考試考好' }, { zh: '賺大錢' },
     ], wrong: [say('amei', '老師剛剛說過喔。')] } },
+    { mini: 'order', set: 'zongzi' }, // 節日小遊戲：照順序做
     { fx: { mood: 15, aff: { amei: 1, chen: 1 } } },
   ],
 

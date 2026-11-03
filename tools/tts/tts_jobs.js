@@ -62,11 +62,19 @@ Object.values(P).forEach(t => t && t.zh && add('nar', t.zh));
 for (const s of ['你想從哪裡開始？', '這個星期要做什麼？', '你好，歡迎來到台灣。']) add('nar', s);
 // 小遊戲：固定句子和名稱（含 {n}、{order} 的句子每次不同，播放時退回手機語音）
 const MINI = fs.existsSync(path.join(SRC, 'story_mini.js')) ? require(path.join(SRC, 'story_mini.js')).MINI : { lines: {}, trash: [], food: [] };
-Object.values(MINI.lines).filter(t => !/\{(n|order)\}/.test(t)).forEach(t => add('nar', t));
+Object.values(MINI.lines).filter(t => !/\{\w+\}/.test(t)).forEach(t => add('nar', t));
 MINI.trash.forEach(t => add('nar', t[0])); MINI.food.forEach(f => add('nar', f[0]));
 (MINI.vocab || []).forEach(v => add('nar', v[0])); (MINI.goods || []).forEach(g => add('nar', g[0]));
 (MINI.clerkQ || []).forEach(([q, , ok]) => { add(VOICE_OF.clerk, q); add('me_f', ok); add('me_m', ok); });
 (MINI.stops || []).forEach(st => add('nar', MINI.lines.busNext.replace('{stop}', st)));
+// 打工排班：小陽說的班（星期 × 時段）、再加一班的問句、主角的回答
+(MINI.weekdays || []).forEach(d => (MINI.shifts || []).forEach(([t]) => {
+  add(VOICE_OF.xiaoyang || 'nar', MINI.lines.shiftSay.replace('{day}', d).replace('{time}', t));
+  add(VOICE_OF.xiaoyang || 'nar', MINI.lines.shiftAsk.replace(/^.*「|」$/g, '').replace('{day}', d).replace('{time}', t));
+}));
+if (MINI.lines.shiftYes) for (const s of [MINI.lines.shiftYes, MINI.lines.shiftNo]) { add('me_f', s); add('me_m', s); }
+// 照順序做：說明的句子（依說話的人）和每個步驟
+Object.values(MINI.orders || {}).forEach(o => { add(VOICE_OF[o.who] || 'nar', o.say); o.steps.forEach(st => add('nar', st[0])); });
 // 收集卡名稱
 const tpl = fs.readFileSync(path.join(SRC, 'template.html'), 'utf8');
 const cards = eval('(' + tpl.match(/const CARDS = (\{[^;]*\});/)[1] + ')');
