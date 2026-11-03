@@ -903,7 +903,7 @@
   "no": "5-13",
   "q": "請問，火車站＿＿走？",
   "full": "請問，火車站怎麼走？",
-  "py": "qǐng wèn, huǒ jū zhàn zěn me zǒu?",
+  "py": "qǐng wèn, huǒ chē zhàn zěn me zǒu?",
   "opts": [
    "怎麼",
    "什麼",
@@ -1028,7 +1028,7 @@
   "no": "5-18",
   "q": "到了！我們要＿＿車了。",
   "full": "到了！我們要下車了。",
-  "py": "dào le! wǒ men yào xià jū le.",
+  "py": "dào le! wǒ men yào xià chē le.",
   "opts": [
    "下",
    "上",
@@ -1078,7 +1078,7 @@
   "no": "5-20",
   "q": "坐公車要用＿＿。",
   "full": "坐公車要用悠遊卡。",
-  "py": "zuò gōng jū yào yòng yōu yóu kǎ.",
+  "py": "zuò gōng chē yào yòng yōu yóu kǎ.",
   "opts": [
    "悠遊卡",
    "課本",
@@ -1103,7 +1103,7 @@
   "no": "5-34",
   "q": "我＿＿公車去夜市。",
   "full": "我坐公車去夜市。",
-  "py": "wǒ zuò gōng jū qù yè shì.",
+  "py": "wǒ zuò gōng chē qù yè shì.",
   "opts": [
    "坐",
    "走",

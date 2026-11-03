@@ -247,6 +247,7 @@ const EVENTS = {
     { q: { p: P.fill, src: '題庫 4-14', stem: '黃老闆：「你要內用還是＿＿？」', opts: [
       { zh: '外帶', ok: 1 }, { zh: '好吃' }, { zh: '夜市' }, { zh: '餐廳' },
     ], wrong: [say('huang', '哈哈，再想一下！')], ok: [say('huang', '小朋友，中文不錯喔！多給你一點！'), { fx: { aff: { huang: 1 } } }] } },
+    { mini: 'market' }, // 夜市點餐小遊戲：之後每次逛夜市都會玩
   ],
   D12: [
     { scene: 'store', npc: 'xiaoyang' },
