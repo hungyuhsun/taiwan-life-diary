@@ -64,6 +64,9 @@ for (const s of ['你想從哪裡開始？', '這個星期要做什麼？', '你
 const MINI = fs.existsSync(path.join(SRC, 'story_mini.js')) ? require(path.join(SRC, 'story_mini.js')).MINI : { lines: {}, trash: [], food: [] };
 Object.values(MINI.lines).filter(t => !/\{(n|order)\}/.test(t)).forEach(t => add('nar', t));
 MINI.trash.forEach(t => add('nar', t[0])); MINI.food.forEach(f => add('nar', f[0]));
+(MINI.vocab || []).forEach(v => add('nar', v[0])); (MINI.goods || []).forEach(g => add('nar', g[0]));
+(MINI.clerkQ || []).forEach(([q, , ok]) => { add(VOICE_OF.clerk, q); add('me_f', ok); add('me_m', ok); });
+(MINI.stops || []).forEach(st => add('nar', MINI.lines.busNext.replace('{stop}', st)));
 // 收集卡名稱
 const tpl = fs.readFileSync(path.join(SRC, 'template.html'), 'utf8');
 const cards = eval('(' + tpl.match(/const CARDS = (\{[^;]*\});/)[1] + ')');

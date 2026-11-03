@@ -18,10 +18,10 @@ const SP = require('./story_pre.js');
 const S10 = require('./story10.js');
 const S11 = require('./story11.js');
 const S12 = require('./story12.js');
-const { MINI } = require('./story_mini.js');
-const N = { ...N1, ...S2.N, ...S3.N, ...S4.N, ...S5.N, ...S6.N, ...S7.N, ...S8.N, ...SL.N, ...S9.N, ...SQ.N, ...SP.N, ...S10.N, ...S11.N, ...S12.N }, EVENTS = { ...E1, ...S2.EVENTS, ...S3.EVENTS, ...S4.EVENTS, ...S5.EVENTS, ...S6.EVENTS, ...S7.EVENTS, ...S8.EVENTS, ...SL.EVENTS, ...S9.EVENTS, ...SQ.EVENTS, ...SP.EVENTS, ...S10.EVENTS, ...S11.EVENTS, ...S12.EVENTS };
+const { MINI, EVENTS: EM } = require('./story_mini.js');
+const N = { ...N1, ...S2.N, ...S3.N, ...S4.N, ...S5.N, ...S6.N, ...S7.N, ...S8.N, ...SL.N, ...S9.N, ...SQ.N, ...SP.N, ...S10.N, ...S11.N, ...S12.N }, EVENTS = { ...E1, ...S2.EVENTS, ...S3.EVENTS, ...S4.EVENTS, ...S5.EVENTS, ...S6.EVENTS, ...S7.EVENTS, ...S8.EVENTS, ...SL.EVENTS, ...S9.EVENTS, ...SQ.EVENTS, ...SP.EVENTS, ...S10.EVENTS, ...S11.EVENTS, ...S12.EVENTS, ...EM };
 
-const OV = { '嗎': 'ma', '呢': 'ne', '吧': 'ba', '個': 'ge', '們': 'men', '麼': 'me', '還': 'hái', '喔': 'o', '啦': 'la', '垃': 'lè', '圾': 'sè' };
+const OV = { '車': 'chē', '嗎': 'ma', '呢': 'ne', '吧': 'ba', '個': 'ge', '們': 'men', '麼': 'me', '還': 'hái', '喔': 'o', '啦': 'la', '垃': 'lè', '圾': 'sè' };
 const PUN = { '，': ',', '。': '.', '？': '?', '！': '!', '：': ':', '、': ',', '；': ';', '（': '(', '）': ')', '「': '"', '」': '"', '／': '/', '—': '-', '～': '~', '……': '…' };
 const isZh = c => /[㐀-鿿]/.test(c);
 function py1(t) {
@@ -57,6 +57,8 @@ for (const s of ['你想從哪裡開始？','這個星期要做什麼？']) add(
 // 小遊戲：句子、垃圾和食物名稱、點餐詞組（詞組用 # 開頭，遊戲中再接起來）
 Object.values(MINI.lines).forEach(add); MINI.trash.forEach(t => add(t[0])); MINI.food.forEach(f => add(f[0]));
 for (const w of MINI.phrases) py['#' + w] = py1(w);
+MINI.vocab.forEach(v => add(v[0])); MINI.goods.forEach(g => add(g[0])); MINI.clerkQ.forEach(([q, , ok, no]) => [q, ok, ...no].forEach(add));
+for (const w of MINI.stops) { add(w); py['#' + w] = py1(w); }
 for (const w of ['越南', '印尼', '泰國', '緬甸', '菲律賓', '馬來西亞', '柬埔寨', '資訊科', '烘焙食品科', '餐飲管理科', '汽車科', '商用資訊科', '工作證', '口罩', '安全帽', '電腦公司', '麵包工廠', '餐廳廚房', '修車廠', '貿易公司'])
   py['#' + w] = py1(w);
 

@@ -34,7 +34,7 @@ T('中文', '越南文', '印尼文', '英文', '泰文', '緬甸文')
 | `{ ifMoney: 5300, then, else }` | 存款夠不夠 |
 | `{ violation: 1 }` + `{ redo: 'R21' }` | 違規紀錄、之後再出現一次複習版 |
 | `{ link: { href, label, zh, tr } }` | 外部連結 |
-| `{ mini: 'trash' \| 'market' }` | 小遊戲：垃圾分類／夜市點餐（資料在 `src/story_mini.js`） |
+| `{ mini: 'trash' \| 'market' \| 'flip' \| 'shop' \| 'bus' }` | 小遊戲：垃圾分類／夜市點餐／詞語翻牌／便利商店結帳／搭公車（資料在 `src/story_mini.js`） |
 
 ## 每章日程
 
