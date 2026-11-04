@@ -2893,7 +2893,69 @@ const normTts=(t)=>t.replace(/[（(].*?[)）]/g,'').replace(/[〔〕]/g,'').repl
 function ttsHash(s){ let h1=0x811c9dc5,h2=0x01000193; for(let i=0;i<s.length;i++){ const c=s.charCodeAt(i); h1=Math.imul(h1^c,16777619); h2=Math.imul(h2^c,2246822519)^(h2>>>13); }
   return (h1>>>0).toString(16).padStart(8,'0')+(h2>>>0).toString(16).padStart(8,'0'); }
 function speakTts(text){ try{ if(!voice) pickVoice(); speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang=voice?voice.lang:'zh-TW'; if(voice) u.voice=voice; u.rate=(S&&S.rate)||.9; speechSynthesis.speak(u);}catch(e){} }
-function speak(text, v){ const n=normTts(text||''); if(!n) return;
+/* ---------- 音效與過場配樂：用 Web Audio 即時合成，不需要音檔（離線也能用）。⚙︎ 可以分開關掉 ---------- */
+let AC = null, SG = null, MG = null, curTune = null;
+function ac(){
+  if(AC===null){ try{ AC = new (window.AudioContext||window.webkitAudioContext)();
+    SG = AC.createGain(); SG.gain.value = .22; SG.connect(AC.destination);
+    MG = AC.createGain(); MG.gain.value = .16; MG.connect(AC.destination); }catch(e){ AC = false; } }
+  if(AC && AC.state==='suspended') AC.resume().catch(()=>{});
+  return AC;
+}
+function tone(dest, f, t, d, type, v){
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type = type||'triangle'; o.frequency.value = f;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v??1, t+.012); g.gain.exponentialRampToValueAtTime(.001, t+d);
+  o.connect(g); g.connect(dest); o.start(t); o.stop(t+d+.05);
+}
+// [頻率, 開始(秒), 長度(秒), 波形, 音量]
+const SFX = {
+  ok:   [[784,0,.14],[1047,.09,.3]],
+  no:   [[247,0,.16,'square',.35],[196,.11,.28,'square',.35]],
+  coin: [[1319,0,.07,'square',.3],[1976,.05,.28,'square',.3]],
+  bell: [[880,0,.6,'sine'],[698,.32,.8,'sine']],
+  flip: [[520,0,.06,'sine',.7],[780,.03,.06,'sine',.5]],
+  card: [[523,0,.18],[659,.08,.18],[784,.16,.18],[1047,.24,.5]],
+};
+function sfx(k){ if(!S || S.sfx===false || !ac()) return; const t = AC.currentTime+.01; for(const [f,dt,d,ty,v] of SFX[k]||[]) tone(SG, f, t+dt, d, ty, v); }
+// 過場旋律：「音名:拍數」，. 是休止。melody 用三角波，bass 用正弦波
+const NOTE = n => { const m = /^([A-G])(#?)(\d)$/.exec(n); const i = {C:0,D:2,E:4,F:5,G:7,A:9,B:11}[m[1]] + (m[2]?1:0) + 12*(+m[3]+1); return 440*Math.pow(2,(i-69)/12); };
+const TUNES = {
+  // 章節開頭：輕快、往上走
+  start: {bpm:132, mel:'C5:1 E5:1 G5:1 A5:1 G5:2 E5:1 D5:1 C5:1 D5:1 E5:1 G5:1 C6:4',
+          bass:'C3:4 F3:4 G3:4 C3:4'},
+  // 章末：短號角
+  end:   {bpm:140, mel:'G4:.5 C5:.5 E5:.5 G5:1.5 E5:.5 G5:.5 C6:4',
+          bass:'C3:2 G2:2 C3:4'},
+  // 結局：慢一點、溫暖
+  ending:{bpm:96,  mel:'E5:1 G5:1 C6:2 B5:1 A5:1 G5:2 F5:1 E5:1 D5:1 E5:1 C5:4',
+          bass:'C3:4 A2:4 F2:2 G2:2 C3:4'},
+};
+function music(k){
+  if(!S || S.bgm===false || !ac()) return;
+  const tn = TUNES[k]; if(!tn) return;
+  if(curTune){ try{ curTune.gain.setTargetAtTime(0, AC.currentTime, .1); }catch(e){} }
+  const g = AC.createGain(); g.connect(MG); curTune = g;
+  const beat = 60/tn.bpm, t0 = AC.currentTime+.05;
+  const play = (seq, type, v, oct) => { let t = t0; for(const tok of seq.split(' ')){ const [n,b] = tok.split(':'); const d = (+b||1)*beat;
+    if(n!=='.') tone(g, NOTE(n)*(oct||1), t, Math.max(.15, d*.95), type, v); t += d; } };
+  play(tn.mel, 'triangle', .9); play(tn.bass, 'sine', .7);
+}
+// 有語音的時候，配樂先變小聲
+function duck(){ if(!AC || !MG) return; const t = AC.currentTime; MG.gain.cancelScheduledValues(t); MG.gain.setTargetAtTime(.04, t, .05); MG.gain.setTargetAtTime(.16, t+2.5, .5); }
+// 按鈕變成 ok／no、翻牌、投幣、下車鈴：統一在這裡放音效，不用每個小遊戲各自處理
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('button'); if(!b) return;
+  const before = b.className;
+  setTimeout(() => {
+    const now = b.className, add = c => now.split(' ').includes(c) && !before.split(' ').includes(c);
+    if(add('ok')) sfx('ok'); else if(add('no')) sfx('no');
+    else if(b.classList.contains('mini-coin')) sfx('coin');
+    else if(b.dataset.mini==='bell') sfx('bell');
+    else if(add('up')) sfx('flip');
+  }, 20);
+}, true);
+function speak(text, v){ const n=normTts(text||''); if(!n) return; duck();
   try{ if(curAudio){ curAudio.pause(); curAudio=null; } speechSynthesis.cancel(); }catch(e){}
   const h=ttsHash((v||'nar')+'|'+n);
   if(AUDIO && AUDIO.has(h) && !(S&&S.ttsOnly)){ try{ const a=new Audio(AUDIO_BASE+h+'.mp3'); a.playbackRate=clamp(((S&&S.rate)||.9)/.9,.5,1.5); curAudio=a; a.play().catch(()=>speakTts(n)); return; }catch(e){} }
@@ -2904,7 +2966,7 @@ function showCard(k){ return new Promise(res=>{
   const card=el('div',{class:'cc'}, el('div',{class:'cc-tag'},'獲得收集卡'), im?el('img',{src:im,alt:''}):null,
     el('div',{class:'cc-name'}, el('b',{},zh), el('button',{class:'speak',onclick:e=>{e.stopPropagation();speak(zh);},'aria-label':'朗讀'},'🔊')),
     S.pinyin?el('i',{},CARD_PY[k]||''):null, el('div',{class:'cc-tap'},'點一下繼續'));
-  ov.append(card); document.body.append(ov); if(S.auto) speak(zh);
+  ov.append(card); document.body.append(ov); sfx('card'); if(S.auto) speak(zh);
   setTimeout(()=>ov.onclick=()=>{ ov.remove(); res(); },300);
 }); }
 function toast(msg){ const t=el('div',{class:'toast',role:'status'},msg); document.body.append(t); setTimeout(()=>t.remove(),2200); }
@@ -3274,6 +3336,7 @@ async function runDay(){
   if(S.screen!=='game') return;
   if(!S.group) S.group=(Math.random()<.5?'A':'B'); save();
   drawHud();
+  if(S.day===0 && S.slot===0) music('start'); // 章節開頭的過場旋律
   while(S.day < days().length){
     const d = days()[S.day];
     // 實習是規定：在職月份一定有薪水（最低 30,900），每天都檢查一次
@@ -3653,6 +3716,7 @@ function startPrologue(saved){
 }
 async function runCh0(){
   S.screen='game'; render();
+  if(S.day===0) music('start');
   while(S.day < DAYS0.length){
     drawHud(); const d=DAYS0[S.day];
     if(!S.seen[d.main]) await runEvent(d.main);
@@ -3800,6 +3864,7 @@ function startCh12(){
 function endingKeys(o){ o=o||S; if(!o.tocflB1) return ['endFail']; return ['endUni', ({work:'endWork',home:'endHome',grad:'endGrad'})[o.route]||'endOpen']; }
 function renderEnd(){
   const ch=S.ch, ch2=ch>=2;
+  music(ch===12 ? 'ending' : 'end');
   const ppl=['rina','amei','chen','zhang','ajiao','xiaoyang','alian','lin'].concat(ch2?['huang','li','guo']:[]);
   const title = ch===12?'畢業了！':ch===11?'第十一章完成！':ch===10?'第十章完成！':ch===9?'第九章完成！':ch===8?'二年級結束！':ch===7?'第七章完成！':ch===6?'第六章完成！':ch===5?'第五章完成！':ch===4?'一年級結束！':ch===3?'第三章完成！':ch===2?'第二章完成！':'第一章完成！';
   const done = (ch===12?UI.done12:ch===11?UI.done11:ch===10?UI.done10:ch===9?UI.done9:ch===8?UI.done8:ch===7?UI.done7:ch===6?UI.done6:ch===5?UI.done5:ch===4?UI.done4:ch===3?UI.done3:ch===2?UI.done2:UI.done)[S.lang];
@@ -4107,6 +4172,8 @@ function openSettings(){
   const row=(lab,ctrl)=>{ if(ctrl.tagName==='SELECT') ctrl.style.maxWidth='62%'; return el('div',{class:'set-row'},el('span',{style:'white-space:nowrap'},lab),ctrl); };
   const py = el('input',{type:'checkbox',id:'s-py'}); py.checked=S.pinyin; py.onchange=()=>{S.pinyin=py.checked;save();};
   const au = el('input',{type:'checkbox',id:'s-au'}); au.checked=S.auto; au.onchange=()=>{S.auto=au.checked;save();};
+  const fxo = el('input',{type:'checkbox',id:'s-sfx'}); fxo.checked=S.sfx!==false; fxo.onchange=()=>{S.sfx=fxo.checked; save(); sfx('ok');};
+  const bgo = el('input',{type:'checkbox',id:'s-bgm'}); bgo.checked=S.bgm!==false; bgo.onchange=()=>{S.bgm=bgo.checked; save(); if(S.bgm) music('end'); else if(curTune&&AC) curTune.gain.setTargetAtTime(0,AC.currentTime,.05);};
   const tm = el('select',{id:'s-tm'}, TR_MODES.map(([v,t])=>{const o=el('option',{value:v},t); if((S.trMode||'show')===v)o.selected=true; return o;})); tm.onchange=()=>{S.trMode=tm.value; S.trSet=true; save();};
   const hd = el('input',{type:'checkbox',id:'s-hd'}); hd.checked=!!S.hard; hd.onchange=()=>{ setHard(hd.checked); tm.value=S.trMode; };
   const lg = el('select',{id:'s-lg'}, Object.entries(LANGS).map(([k,v])=>{const o=el('option',{value:k},v); if(S.lang===k)o.selected=true; return o;})); lg.onchange=()=>{S.lang=lg.value;save();};
@@ -4117,7 +4184,7 @@ function openSettings(){
   rt.onchange=()=>{S.rate=+rt.value; save(); speak('你好，歡迎來到台灣。');};
   let armed=false;
   const rs = el('button',{class:'btn ghost',onclick:()=>{ if(!armed){armed=true; rs.textContent='再按一次確認重新開始'; return;} try{localStorage.removeItem(KEY);}catch(e){} location.reload(); }},'重新開始');
-  dlg.append(...[el('h3',{style:'margin:0 0 8px',onclick:()=>{ devTaps++; if(devTaps>=5){ devTaps=0; dlg.close(); askDevPin(); } }},'設定'), isDev()?devPanel(dlg):null, row('顯示拼音',py), row('自動朗讀',au), row('朗讀聲音',vc), row('朗讀速度',rt), el('p',{style:'margin:2px 0 6px;font-size:.8rem;color:var(--ink-2)'},'★ 是較自然的聲音。電腦建議用 Edge 瀏覽器開啟，會有「HsiaoChen Online (Natural)」。'), row('翻譯語言',lg), row('母語翻譯',tm), row('挑戰模式',hd), el('p',{style:'margin:2px 0 6px;font-size:.8rem;color:var(--ink-2)'},'挑戰模式：答錯不能重選、心情 −3，聽力只能重播 2 次。'),
+  dlg.append(...[el('h3',{style:'margin:0 0 8px',onclick:()=>{ devTaps++; if(devTaps>=5){ devTaps=0; dlg.close(); askDevPin(); } }},'設定'), isDev()?devPanel(dlg):null, row('顯示拼音',py), row('自動朗讀',au), row('音效',fxo), row('過場配樂',bgo), row('朗讀聲音',vc), row('朗讀速度',rt), el('p',{style:'margin:2px 0 6px;font-size:.8rem;color:var(--ink-2)'},'★ 是較自然的聲音。電腦建議用 Edge 瀏覽器開啟，會有「HsiaoChen Online (Natural)」。'), row('翻譯語言',lg), row('母語翻譯',tm), row('挑戰模式',hd), el('p',{style:'margin:2px 0 6px;font-size:.8rem;color:var(--ink-2)'},'挑戰模式：答錯不能重選、心情 −3，聽力只能重播 2 次。'),
     (S.hero && (S.screen==='game'||S.screen==='end')) ? el('div',{style:'margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px'},
       el('button',{class:'btn',onclick:()=>{ save(); toast('已儲存：'+saveWhere(S)); }},'儲存進度'),
       el('button',{class:'btn ghost',onclick:()=>{ save(); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} location.reload(); }},'回到主畫面')) : null,
