@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台灣生活日記搬家了</title>
+<style>
+body{margin:0;font:18px/1.6 system-ui,"Noto Sans TC",sans-serif;background:#F3EFE4;color:#1E2B3A;display:grid;place-items:center;min-height:100vh;padding:16px;box-sizing:border-box}
+main{max-width:420px;text-align:center}
+a{display:inline-block;margin-top:12px;padding:12px 20px;border-radius:14px;background:#26324A;color:#fff;text-decoration:none;font-weight:700}
+small{color:#5A6676}
+</style>
+</head>
+<body>
+<main>
+  <h1>台灣生活日記搬家了</h1>
+  <p>新網址：<b>twdiary.youth.tc.edu.tw</b></p>
+  <p id="msg">正在帶你過去，你的進度也會一起搬過去……</p>
+  <a id="go" href="https://twdiary.youth.tc.edu.tw/">前往新網址</a>
+  <p><small>Trò chơi đã chuyển nhà · Game sudah pindah · The game has moved · เกมย้ายแล้ว · ဂိမ်း နေရာပြောင်းပြီ · ហ្គេមបានផ្លាស់ទីលំនៅ</small></p>
+</main>
+<script>
+// 放在舊網址（app2.youth.tc.edu.tw/twdiary/）的 index.html。
+// 舊網址的存檔在這個網域的 localStorage，新網域讀不到，所以先做成存檔代碼，放在新網址的 #save= 帶過去。
+// 存檔代碼的格式和遊戲裡的 packSave 一樣（TW1. + 壓縮 + base64url）。
+(async () => {
+  const NEW = 'https://twdiary.youth.tc.edu.tw/';
+  let url = NEW + location.search;
+  try {
+    const raw = localStorage.getItem('twdiary_ch1_v1');
+    const o = raw && JSON.parse(raw);
+    if (o && o.hero) {
+      delete o.usedBank;
+      let bytes = new TextEncoder().encode(JSON.stringify(o)), z = '0';
+      if (window.CompressionStream) { try { const cs = new CompressionStream('deflate-raw'); const w = cs.writable.getWriter(); w.write(bytes); w.close(); bytes = new Uint8Array(await new Response(cs.readable).arrayBuffer()); z = '1'; } catch (e) {} }
+      let s = ''; for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+      url += '#save=' + encodeURIComponent('TW1.' + z + btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''));
+    }
+  } catch (e) {}
+  // 舊網址的 service worker 不再需要
+  try { (await navigator.serviceWorker.getRegistrations()).forEach(r => r.unregister()); } catch (e) {}
+  document.getElementById('go').href = url;
+  setTimeout(() => location.replace(url), 800);
+})();
+</script>
+</body>
+</html>

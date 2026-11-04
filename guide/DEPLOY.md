@@ -16,6 +16,15 @@ docs/audio/            語音檔（自行產生，見 tools/tts/README.md）
 - **GitHub Pages**：Settings → Pages → Source 選 `Deploy from a branch`，Branch 選 `main`、資料夾 `/docs`。
 - **學校伺服器**：把 `docs/` 裡的檔案放到網站目錄（例如 `/var/www/html/twdiary/`）。不需要資料庫或後端。
 
+## 網址：twdiary.youth.tc.edu.tw（2026-11-04 起）
+
+遊戲裡的連結都是相對路徑，放在網域根目錄或子目錄都能用。換網址要注意：
+
+1. 新網域要有 DNS、網站設定（vhost）和 HTTPS 憑證。沒有 https，離線功能和 service worker 不會啟動。
+2. 存檔存在瀏覽器的 localStorage，**不同網域讀不到**。所以舊網址不要直接刪掉或改成伺服器轉址，而是把 `docs/moved/index.html` 放到舊網址（取代舊的 `index.html`）。學生打開舊網址或舊的主畫面圖示時，搬家頁會把存檔做成存檔代碼，自動帶到新網址載入，再把舊網址的 service worker 移除。
+3. 宣傳頁的 QR Code（`docs/about/img/qr.png`）和 `og:url` 已改成新網址。
+4. 舊網址的 `about/`、`feedback/` 可以保留，或在伺服器設定轉址到新網址（這兩頁沒有存檔）。
+
 ## 離線使用
 
 網站必須是 https。學生有網路時打開一次，遊戲和字型就會存在手機裡；「加到主畫面」後，沒有網路也能從圖示打開。語音在首頁「離線・下載語音」或遊戲「設定」下載（約 30 MB）。
