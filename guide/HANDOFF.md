@@ -25,10 +25,10 @@
 
 | 項目 | 網址 |
 |---|---|
-| 遊戲 | https://app2.youth.tc.edu.tw/twdiary/ （伺服器路徑 `/var/www/html/twdiary/`） |
-| 宣傳頁 | `/twdiary/about/` |
-| 學生回饋問卷 | `/twdiary/feedback/` |
-| 教師回饋問卷 | `/twdiary/feedback/teacher/` |
+| 遊戲 | https://twdiary.youth.tc.edu.tw/ （2026-11-04 起；舊網址 https://app2.youth.tc.edu.tw/twdiary/ 改放搬家頁 `docs/moved/index.html`） |
+| 宣傳頁 | `/about/` |
+| 學生回饋問卷 | `/feedback/` |
+| 教師回饋問卷 | `/feedback/teacher/` |
 | 開源專案 | https://github.com/hungyuhsun/taiwan-life-diary （程式碼 MIT，內容 CC BY-NC-SA 4.0） |
 
 ---
