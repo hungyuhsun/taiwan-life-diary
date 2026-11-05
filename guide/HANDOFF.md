@@ -190,6 +190,16 @@
 - ✅ ⚙︎ 設定可以分開關「音效」和「過場配樂」（`S.sfx`、`S.bgm`，預設開）。
 - 🔍 還沒在真手機上聽過音量；iPhone 靜音鍵打開時 Web Audio 可能不會出聲。
 
+### 新網址與搬家（2026-11-04～05）
+
+- ✅ https://twdiary.youth.tc.edu.tw/ 上線：DNS A 記錄 → 163.17.168.50（和 app2 同一台）。nginx（Docker 容器 `youth_nginx`，設定檔 `/home/hungyuhsun/docker-deploy/nginx/default.conf`）在檔尾新增 80／443 兩個區塊，根目錄和舊網址共用同一份檔案（容器內 `/srv/twdiary`）。Let's Encrypt 憑證到 2027-02-02，用和 app2 相同的 webroot 方式，靠 certbot.timer 自動續約。
+- ✅ 舊網址 `app2.youth.tc.edu.tw/twdiary/`（和 `/twdiary/index.html`）在 app2 的 https 區塊新增兩行 `rewrite` 到 `/twdiary/moved/`，學生打開會把存檔做成代碼，帶到新網址自動載入，`?ch=` 參數也會一起帶過去。舊網址的 about／feedback／sw.js 照常可用。
+- ✅ 宣傳頁 QR Code 與分享連結改成新網址。
+- ✅ 已確認 nginx 設定只新增行，未改動既有設定；全校其他 14 個網站狀態不變。
+- 備份：`default.conf.before-twdiary-20261104-023905`、`default.conf.before-moved-20261105-023104`（同目錄）、`~/twdiary-backups/20261105-023104/`（舊 about 檔）。要恢復舊網址的遊戲，把 before-moved 的內容用 `cat` 寫回 `default.conf`（不要換 inode），再 `docker exec youth_nginx nginx -s reload`。
+- 注意：nginx 是全校共用的，只能新增區塊、不可改既有設定，每次改都先 `nginx -t`。使用者電腦上的 Claude 是自動模式，遠端寫入會被擋，寫入伺服器的步驟要寫成指令讓使用者自己貼。
+- 🔍 還沒用真手機和真的舊進度測搬家。各章最佳成績（`twdiary_best`）不會帶過去；主畫面舊圖示會先開到搬家頁，建議學生重新加到主畫面。
+
 ### 離線遊玩
 
 - ✅ 加入 service worker、manifest、圖示和下載語音功能。
@@ -293,7 +303,7 @@ tools/tts/           語音句子清單與產生器（README.md 有步驟）
 
 ### C. 學校伺服器
 
-`/var/www/html/twdiary/`。正式版的問卷網址和試算表 ID 只在這裡。
+app2.youth.tc.edu.tw（163.17.168.50），帳號 hungyuhsun（ssh 金鑰）。網站檔案在 `/var/www/html/twdiary/`（root 擁有，寫入要 sudo），新舊網址共用。正式版的問卷網址和試算表 ID 只在這裡。詳見第 4 節「新網址與搬家」。
 
 ### D. Google 雲端硬碟交接資料夾
 
