@@ -161,6 +161,8 @@ input[type=text],select{font:inherit;padding:12px 14px;border-radius:12px;border
 .cc-tap{margin-top:10px;font-size:.8rem;color:var(--grey)}
 @keyframes popin{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
 @keyframes fadein{from{opacity:0}}
+.endart{position:relative;aspect-ratio:3/2;border-radius:14px;overflow:hidden;border:1px solid var(--line);margin:10px 0 4px;background:center/cover no-repeat}
+.endart img{position:absolute;bottom:0;left:6%;height:78%}
 .wish{background:#FFF6D8;border:1px dashed #E2A11C;border-radius:12px;padding:10px 12px;font-family:var(--f-display);font-size:1.05rem}
 .devbox{border:2px dashed var(--orange);border-radius:12px;padding:10px;margin:6px 0 10px;display:grid;gap:8px;background:#FFF8F0}
 .devrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.devrow select{flex:1;min-width:0;max-width:100%}
@@ -358,7 +360,7 @@ const DEPTS = [
   {zh:'汽車科',work:{zh:'修車廠',vi:'xưởng sửa xe',id:'bengkel mobil',en:'car repair shop',th:'อู่ซ่อมรถ',my:'ကားပြင်ဆိုင်'},gear:'安全帽',ge:'⛑️'},
   {zh:'商用資訊科',work:{zh:'貿易公司',vi:'công ty thương mại',id:'perusahaan dagang',en:'trading company',th:'บริษัทการค้า',my:'ကုန်သွယ်ရေးကုမ္ပဏီ'},gear:'工作證',ge:'🪪'}];
 const GEAR_E = {'工作證':'🪪','口罩':'😷','安全帽':'⛑️'};
-const ITEM_IMG = {'燈籠':'item_lantern','工作證':'item_badge','口罩':'item_mask','安全帽':'item_helmet','雨傘':'item_umbrella','悠遊卡':'item_easycard','緊急出口':'item_exit','實習工作服':'item_workwear','資源回收':'item_bin_recycle','廚餘':'item_bin_food','一般垃圾':'item_bin_general','健保卡':'item_nhicard','月餅':'item_mooncake'};
+const ITEM_IMG = {'燈籠':'item_lantern','雞排':'food_jipai','珍珠奶茶':'food_zhenzhunaicha','臭豆腐':'food_choudoufu','蚵仔煎':'food_ezaijian','地瓜球':'food_diguaqiu','烤玉米':'food_kaoyumi','芒果冰':'food_mangguobing','水煎包':'food_shuijianbao','飯糰':'goods_fantuan','茶葉蛋':'goods_chayedan','礦泉水':'goods_kuangquanshui','便當':'goods_biandang','牛奶':'goods_niunai','工作證':'item_badge','口罩':'item_mask','安全帽':'item_helmet','雨傘':'item_umbrella','悠遊卡':'item_easycard','緊急出口':'item_exit','實習工作服':'item_workwear','資源回收':'item_bin_recycle','廚餘':'item_bin_food','一般垃圾':'item_bin_general','健保卡':'item_nhicard','月餅':'item_mooncake'};
 const PEOPLE = {
   rina:{zh:'Rina',img:'rina'}, amei:{zh:'阿蜜',img:'amei'}, chen:{zh:'陳導師',img:'chen'}, zhang:{zh:'張師傅',img:'zhang'},
   ajiao:{zh:'王阿嬌',img:'ajiao'}, xiaoyang:{zh:'小陽',img:'xiaoyang'},
@@ -1568,6 +1570,9 @@ function startCh12(){
 }
 // 第十二章結局：通過 B1 → 直升科大＋四年後（依第十章路線）；沒通過 → 依規定返國
 function endingKeys(o){ o=o||S; if(!o.tocflB1) return ['endFail']; return ['endUni', ({work:'endWork',home:'endHome',grad:'endGrad'})[o.route]||'endOpen']; }
+// 結局插圖：場景圖＋玩家選的主角（場景圖裡不畫主角）
+const END_BG = {endFail:'end_fail',endUni:'end_uni',endWork:'end_work',endHome:'end_home',endGrad:'end_grad',endOpen:'end_open'};
+function endArt(k){ const b=BG[END_BG[k]]; if(!b) return null; const d=el('div',{class:'endart',role:'img','aria-label':'結局插圖'}, el('img',{src:IMG[S.hero+'_casual']||IMG[S.hero],alt:''})); d.style.backgroundImage='url('+b+')'; return d; }
 function renderEnd(){
   const ch=S.ch, ch2=ch>=2;
   music(ch===12 ? 'ending' : 'end');
@@ -1603,7 +1608,7 @@ function renderEnd(){
     yr ? el('div',{class:'statgrid'}, ...yr.map(([nm,r])=>el('div',{class:'stat'},el('b',{},r&&r.qTot?Math.round(100*r.qOk/r.qTot)+'%':'—'),r&&r.qTot?el('span',{class:'stars'},starTxt(starsOf(r))):null,el('span',{},nm+'一次答對')))) : null,
     ch===8 ? el('p',{class:'wish'},'華語文能力測驗進階級（B1）：'+(S.tocflB1?'通過':'這次沒通過，三年級再挑戰')) : null,
     ch===12 ? el('h3',{},'畢業以後') : null,
-    ch===12 ? el('div',{class:'ending'}, ...endingKeys().flatMap(k=>[el('p',{class:'wish'},fill(DATA.N[k].zh)), el('p',{class:'tr'},fillTr(L(DATA.N[k])))])) : null,
+    ch===12 ? el('div',{class:'ending'}, ...endingKeys().flatMap(k=>[endArt(k), el('p',{class:'wish'},fill(DATA.N[k].zh)), el('p',{class:'tr'},fillTr(L(DATA.N[k])))])) : null,
     ch===12 && !S.tocflB1 ? el('p',{class:'small'},'提醒：照規定，高中畢業前要通過華語文能力測驗 B1，才能直升科大。華語每天都要練習！') : null,
     ch===4 && S.exam4!=null ? el('p',{class:'wish'},'一年級華語期末考：'+S.exam4+' / '+(S.examN4||6)+' 題') : null,
     ch===4 ? el('p',{class:'wish'},'華語文能力測驗 A2：'+(S.tocflA2?'通過 ✓':'八月可以重新報名再考')) : null,
