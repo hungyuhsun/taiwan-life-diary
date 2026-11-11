@@ -170,6 +170,8 @@ input[type=text],select{font:inherit;padding:12px 14px;border-radius:12px;border
 dialog{border:0;border-radius:18px;padding:18px;max-width:min(420px,calc(100vw - 32px));color:var(--ink);background:var(--card)}
 .mini-item{display:flex;align-items:center;gap:12px;border:2px solid var(--line);background:var(--card);border-radius:14px;padding:12px}
 .mini-item .mini-e{font-size:2.6rem;line-height:1;flex:none}
+img.emo{width:1.25em;height:1.25em;object-fit:contain;display:block;margin:0 auto}
+.cardchip img.emo{display:inline-block;width:1.4em;height:1.4em;vertical-align:middle}
 .mini-item div{flex:1;min-width:0}
 .mini-item b{font-family:var(--f-display);font-size:1.4rem;display:block}
 .mini-item i{font-style:normal;font-size:.8rem;color:var(--ink-2);display:block}
@@ -2654,7 +2656,7 @@ const DEPTS = [
   {zh:'汽車科',work:{zh:'修車廠',vi:'xưởng sửa xe',id:'bengkel mobil',en:'car repair shop',th:'อู่ซ่อมรถ',my:'ကားပြင်ဆိုင်'},gear:'安全帽',ge:'⛑️'},
   {zh:'商用資訊科',work:{zh:'貿易公司',vi:'công ty thương mại',id:'perusahaan dagang',en:'trading company',th:'บริษัทการค้า',my:'ကုန်သွယ်ရေးကုမ္ပဏီ'},gear:'工作證',ge:'🪪'}];
 const GEAR_E = {'工作證':'🪪','口罩':'😷','安全帽':'⛑️'};
-const ITEM_IMG = {'工作證':'item_badge','口罩':'item_mask','安全帽':'item_helmet','雨傘':'item_umbrella','悠遊卡':'item_easycard','緊急出口':'item_exit','實習工作服':'item_workwear','資源回收':'item_bin_recycle','廚餘':'item_bin_food','一般垃圾':'item_bin_general','健保卡':'item_nhicard','月餅':'item_mooncake'};
+const ITEM_IMG = {'燈籠':'item_lantern','工作證':'item_badge','口罩':'item_mask','安全帽':'item_helmet','雨傘':'item_umbrella','悠遊卡':'item_easycard','緊急出口':'item_exit','實習工作服':'item_workwear','資源回收':'item_bin_recycle','廚餘':'item_bin_food','一般垃圾':'item_bin_general','健保卡':'item_nhicard','月餅':'item_mooncake'};
 const PEOPLE = {
   rina:{zh:'Rina',img:'rina'}, amei:{zh:'阿蜜',img:'amei'}, chen:{zh:'陳導師',img:'chen'}, zhang:{zh:'張師傅',img:'zhang'},
   ajiao:{zh:'王阿嬌',img:'ajiao'}, xiaoyang:{zh:'小陽',img:'xiaoyang'},
@@ -3383,6 +3385,8 @@ async function endDay(){
 }
 /* ---------- 小遊戲：垃圾分類（打掃房間時）、夜市點餐（逛夜市時） ---------- */
 // 成績記在 S.mini，不算進章末的「一次就答對」星等
+// 小遊戲圖示：有做好的物品圖就用圖，沒有才用 emoji（emoji 在舊手機可能顯示成方框）
+function emo(zh, e){ const k=ITEM_IMG[zh]; return k&&IMG[k] ? el('img',{class:'emo',src:IMG[k],alt:''}) : e; }
 const MINI = DATA.mini, MINI_TR = MINI.tr, BINS = MINI.bins, TRASH = MINI.trash, FOOD = MINI.food, ML = MINI.lines;
 const pickN = (arr,n) => arr.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).slice(0,n).map(x=>x[1]);
 const miniRec = (k) => { S.mini=S.mini||{}; return S.mini[k]=S.mini[k]||{plays:0,best:0,perfect:0}; };
@@ -3395,10 +3399,10 @@ async function miniTrash(){
   for(let i=0;i<items.length;i++){
     const [zh, e, bin, tr] = items[i];
     miniHead(ML.trashHead,'trash');
-    const card = el('div',{class:'mini-item'}, el('span',{class:'mini-e','aria-hidden':'true'},e),
+    const card = el('div',{class:'mini-item'}, el('span',{class:'mini-e','aria-hidden':'true'},emo(zh,e)),
       el('div',{}, el('b',{},zh), S.pinyin&&pyOf(zh)?el('i',{},pyOf(zh)):null, trBlock(L(tr),'margin:0')),
       el('button',{class:'speak sm','aria-label':'播放',onclick:()=>speak(zh)},'🔊'));
-    const btns = BINS.map(([k,bz,be])=>el('button',{class:'mini-bin','data-mini':k}, el('span',{'aria-hidden':'true'},be), el('b',{},bz)));
+    const btns = BINS.map(([k,bz,be])=>el('button',{class:'mini-bin','data-mini':k}, el('span',{'aria-hidden':'true'},emo(bz,be)), el('b',{},bz)));
     panel.append(el('p',{class:'small',style:'margin:0;text-align:right'},`${i+1} / ${items.length}　答對 ${ok}`), card, el('div',{class:'mini-bins'}, btns));
     if(S.auto) speak(zh);
     let first = true;
@@ -3437,7 +3441,7 @@ async function miniMarket(){
     const sum = el('p',{class:'small',style:'margin:0'},'還沒點');
     const show = () => { const t=Object.entries(tray).filter(([,n])=>n); sum.textContent = t.length ? '你點了：'+t.map(([k,n])=>k+' ×'+n).join('、') : '還沒點'; picks.forEach(p=>p.classList.toggle('on', !!tray[p.dataset.mini])); };
     const picks = menu.map(f=>el('button',{class:'mini-food','data-mini':f[0],onclick:()=>{ tray[f[0]]=((tray[f[0]]||0)+1)%3; show(); }},
-      el('span',{'aria-hidden':'true'},f[1]), el('b',{},f[0]), el('em',{},f[2]+' 元'), (S.trMode||'show')==='show' ? el('span',{class:'tr'},L(f[4])) : null));
+      el('span',{'aria-hidden':'true'},emo(f[0],f[1])), el('b',{},f[0]), el('em',{},f[2]+' 元'), (S.trMode||'show')==='show' ? el('span',{class:'tr'},L(f[4])) : null));
     const done = el('button',{class:'btn','data-mini':'done',style:'width:100%'},'點好了');
     panel.append(el('p',{class:'small',style:'margin:0'},'點一下加一份，點三下取消。'), el('div',{class:'mini-foods'}, picks), sum, done);
     await tapOnce([done]);
@@ -3452,7 +3456,7 @@ async function miniMarket(){
   let okPay = true, payTries = 0;
   for(;;){
     miniHead(ML.payHead,'pay');
-    panel.append(el('div',{class:'mini-menu'}, menu.map(f=>el('div',{}, el('span',{'aria-hidden':'true'},f[1]), el('b',{},f[0]), el('em',{},f[2]+' 元／'+f[3])))),
+    panel.append(el('div',{class:'mini-menu'}, menu.map(f=>el('div',{}, el('span',{'aria-hidden':'true'},emo(f[0],f[1])), el('b',{},f[0]), el('em',{},f[2]+' 元／'+f[3])))),
       el('p',{class:'small',style:'margin:0'},'你點了：'+want.map(([f,n])=>f[0]+' ×'+n).join('、')));
     let paid = 0;
     const shown = el('b',{class:'mini-paid'},'0 元');
@@ -3482,7 +3486,7 @@ async function miniFlip(){
   const info = el('p',{class:'small',style:'margin:0;text-align:right'},'翻了 0 次');
   const face = (c) => { const [zh, e, tr] = words[c.i];
     return c.zh ? [el('b',{},zh), S.pinyin&&pyOf(zh)?el('i',{},pyOf(zh)):null]
-                : [el('span',{class:'mini-e','aria-hidden':'true'},e), (S.trMode||'show')==='show' ? el('span',{class:'tr'},L(tr)) : null]; };
+                : [el('span',{class:'mini-e','aria-hidden':'true'},emo(zh,e)), (S.trMode||'show')==='show' ? el('span',{class:'tr'},L(tr)) : null]; };
   const done = new Promise(res=>{
     const btns = deck.map(c=>{ const b=el('button',{class:'mini-card','data-mini':'card','aria-label':'翻牌'},'？');
       b.onclick=async()=>{
@@ -3500,7 +3504,7 @@ async function miniFlip(){
   await done;
   const rec = miniRec('flip'); rec.plays++; rec.best = rec.best ? Math.min(rec.best, flips) : flips; if(flips===words.length) rec.perfect++;
   panel.innerHTML=''; panel.append(zhLine(ML.flipDone, null, {n:String(flips)}),
-    el('div',{class:'cards'}, words.map(([zh,e])=>el('span',{class:'cardchip'}, e+' '+zh))));
+    el('div',{class:'cards'}, words.map(([zh,e])=>el('span',{class:'cardchip'}, emo(zh,e), ' '+zh))));
   applyFx({hp:-5, mood:flips<=6?3:-2, zh:2}); save();
   await waitTap();
 }
@@ -3512,7 +3516,7 @@ async function miniShop(){
   let basket = pickN(MINI.goods.filter(g=>g[0]!==q[4]), q[4] ? 1 : 2);
   if(q[4]) basket.unshift(MINI.goods.find(g=>g[0]===q[4]));
   const total = basket.reduce((a,g)=>a+g[2],0), pay = total<100 ? 100 : 500, change = pay-total;
-  const list = () => el('div',{class:'mini-menu'}, basket.map(g=>el('div',{}, el('span',{'aria-hidden':'true'},g[1]), el('b',{},g[0]), el('em',{},g[2]+' 元'))));
+  const list = () => el('div',{class:'mini-menu'}, basket.map(g=>el('div',{}, el('span',{'aria-hidden':'true'},emo(g[0],g[1])), el('b',{},g[0]), el('em',{},g[2]+' 元'))));
   const vv = voiceOf('clerk');
   // 1. 聽店員問什麼，選回答（挑戰模式要先用聽的、不能重選）
   miniHead(ML.shopHead,'shop');
